@@ -34,6 +34,12 @@ setupVbenVxeTable({
           // 全局禁用vxe-table的表单配置，使用formOptions
           enabled: false,
         },
+        toolbarConfig: {
+          custom: true,
+          export: false,
+          refresh: true,
+          zoom: true,
+        },
         minHeight: 180,
         proxyConfig: {
           autoLoad: true,
