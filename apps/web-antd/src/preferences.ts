@@ -16,12 +16,16 @@ export const overridesPreferences = defineOverridesPreferences({
     defaultAvatar,
     layout: 'header-mixed-nav',
   },
+  logo: {
+    enable: true,
+    source: defaultAvatar,
+  },
   sidebar: {
     width: 200,
   },
   theme: {
     mode: 'light',
-    semiDarkSidebar: true,
+    semiDarkSidebar: false,
   },
   footer: {
     enable: true,

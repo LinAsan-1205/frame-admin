@@ -6,7 +6,11 @@ import { baseRequestClient, requestClient } from '#/api/request';
  * 登录
  */
 export async function accountLogin(data: Auth.LoginParams) {
-  return requestClient.post<Auth.LoginResult>('/auth/account-login', data);
+  const { username: userName, ...params } = data;
+  return requestClient.post<Auth.LoginResult>('/auth/account-login', {
+    ...params,
+    userName,
+  });
 }
 
 /**
