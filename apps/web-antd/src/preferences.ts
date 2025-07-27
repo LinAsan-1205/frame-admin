@@ -14,7 +14,7 @@ export const overridesPreferences = defineOverridesPreferences({
     authPageLayout: 'panel-center',
     defaultHomePath: '/workspace',
     defaultAvatar,
-    layout: 'header-mixed-nav',
+    layout: 'sidebar-mixed-nav',
   },
   logo: {
     enable: true,
