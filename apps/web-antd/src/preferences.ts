@@ -14,9 +14,17 @@ export const overridesPreferences = defineOverridesPreferences({
     authPageLayout: 'panel-center',
     defaultHomePath: '/workspace',
     defaultAvatar,
+    layout: 'header-mixed-nav',
+  },
+  sidebar: {
+    width: 200,
   },
   theme: {
     mode: 'light',
+    semiDarkSidebar: true,
+  },
+  footer: {
+    enable: true,
   },
   copyright: {
     companyName: 'frame-admin',

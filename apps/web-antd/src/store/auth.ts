@@ -12,7 +12,8 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getUserInfoApi, loginApi, logoutApi } from '#/api';
+import { accountLogin, accountLogout } from '#/api/auth';
+import { getMineProfile } from '#/api/system/user';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -35,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | User.profile = null;
     try {
       loginLoading.value = true;
-      const { accessToken } = await loginApi(params);
+      const { accessToken } = await accountLogin(params);
 
       // 如果成功获取到 accessToken
       if (accessToken) {
@@ -75,7 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout(redirect: boolean = true) {
     try {
-      await logoutApi();
+      await accountLogout();
     } catch {
       // 不做任何处理
     }
@@ -95,7 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUserInfo() {
     let userInfo: null | User.profile = null;
-    userInfo = await getUserInfoApi();
+    userInfo = await getMineProfile();
     userStore.setUserInfo(userInfo);
     return userInfo;
   }
