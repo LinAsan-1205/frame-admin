@@ -14,4 +14,9 @@ export const overridesPreferences = defineOverridesPreferences({
   theme: {
     mode: 'light',
   },
+  copyright: {
+    companyName: 'frame-admin',
+    companySiteLink: 'https://www.linasan.cn',
+    date: '2025',
+  },
 });
