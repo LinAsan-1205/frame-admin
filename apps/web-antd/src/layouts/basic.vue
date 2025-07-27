@@ -45,8 +45,8 @@ watch(
     <template #user-dropdown>
       <UserDropdown
         :avatar
-        :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
+        :text="userStore.userInfo?.nickName"
+        :description="userStore.userInfo?.email"
         @logout="handleLogout"
       />
     </template>

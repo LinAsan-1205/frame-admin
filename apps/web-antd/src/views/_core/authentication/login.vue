@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormSchema } from '@vben/common-ui';
-import type { BasicOption } from '@vben/types';
 
-import { computed, markRaw } from 'vue';
+import { computed, markRaw, ref } from 'vue';
 
 import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -15,64 +14,37 @@ defineOptions({ name: 'Login' });
 
 const authStore = useAuthStore();
 
-const MOCK_USER_OPTIONS: BasicOption[] = [
-  {
-    label: 'Super',
-    value: 'vben',
-  },
-  {
-    label: 'Admin',
-    value: 'admin',
-  },
-  {
-    label: 'User',
-    value: 'jack',
-  },
-];
+const captchaId = ref('');
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
-    {
-      component: 'VbenSelect',
-      componentProps: {
-        options: MOCK_USER_OPTIONS,
-        placeholder: $t('authentication.selectAccount'),
-      },
-      fieldName: 'selectAccount',
-      label: $t('authentication.selectAccount'),
-      rules: z
-        .string()
-        .min(1, { message: $t('authentication.selectAccount') })
-        .optional()
-        .default('vben'),
-    },
+    // {
+    //   component: 'VbenSelect',
+    //   componentProps: {
+    //     options: MOCK_USER_OPTIONS,
+    //     placeholder: $t('authentication.selectAccount'),
+    //   },
+    //   fieldName: 'selectAccount',
+    //   label: $t('authentication.selectAccount'),
+    //   rules: z
+    //     .string()
+    //     .min(1, { message: $t('authentication.selectAccount') })
+    //     .optional()
+    //     .default('vben'),
+    // },
     {
       component: 'VbenInput',
       componentProps: {
         placeholder: $t('authentication.usernameTip'),
       },
-      dependencies: {
-        trigger(values, form) {
-          if (values.selectAccount) {
-            const findUser = MOCK_USER_OPTIONS.find(
-              (item) => item.value === values.selectAccount,
-            );
-            if (findUser) {
-              form.setValues({
-                password: '123456',
-                username: findUser.value,
-              });
-            }
-          }
-        },
-        triggerFields: ['selectAccount'],
-      },
-      fieldName: 'username',
+      defaultValue: 'admin',
+      fieldName: 'userName',
       label: $t('authentication.username'),
       rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
     },
     {
       component: 'VbenInputPassword',
+      defaultValue: '123456',
       componentProps: {
         placeholder: $t('authentication.password'),
       },
@@ -84,13 +56,28 @@ const formSchema = computed((): VbenFormSchema[] => {
       component: markRaw(FoundationCaptcha),
       componentProps: {
         placeholder: $t('authentication.verifyCode'),
+        onReload: (id: string) => {
+          captchaId.value = id;
+        },
       },
+
       fieldName: 'verifyCode',
       label: $t('authentication.verifyCode'),
-      rules: z.string().min(1, { message: $t('authentication.verifyCodeTip') }),
+      rules: z
+        .string()
+        .nonempty({ message: $t('authentication.verifyCodeTip') })
+        .min(4, { message: $t('authentication.maxVerifyCodeTip') })
+        .max(4, { message: $t('authentication.maxVerifyCodeTip') }),
     },
   ];
 });
+
+const authLogin = (values: any) => {
+  authStore.authLogin({
+    ...values,
+    captchaId: captchaId.value,
+  });
+};
 </script>
 
 <template>
@@ -102,6 +89,6 @@ const formSchema = computed((): VbenFormSchema[] => {
     :show-code-login="false"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
-    @submit="authStore.authLogin"
+    @submit="authLogin"
   />
 </template>

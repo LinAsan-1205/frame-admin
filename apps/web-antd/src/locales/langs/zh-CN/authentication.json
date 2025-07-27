@@ -1,4 +1,5 @@
 {
   "verifyCode": "请输入验证码",
-  "verifyCodeTip": "请输入验证码"
+  "verifyCodeTip": "请输入验证码",
+  "maxVerifyCodeTip": "验证码长度为4位"
 }
