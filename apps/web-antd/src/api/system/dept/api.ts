@@ -24,7 +24,7 @@ async function createDept(data: Omit<Dept.View, 'children' | 'id'>) {
  * @param data 部门数据
  */
 async function updateDept(
-  id: string,
+  id: number,
   data: Omit<Dept.View, 'children' | 'id'>,
 ) {
   return requestClient.put(`/system/dept/${id}`, data);
@@ -34,7 +34,7 @@ async function updateDept(
  * 删除部门
  * @param id 部门 ID
  */
-async function deleteDept(id: string) {
+async function deleteDept(id: number) {
   return requestClient.delete(`/system/dept/${id}`);
 }
 

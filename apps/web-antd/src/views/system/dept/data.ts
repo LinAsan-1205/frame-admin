@@ -74,6 +74,7 @@ export function useSchema(): VbenFormSchema[] {
         class: 'w-full',
       },
       fieldName: 'orderNum',
+      defaultValue: 0,
       label: $t('system.dept.orderNum'),
     },
     {

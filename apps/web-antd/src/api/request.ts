@@ -98,8 +98,18 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       // 当前mock接口返回的错误字段是 error 或者 message
       const responseData = error?.response?.data ?? {};
       const errorMessage = responseData?.error ?? responseData?.message ?? '';
-      // 如果没有错误信息，则会根据状态码进行提示
-      message.error(errorMessage || msg);
+      const errorCode = responseData?.code;
+      switch (errorCode) {
+        case 401: {
+          message.error(errorMessage);
+          doReAuthenticate();
+          break;
+        }
+        default: {
+          message.error(errorMessage || msg);
+          break;
+        }
+      }
     }),
   );
 

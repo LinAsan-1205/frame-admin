@@ -2,7 +2,7 @@ export namespace Dept {
   export interface View {
     [key: string]: any;
     children?: Dept.View[];
-    id: string;
+    id: number;
     name: string;
     remark?: string;
     status: 0 | 1;
