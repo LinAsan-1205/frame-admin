@@ -105,8 +105,8 @@ setupVbenVxeTable({
         if (!date.isValid()) {
           return h(
             'span',
-            { class: 'text-red-400', title: '无效日期' },
-            { default: () => placeholder },
+            { class: 'text-red-400' },
+            { default: () => '无效日期' },
           );
         }
 
