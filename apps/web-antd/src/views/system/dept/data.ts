@@ -1,6 +1,6 @@
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 
-import type { VbenFormSchema } from '#/adapter/form';
+import type { VbenFormProps, VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { Dept } from '#/api/system/dept';
 
@@ -93,6 +93,52 @@ export function useSchema(): VbenFormSchema[] {
         .optional(),
     },
   ];
+}
+
+export function userSearchFormOptions(): VbenFormProps {
+  return {
+    collapsed: false,
+    schema: [
+      {
+        component: 'Input',
+        componentProps: {
+          placeholder: $t('system.dept.deptNamePlaceholder'),
+        },
+        fieldName: 'name',
+        label: $t('system.dept.deptName'),
+      },
+      {
+        component: 'Input',
+        componentProps: {
+          placeholder: $t('system.dept.leaderPlaceholder'),
+        },
+        fieldName: 'leader',
+        label: $t('system.dept.leader'),
+      },
+      {
+        component: 'Input',
+        componentProps: {
+          placeholder: $t('system.dept.phonePlaceholder'),
+        },
+        fieldName: 'phone',
+        label: $t('system.dept.phone'),
+      },
+      {
+        component: 'RadioGroup',
+        componentProps: {
+          buttonStyle: 'solid',
+          options: [
+            { label: $t('common.all'), value: undefined },
+            { label: $t('common.enabled'), value: '1' },
+            { label: $t('common.disabled'), value: '0' },
+          ],
+        },
+        fieldName: 'status',
+        label: $t('system.dept.status'),
+      },
+    ],
+    submitOnChange: true,
+  };
 }
 
 /**

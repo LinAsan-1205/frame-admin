@@ -5,8 +5,10 @@ import { requestClient } from '#/api/request';
 /**
  * 获取部门列表数据
  */
-async function getDeptList() {
-  return requestClient.get<Array<Dept.View>>('/system/dept/list');
+async function getDeptList(params: Dept.Condition) {
+  return requestClient.get<Array<Dept.View>>('/system/dept/list', {
+    params,
+  });
 }
 
 /**

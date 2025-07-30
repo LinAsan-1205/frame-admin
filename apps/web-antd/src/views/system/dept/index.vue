@@ -14,7 +14,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteDept, getDeptList } from '#/api/system/dept';
 import { $t } from '#/locales';
 
-import { useColumns } from './data';
+import { useColumns, userSearchFormOptions } from './data';
 import Form from './modules/form.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
@@ -88,7 +88,10 @@ function onActionClick({ code, row }: OnActionClickParams<Dept.View>) {
   }
 }
 
+const formOptions = userSearchFormOptions();
+
 const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions,
   gridEvents: {},
   gridOptions: {
     columns: useColumns(onActionClick),
@@ -99,8 +102,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async (_params) => {
-          return await getDeptList();
+        query: async (_, params) => {
+          return await getDeptList(params);
         },
       },
     },

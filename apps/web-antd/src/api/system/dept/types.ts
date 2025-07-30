@@ -6,5 +6,12 @@ export namespace Dept {
     name: string;
     remark?: string;
     status: 0 | 1;
+    leader?: string;
+    phone?: string;
+  }
+  export interface Condition {
+    name?: string;
+    leader?: string;
+    phone?: string;
   }
 }

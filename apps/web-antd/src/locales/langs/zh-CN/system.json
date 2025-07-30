@@ -13,6 +13,9 @@
     "phone": "联系电话",
     "email": "邮箱",
     "leader": "负责人",
-    "orderNum": "排序"
+    "orderNum": "排序",
+    "deptNamePlaceholder": "请输入部门名称",
+    "leaderPlaceholder": "请输入负责人名称",
+    "phonePlaceholder": "请输入联系电话"
   }
 }
