@@ -15,11 +15,11 @@ import { get, isFunction, isString } from '@vben/utils';
 
 import { objectOmit } from '@vueuse/core';
 import { Button, Image, Popconfirm, Switch, Tag } from 'ant-design-vue';
-import dayjs from 'dayjs';
 
 import { $t } from '#/locales';
 
 import { useVbenForm } from './form';
+import { renderers } from './renderer';
 
 setupVbenVxeTable({
   configVxeTable: (vxeUI) => {
@@ -84,34 +84,6 @@ setupVbenVxeTable({
           { size: 'small', type: 'link' },
           { default: () => props?.text },
         );
-      },
-    });
-    vxeUI.renderer.add('CellFormatDate', {
-      renderTableDefault({ props }, { column, row }) {
-        const value = get(row, column.field);
-        const { unit = 'YYYY-MM-DD HH:mm:ss', placeholder = '-' } = props ?? {};
-
-        // 边界处理：检查值是否为空或无效
-        if (value === null || value === '' || value === undefined) {
-          return h(
-            'span',
-            { class: 'text-gray-400' },
-            { default: () => placeholder },
-          );
-        }
-
-        // 边界处理：验证日期是否有效
-        const date = dayjs(value);
-        if (!date.isValid()) {
-          return h(
-            'span',
-            { class: 'text-red-400' },
-            { default: () => '无效日期' },
-          );
-        }
-
-        const formatValue = date.format(unit);
-        return h('span', {}, { default: () => formatValue });
       },
     });
 
@@ -314,6 +286,7 @@ setupVbenVxeTable({
 
     // 这里可以自行扩展 vxe-table 的全局配置，比如自定义格式化
     // vxeUI.formats.add
+    renderers(vxeUI.renderer);
   },
   useVbenForm,
 });
