@@ -180,6 +180,7 @@ export function useColumns(
     },
     {
       field: 'createTime',
+      cellRender: { name: 'CellFormatDate' },
       title: $t('system.dept.createTime'),
     },
     {
