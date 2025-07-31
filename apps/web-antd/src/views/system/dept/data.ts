@@ -58,12 +58,12 @@ export function useSchema(): VbenFormSchema[] {
       componentProps: {
         buttonStyle: 'solid',
         options: [
-          { label: $t('common.enabled'), value: '1' },
-          { label: $t('common.disabled'), value: '0' },
+          { label: $t('common.enabled'), value: '0' },
+          { label: $t('common.disabled'), value: '1' },
         ],
         optionType: 'button',
       },
-      defaultValue: '1',
+      defaultValue: '0',
       fieldName: 'status',
       label: $t('system.dept.status'),
     },
@@ -129,8 +129,8 @@ export function userSearchFormOptions(): VbenFormProps {
           buttonStyle: 'solid',
           options: [
             { label: $t('common.all'), value: undefined },
-            { label: $t('common.enabled'), value: '1' },
-            { label: $t('common.disabled'), value: '0' },
+            { label: $t('common.enabled'), value: '0' },
+            { label: $t('common.disabled'), value: '1' },
           ],
         },
         fieldName: 'status',

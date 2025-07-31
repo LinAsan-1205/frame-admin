@@ -15,14 +15,7 @@ import { getPopupContainer } from '@vben/utils';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
 import { useVbenForm, z } from '#/adapter/form';
-import {
-  createMenu,
-  getMenuList,
-  isMenuNameExists,
-  isMenuPathExists,
-  SystemMenuApi,
-  updateMenu,
-} from '#/api/system/menu';
+import { createMenu, getMenuList, Menu, updateMenu } from '#/api/system/menu';
 import { $t } from '#/locales';
 import { componentKeys } from '#/router/routes';
 
@@ -31,7 +24,7 @@ import { getMenuTypeOptions } from '../data';
 const emit = defineEmits<{
   success: [];
 }>();
-const formData = ref<SystemMenuApi.SystemMenu>();
+const formData = ref<Menu.OriginView>();
 const titleSuffix = ref<string>();
 const schema: VbenFormSchema[] = [
   {
@@ -53,18 +46,7 @@ const schema: VbenFormSchema[] = [
     rules: z
       .string()
       .min(2, $t('ui.formRules.minLength', [$t('system.menu.menuName'), 2]))
-      .max(30, $t('ui.formRules.maxLength', [$t('system.menu.menuName'), 30]))
-      .refine(
-        async (value: string) => {
-          return !(await isMenuNameExists(value, formData.value?.id));
-        },
-        (value) => ({
-          message: $t('ui.formRules.alreadyExists', [
-            $t('system.menu.menuName'),
-            value,
-          ]),
-        }),
-      ),
+      .max(30, $t('ui.formRules.maxLength', [$t('system.menu.menuName'), 30])),
   },
   {
     component: 'ApiTreeSelect',
@@ -86,7 +68,7 @@ const schema: VbenFormSchema[] = [
       valueField: 'id',
       childrenField: 'children',
     },
-    fieldName: 'pid',
+    fieldName: 'parentId',
     label: $t('system.menu.parent'),
     renderComponentContent() {
       return {
@@ -113,7 +95,7 @@ const schema: VbenFormSchema[] = [
         },
       };
     },
-    fieldName: 'meta.title',
+    fieldName: 'title',
     label: $t('system.menu.menuTitle'),
     rules: 'required',
   },
@@ -136,17 +118,6 @@ const schema: VbenFormSchema[] = [
           return value.startsWith('/');
         },
         $t('ui.formRules.startWith', [$t('system.menu.path'), '/']),
-      )
-      .refine(
-        async (value: string) => {
-          return !(await isMenuPathExists(value, formData.value?.id));
-        },
-        (value) => ({
-          message: $t('ui.formRules.alreadyExists', [
-            $t('system.menu.path'),
-            value,
-          ]),
-        }),
       ),
   },
   {
@@ -170,9 +141,6 @@ const schema: VbenFormSchema[] = [
         },
         $t('ui.formRules.startWith', [$t('system.menu.path'), '/']),
       )
-      .refine(async (value: string) => {
-        return await isMenuPathExists(value, formData.value?.id);
-      }, $t('system.menu.activePathMustExist'))
       .optional(),
   },
   {
@@ -186,7 +154,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.icon',
+    fieldName: 'icon',
     label: $t('system.menu.icon'),
   },
   {
@@ -200,7 +168,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.activeIcon',
+    fieldName: 'activeIcon',
     label: $t('system.menu.activeIcon'),
   },
   {
@@ -233,7 +201,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'linkSrc',
+    fieldName: 'link',
     label: $t('system.menu.linkSrc'),
     rules: z.string().url($t('ui.formRules.invalidURL')),
   },
@@ -256,12 +224,12 @@ const schema: VbenFormSchema[] = [
     componentProps: {
       buttonStyle: 'solid',
       options: [
-        { label: $t('common.enabled'), value: 1 },
-        { label: $t('common.disabled'), value: 0 },
+        { label: $t('common.enabled'), value: '0' },
+        { label: $t('common.disabled'), value: '1' },
       ],
       optionType: 'button',
     },
-    defaultValue: 1,
+    defaultValue: '0',
     fieldName: 'status',
     label: $t('system.menu.status'),
   },
@@ -281,7 +249,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.badgeType',
+    fieldName: 'badgeType',
     label: $t('system.menu.badgeType.title'),
   },
   {
@@ -290,7 +258,7 @@ const schema: VbenFormSchema[] = [
       return {
         allowClear: true,
         class: 'w-full',
-        disabled: values.meta?.badgeType !== 'normal',
+        disabled: values?.badgeType !== 'normal',
       };
     },
     dependencies: {
@@ -299,7 +267,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.badge',
+    fieldName: 'badge',
     label: $t('system.menu.badge'),
   },
   {
@@ -307,7 +275,7 @@ const schema: VbenFormSchema[] = [
     componentProps: {
       allowClear: true,
       class: 'w-full',
-      options: SystemMenuApi.BadgeVariants.map((v) => ({
+      options: Menu.BadgeVariants.map((v) => ({
         label: v,
         value: v,
       })),
@@ -318,7 +286,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.badgeVariants',
+    fieldName: 'badgeVariants',
     label: $t('system.menu.badgeVariants'),
   },
   {
@@ -346,7 +314,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.keepAlive',
+    fieldName: 'keepAlive',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.keepAlive'),
@@ -361,7 +329,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.affixTab',
+    fieldName: 'affixTab',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.affixTab'),
@@ -376,7 +344,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.hideInMenu',
+    fieldName: 'hideInMenu',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInMenu'),
@@ -391,7 +359,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.hideChildrenInMenu',
+    fieldName: 'hideChildrenInMenu',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideChildrenInMenu'),
@@ -406,7 +374,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.hideInBreadcrumb',
+    fieldName: 'hideInBreadcrumb',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInBreadcrumb'),
@@ -421,7 +389,7 @@ const schema: VbenFormSchema[] = [
       },
       triggerFields: ['type'],
     },
-    fieldName: 'meta.hideInTab',
+    fieldName: 'hideInTab',
     renderComponentContent() {
       return {
         default: () => $t('system.menu.hideInTab'),
@@ -447,17 +415,22 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onConfirm: onSubmit,
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData<SystemMenuApi.SystemMenu>();
+      const data = drawerApi.getData<Menu.View>();
       if (data?.type === 'link') {
         data.linkSrc = data.meta?.link;
       } else if (data?.type === 'embedded') {
         data.linkSrc = data.meta?.iframeSrc;
       }
       if (data) {
-        formData.value = data;
-        formApi.setValues(formData.value);
-        titleSuffix.value = formData.value.meta?.title
-          ? $t(formData.value.meta.title)
+        const { meta = {}, ...originView } = data;
+        const originData: Menu.OriginView = {
+          ...meta,
+          ...originView,
+        };
+        formData.value = originData;
+        formApi.setValues(originData);
+        titleSuffix.value = formData.value?.title
+          ? $t(formData.value.title)
           : '';
       } else {
         formApi.resetForm();
@@ -471,10 +444,7 @@ async function onSubmit() {
   const { valid } = await formApi.validate();
   if (valid) {
     drawerApi.lock();
-    const data =
-      await formApi.getValues<
-        Omit<SystemMenuApi.SystemMenu, 'children' | 'id'>
-      >();
+    const data = await formApi.getValues<Omit<Menu.View, 'children' | 'id'>>();
     if (data.type === 'link') {
       data.meta = { ...data.meta, link: data.linkSrc };
     } else if (data.type === 'embedded') {
