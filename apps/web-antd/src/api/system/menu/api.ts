@@ -4,8 +4,10 @@ import { requestClient } from '#/api/request';
 /**
  * 获取菜单数据列表
  */
-async function getMenuList() {
-  return requestClient.get<Array<Menu.View>>('/system/menu/list');
+async function getMenuList(condition?: Menu.Condition) {
+  return requestClient.get<Array<Menu.View>>('/system/menu/list', {
+    params: condition,
+  });
 }
 
 /**

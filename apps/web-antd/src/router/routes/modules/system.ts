@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
           icon: 'mdi:menu',
           title: $t('system.menu.title'),
         },
-        component: () => import('#/views/system/menu/list.vue'),
+        component: () => import('#/views/system/menu/index.vue'),
       },
       {
         path: '/system/dept',

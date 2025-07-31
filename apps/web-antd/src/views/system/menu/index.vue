@@ -13,7 +13,7 @@ import { MenuBadge } from '@vben-core/menu-ui';
 import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteMenu, getMenuList } from '#/api/system/menu';
+import { deleteMenu, getMenuList, Menu } from '#/api/system/menu';
 
 import { useColumns } from './data';
 import Form from './modules/form.vue';
@@ -33,8 +33,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async (_params) => {
-          return await getMenuList();
+        query: async (_, params) => {
+          return await getMenuList(params);
         },
       },
     },
@@ -55,10 +55,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions,
 });
 
-function onActionClick({
-  code,
-  row,
-}: OnActionClickParams<SystemMenuApi.SystemMenu>) {
+function onActionClick({ code, row }: OnActionClickParams<Menu.View>) {
   switch (code) {
     case 'append': {
       onAppend(row);
@@ -81,17 +78,17 @@ function onActionClick({
 function onRefresh() {
   gridApi.query();
 }
-function onEdit(row: SystemMenuApi.SystemMenu) {
+function onEdit(row: Menu.View) {
   formDrawerApi.setData(row).open();
 }
 function onCreate() {
   formDrawerApi.setData({}).open();
 }
-function onAppend(row: SystemMenuApi.SystemMenu) {
+function onAppend(row: Menu.View) {
   formDrawerApi.setData({ pid: row.id }).open();
 }
 
-function onDelete(row: SystemMenuApi.SystemMenu) {
+function onDelete(row: Menu.View) {
   const hideLoading = message.loading({
     content: $t('ui.actionMessage.deleting', [row.name]),
     duration: 0,
