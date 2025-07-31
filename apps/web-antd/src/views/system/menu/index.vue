@@ -15,7 +15,7 @@ import { Button, message } from 'ant-design-vue';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteMenu, getMenuList, Menu } from '#/api/system/menu';
 
-import { useColumns } from './data';
+import { useColumns, userSearchFormOptions } from './data';
 import Form from './modules/form.vue';
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
@@ -23,7 +23,10 @@ const [FormDrawer, formDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 });
 
+const formOptions = userSearchFormOptions();
+
 const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions,
   gridOptions: {
     columns: useColumns(onActionClick),
     height: 'auto',
@@ -40,12 +43,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     rowConfig: {
       keyField: 'id',
-    },
-    toolbarConfig: {
-      custom: true,
-      export: false,
-      refresh: true,
-      zoom: true,
     },
     treeConfig: {
       parentField: 'parentId',

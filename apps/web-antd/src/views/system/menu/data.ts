@@ -1,3 +1,4 @@
+import type { VbenFormProps } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { Menu } from '#/api/system/menu';
 
@@ -19,6 +20,37 @@ export function getMenuTypeOptions() {
     },
     { color: 'warning', label: $t('system.menu.typeLink'), value: 'link' },
   ];
+}
+
+export function userSearchFormOptions(): VbenFormProps {
+  return {
+    collapsed: false,
+    schema: [
+      {
+        component: 'Input',
+        componentProps: {
+          placeholder: $t('system.menu.menuTitlePlaceholder'),
+        },
+        fieldName: 'title',
+        label: $t('system.menu.menuTitle'),
+      },
+
+      {
+        component: 'RadioGroup',
+        componentProps: {
+          buttonStyle: 'solid',
+          options: [
+            { label: $t('common.all'), value: undefined },
+            { label: $t('common.enabled'), value: '0' },
+            { label: $t('common.disabled'), value: '1' },
+          ],
+        },
+        fieldName: 'status',
+        label: $t('system.menu.status'),
+      },
+    ],
+    submitOnChange: true,
+  };
 }
 
 export function useColumns(
