@@ -28,13 +28,19 @@ export function userSearchFormOptions(): VbenFormProps {
     schema: [
       {
         component: 'Input',
-        componentProps: {
-          placeholder: $t('system.menu.menuTitlePlaceholder'),
-        },
         fieldName: 'title',
         label: $t('system.menu.menuTitle'),
       },
-
+      {
+        component: 'Input',
+        fieldName: 'path',
+        label: $t('system.menu.path'),
+      },
+      {
+        component: 'Input',
+        fieldName: 'component',
+        label: $t('system.menu.component'),
+      },
       {
         component: 'RadioGroup',
         componentProps: {
