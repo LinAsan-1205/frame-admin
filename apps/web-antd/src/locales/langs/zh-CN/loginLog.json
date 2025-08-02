@@ -1,0 +1,9 @@
+{
+  "id": "编号",
+  "username": "用户名",
+  "ip": "IP地址",
+  "browser": "浏览器",
+  "os": "操作系统",
+  "status": "状态",
+  "loginTime": "登录时间"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "ID",
+  "userId": "用户ID",
+  "username": "用户名",
+  "module": "模块",
+  "operationType": "操作类型",
+  "description": "描述",
+  "method": "请求方法",
+  "url": "请求地址",
+  "params": "请求参数",
+  "result": "返回结果",
+  "status": "状态",
+  "errorMsg": "错误信息",
+  "ip": "IP地址",
+  "userAgent": "用户代理",
+  "operationTime": "操作时间",
+  "costTime": "耗时",
+  "usernamePlaceholder": "请输入用户名"
+}

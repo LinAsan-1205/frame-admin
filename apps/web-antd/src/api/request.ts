@@ -100,7 +100,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       const errorMessage = responseData?.error ?? responseData?.message ?? '';
       const errorCode = responseData?.code;
       switch (errorCode) {
-        case 401: {
+        case 401:
+        case 2001: {
           message.error(errorMessage);
           doReAuthenticate();
           break;

@@ -1,3 +1,6 @@
 {
-  "all": "全部"
+  "all": "全部",
+  "success": "成功",
+  "failed": "失败",
+  "operation": "操作"
 }

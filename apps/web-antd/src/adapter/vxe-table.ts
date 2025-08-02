@@ -46,7 +46,7 @@ setupVbenVxeTable({
           autoLoad: true,
           response: {
             result: 'items',
-            total: 'total',
+            total: 'meta.totalItems',
             list: '',
           },
           showActiveMsg: true,

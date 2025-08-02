@@ -14,5 +14,10 @@
   "system": {
     "title": "系统管理",
     "dept": "部门管理"
+  },
+  "log": {
+    "title": "日志管理",
+    "operationLog": "操作日志",
+    "loginLog": "登录日志"
   }
 }
