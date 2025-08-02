@@ -10,7 +10,7 @@ import { requestClient } from '#/api/request';
  * @returns
  */
 export function queryOperationLogpage(params?: Operation.Condition) {
-  return requestClient.get<Api.Pagination<Operation.View>>(
+  return requestClient.get<Api.PaginationResult<Operation.View>>(
     '/admin/operation-log/page',
     {
       params,

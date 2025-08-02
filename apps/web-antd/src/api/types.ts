@@ -1,5 +1,9 @@
 export declare namespace Api {
-  export interface Pagination<T> {
+  export interface PageCursor {
+    page?: number;
+    pageSize?: number;
+  }
+  export interface PaginationResult<T> {
     /** 分页数据列表 */
     items: T[];
     /** 分页元数据 */
