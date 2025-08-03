@@ -132,8 +132,8 @@ export function useColumns(
             code: 'append',
             text: '新增下级',
           },
-          'edit', // 默认的编辑按钮
-          'delete', // 默认的删除按钮
+          'edit',
+          'delete',
         ],
       },
       field: 'operation',
