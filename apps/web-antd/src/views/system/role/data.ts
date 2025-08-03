@@ -55,7 +55,7 @@ export function useFormSchema(): VbenFormSchema[] {
 
 export function useSearchFormOptions(): VbenFormProps {
   return {
-    fieldMappingTime: [['createTime', ['startTime', 'endTime']]],
+    fieldMappingTime: [['createTime', ['createFormDate', 'createToDate']]],
     submitOnChange: true,
     schema: [
       {
