@@ -9,11 +9,17 @@ import { requestClient } from '#/api/request';
  * @param params
  * @returns
  */
-export function queryLoginLogPage(params?: LoginLog.Condition) {
+export function queryLoginLogPage(
+  pageCursor: Api.PageCursor = {},
+  condition: LoginLog.Condition = {},
+) {
   return requestClient.get<Api.PaginationResult<LoginLog.View>>(
     '/admin/log/login/page',
     {
-      params,
+      params: {
+        ...pageCursor,
+        ...condition,
+      },
     },
   );
 }

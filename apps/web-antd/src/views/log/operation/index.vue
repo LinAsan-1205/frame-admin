@@ -57,8 +57,14 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        query: (_, params) => {
-          return queryOperationLogpage(params);
+        query: ({ page }, formValues) => {
+          return queryOperationLogpage(
+            {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+            },
+            formValues,
+          );
         },
       },
     },

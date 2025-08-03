@@ -20,8 +20,14 @@ const [Grid] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        query: (_, params) => {
-          return queryLoginLogPage(params);
+        query: ({ page }, formValues) => {
+          return queryLoginLogPage(
+            {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+            },
+            formValues,
+          );
         },
       },
     },

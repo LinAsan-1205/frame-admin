@@ -102,8 +102,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async (_, params) => {
-          return await getDeptList(params);
+        query: async (_, formValues) => {
+          return await getDeptList(formValues);
         },
       },
     },

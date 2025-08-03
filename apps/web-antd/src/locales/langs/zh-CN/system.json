@@ -58,5 +58,20 @@
     "typeLink": "外链",
     "typeMenu": "菜单",
     "menuTitlePlaceholder": "请输入菜单标题"
+  },
+  "role": {
+    "title": "角色管理",
+    "list": "角色列表",
+    "name": "角色",
+    "roleName": "角色名称",
+    "id": "角色ID",
+    "status": "状态",
+    "remark": "备注",
+    "sort": "排序",
+    "createTime": "创建时间",
+    "operation": "操作",
+    "permissions": "权限",
+    "setPermissions": "授权",
+    "code": "角色编码"
   }
 }
