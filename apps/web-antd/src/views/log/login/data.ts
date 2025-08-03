@@ -8,6 +8,7 @@ import { $t } from '#/locales';
 export function userSearchFormOptions(): VbenFormProps {
   return {
     collapsed: true,
+    fieldMappingTime: [['loginTime', ['createFormDate', 'createToDate']]],
     schema: [
       {
         component: 'Input',
@@ -33,7 +34,7 @@ export function userSearchFormOptions(): VbenFormProps {
         label: $t('loginLog.status'),
       },
       {
-        component: 'DatePicker',
+        component: 'RangePicker',
         fieldName: 'loginTime',
         label: $t('loginLog.loginTime'),
       },
