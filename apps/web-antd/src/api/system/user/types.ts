@@ -36,4 +36,18 @@ export declare namespace User {
     avatar: string;
     roles: string[];
   }
+
+  export interface Post {
+    userName: string;
+    nickName: string;
+    password: string;
+    email?: string;
+    phone?: string;
+    avatar?: string;
+    sex?: string;
+    status: string;
+    remark?: string;
+    deptId?: number;
+    userType?: UserType;
+  }
 }

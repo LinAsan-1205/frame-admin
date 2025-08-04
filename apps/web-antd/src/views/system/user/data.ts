@@ -141,6 +141,8 @@ export function useColumns<T = User.View>(
       slots: { default: 'userBlock' },
       field: 'userBlock',
       title: $t('system.user.userBlock'),
+      showOverflow: false,
+      width: 140,
     },
     {
       field: 'userName',

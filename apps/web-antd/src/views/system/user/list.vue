@@ -5,7 +5,10 @@ import type {
 } from '#/adapter/vxe-table';
 import type { User } from '#/api/system/user';
 
+import { watch } from 'vue';
+
 import { Page, useVbenDrawer } from '@vben/common-ui';
+import { Plus } from '@vben/icons';
 
 import { Button, message } from 'ant-design-vue';
 
@@ -97,15 +100,15 @@ function onDelete(row: User.View) {
 function onRefresh() {
   gridApi.query();
 }
+
+watch(() => deptId.value, onRefresh);
 </script>
 <template>
   <Page auto-content-height>
     <FormDrawer @success="onRefresh" />
     <Grid :table-title="$t('system.user.list')">
       <template #userBlock="{ row }">
-        <div class="flex justify-center">
-          <UserBlock :origin="row" />
-        </div>
+        <UserBlock :origin="row" />
       </template>
       <template #toolbar-tools>
         <Button type="primary" @click="onCreate">
