@@ -55,6 +55,15 @@ export function useFormSchema(): VbenFormSchema[] {
       label: $t('system.user.sex'),
     },
     {
+      component: 'RadioGroup',
+      componentProps: {
+        options: UserType.toSelect(),
+      },
+      defaultValue: UserType.System,
+      fieldName: 'userType',
+      label: $t('system.user.userType'),
+    },
+    {
       component: 'ApiTreeSelect',
       componentProps: {
         allowClear: true,
@@ -142,12 +151,15 @@ export function useColumns<T = User.View>(
       field: 'userBlock',
       title: $t('system.user.userBlock'),
       showOverflow: false,
+      fixed: 'left',
       width: 140,
     },
     {
       field: 'userName',
       title: $t('system.user.userName'),
+      width: 200,
     },
+
     {
       field: 'userType',
       slots: {
@@ -156,10 +168,12 @@ export function useColumns<T = User.View>(
         },
       },
       title: $t('system.user.userType'),
+      width: 140,
     },
     {
       field: 'email',
       title: $t('system.user.email'),
+      width: 200,
     },
 
     {
@@ -170,6 +184,12 @@ export function useColumns<T = User.View>(
         },
       },
       title: $t('system.user.sex'),
+      width: 140,
+    },
+    {
+      field: 'dept.name',
+      title: $t('system.user.dept'),
+      width: 200,
     },
     {
       field: 'status',
@@ -179,23 +199,25 @@ export function useColumns<T = User.View>(
         },
       },
       title: $t('system.user.status'),
+      width: 140,
+    },
+    {
+      field: 'remark',
+      title: $t('system.user.remark'),
     },
     {
       field: 'loginIp',
       title: $t('system.user.loginIp'),
-      width: 200,
     },
     {
       field: 'loginDate',
       cellRender: { name: 'CellFormatDate' },
       title: $t('system.user.loginDate'),
-      width: 200,
     },
     {
       field: 'createTime',
       cellRender: { name: 'CellFormatDate' },
       title: $t('system.user.createTime'),
-      width: 200,
     },
     {
       align: 'center',

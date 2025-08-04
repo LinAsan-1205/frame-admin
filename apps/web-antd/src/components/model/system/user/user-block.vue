@@ -13,7 +13,7 @@ const { origin } = defineProps<{
 const { phone, nickName, avatar } = origin;
 </script>
 <template>
-  <div class="flex w-full items-center justify-center">
+  <div class="flex w-full items-center justify-center gap-2">
     <div class="w-[40px]">
       <Avatar :size="40" :src="avatar">
         <template #icon>
@@ -25,12 +25,12 @@ const { phone, nickName, avatar } = origin;
     </div>
     <div class="flex w-[100px] flex-col justify-start">
       <EllipsisText tooltip-when-ellipsis>
-        <span class="text-left text-sm font-bold">{{ nickName }}</span>
+        <div class="text-left text-sm font-bold">{{ nickName }}</div>
       </EllipsisText>
       <EllipsisText tooltip-when-ellipsis>
-        <span class="text-left text-xs text-gray-400" v-if="phone">
+        <div class="text-left text-xs text-gray-400" v-if="phone">
           {{ phone }}
-        </span>
+        </div>
       </EllipsisText>
     </div>
   </div>
