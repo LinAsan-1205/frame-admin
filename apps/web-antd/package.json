@@ -45,6 +45,7 @@
     "@vueuse/core": "catalog:",
     "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
+    "enum-plus": "^2.4.2",
     "pinia": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:",

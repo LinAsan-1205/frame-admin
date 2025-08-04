@@ -1,6 +1,9 @@
 import type { Api } from '#/api/types';
 
+import { UserType } from './enum';
+
 export declare namespace User {
+  export type UserType = typeof UserType.valueType;
   export interface View {
     id: number;
     userName: string;
@@ -14,6 +17,7 @@ export declare namespace User {
     loginDate: string;
     remark?: string;
     deptId?: number;
+    userType: UserType;
     userTypeDisplay: Api.StatusDisplay;
   }
   export interface Condition {

@@ -13,6 +13,15 @@ const routes: RouteRecordRaw[] = [
     path: '/system',
     children: [
       {
+        path: '/system/user',
+        name: 'SystemUser',
+        meta: {
+          icon: 'ant-design:user-outlined',
+          title: $t('system.user.title'),
+        },
+        component: () => import('#/views/system/user/index.vue'),
+      },
+      {
         path: '/system/role',
         name: 'SystemRole',
         meta: {

@@ -5,7 +5,7 @@ import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { Dept } from '#/api/system/dept';
 
 import { z } from '#/adapter/form';
-import { getDeptList } from '#/api/system/dept';
+import { getDeptList, Status } from '#/api/system/dept';
 import { $t } from '#/locales';
 
 /**
@@ -23,6 +23,7 @@ export function useSchema(): VbenFormSchema[] {
         valueField: 'id',
         childrenField: 'children',
       },
+      defaultValue: 0,
       fieldName: 'parentId',
       label: $t('system.dept.parentDept'),
     },
@@ -57,13 +58,10 @@ export function useSchema(): VbenFormSchema[] {
       component: 'RadioGroup',
       componentProps: {
         buttonStyle: 'solid',
-        options: [
-          { label: $t('common.enabled'), value: '0' },
-          { label: $t('common.disabled'), value: '1' },
-        ],
+        options: Status.toSelect(),
         optionType: 'button',
       },
-      defaultValue: '0',
+      defaultValue: Status.Normal,
       fieldName: 'status',
       label: $t('system.dept.status'),
     },
@@ -124,14 +122,10 @@ export function userSearchFormOptions(): VbenFormProps {
         label: $t('system.dept.phone'),
       },
       {
-        component: 'RadioGroup',
+        component: 'Select',
         componentProps: {
-          buttonStyle: 'solid',
-          options: [
-            { label: $t('common.all'), value: undefined },
-            { label: $t('common.enabled'), value: '0' },
-            { label: $t('common.disabled'), value: '1' },
-          ],
+          allowClear: true,
+          options: Status.toSelect(),
         },
         fieldName: 'status',
         label: $t('system.dept.status'),

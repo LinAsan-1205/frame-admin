@@ -5,17 +5,25 @@ import { requestClient } from '#/api/request';
 /**
  * 获取部门列表数据
  */
-async function getDeptList(params: Dept.Condition) {
+function getDeptList(params: Dept.Condition) {
   return requestClient.get<Array<Dept.View>>('/system/dept/list', {
     params,
   });
 }
 
 /**
+ * 查询部门树
+ * @returns 部门树
+ */
+function queryDeptTree() {
+  return requestClient.get<Array<Dept.View>>('/system/dept/tree');
+}
+
+/**
  * 创建部门
  * @param data 部门数据
  */
-async function createDept(data: Omit<Dept.View, 'children' | 'id'>) {
+function createDept(data: Omit<Dept.View, 'children' | 'id'>) {
   return requestClient.post('/system/dept', data);
 }
 
@@ -25,10 +33,7 @@ async function createDept(data: Omit<Dept.View, 'children' | 'id'>) {
  * @param id 部门 ID
  * @param data 部门数据
  */
-async function updateDept(
-  id: number,
-  data: Omit<Dept.View, 'children' | 'id'>,
-) {
+function updateDept(id: number, data: Omit<Dept.View, 'children' | 'id'>) {
   return requestClient.put(`/system/dept/${id}`, data);
 }
 
@@ -36,8 +41,8 @@ async function updateDept(
  * 删除部门
  * @param id 部门 ID
  */
-async function deleteDept(id: number) {
+function deleteDept(id: number) {
   return requestClient.delete(`/system/dept/${id}`);
 }
 
-export { createDept, deleteDept, getDeptList, updateDept };
+export { createDept, deleteDept, getDeptList, queryDeptTree, updateDept };

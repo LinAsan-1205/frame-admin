@@ -73,5 +73,31 @@
     "permissions": "权限",
     "setPermissions": "授权",
     "code": "角色编码"
+  },
+  "user": {
+    "title": "用户管理",
+    "name": "用户",
+    "deptSearchPlaceholder": "请输入部门名称",
+    "userName": "用户名",
+    "list": "用户列表",
+    "id": "用户ID",
+    "userBlock": "用户",
+    "nickName": "昵称",
+    "userType": "用户类型",
+    "email": "邮箱",
+    "phone": "手机号",
+    "status": "状态",
+    "remark": "备注",
+    "dept": "所属部门",
+    "password": "密码",
+    "sex": "性别",
+    "loginDate": "最后登录时间",
+    "loginIp": "最后登录IP",
+    "sort": "排序",
+    "createTime": "创建时间",
+    "operation": "操作",
+    "permissions": "权限",
+    "setPermissions": "授权",
+    "code": "用户编码"
   }
 }
