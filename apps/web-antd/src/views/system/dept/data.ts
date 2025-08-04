@@ -23,7 +23,6 @@ export function useSchema(): VbenFormSchema[] {
         valueField: 'id',
         childrenField: 'children',
       },
-      defaultValue: 0,
       fieldName: 'parentId',
       label: $t('system.dept.parentDept'),
     },

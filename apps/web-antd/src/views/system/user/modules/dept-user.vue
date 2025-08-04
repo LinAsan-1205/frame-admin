@@ -20,7 +20,7 @@ const { data } = useQuery({
 });
 
 const fieldNames: TreeProps['fieldNames'] = {
-  children: 'child',
+  children: 'children',
   title: 'name',
   key: 'id',
 };
@@ -28,7 +28,7 @@ const fieldNames: TreeProps['fieldNames'] = {
 const modelValue = defineModel<number | undefined>();
 
 const onSelect = (selectedKeys: any) => {
-  modelValue.value = Number(selectedKeys[0]);
+  modelValue.value = selectedKeys[0];
 };
 </script>
 <template>
