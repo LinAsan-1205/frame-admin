@@ -43,6 +43,11 @@ export function userSearchFormOptions(): VbenFormProps {
 export function useColumns(): VxeTableGridOptions<LoginLog.View>['columns'] {
   return [
     {
+      field: 'loginTime',
+      cellRender: { name: 'CellFormatDate' },
+      title: $t('loginLog.loginTime'),
+    },
+    {
       align: 'center',
       field: 'username',
       title: $t('loginLog.username'),
@@ -71,11 +76,6 @@ export function useColumns(): VxeTableGridOptions<LoginLog.View>['columns'] {
       },
       title: $t('loginLog.status'),
       width: 100,
-    },
-    {
-      field: 'loginTime',
-      cellRender: { name: 'CellFormatDate' },
-      title: $t('loginLog.loginTime'),
     },
   ];
 }
