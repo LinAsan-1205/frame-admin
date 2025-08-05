@@ -179,6 +179,7 @@ export function useColumns(
       field: 'createTime',
       cellRender: { name: 'CellFormatDate' },
       title: $t('system.menu.createTime'),
+      width: 156,
     },
     {
       align: 'right',
