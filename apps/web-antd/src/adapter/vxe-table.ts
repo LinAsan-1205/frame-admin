@@ -96,6 +96,7 @@ setupVbenVxeTable({
           { color: 'error', label: $t('common.disabled'), value: '1' },
         ];
         const tagItem = tagOptions.find((item) => item.value === value);
+
         return h(
           Tag,
           {

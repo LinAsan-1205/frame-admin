@@ -7,7 +7,7 @@ import type { Operation } from '#/api/log/operation';
 
 import { Page } from '@vben/common-ui';
 
-import { message, Tag } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteById, queryOperationLogpage } from '#/api/log/operation';
@@ -83,10 +83,6 @@ function refreshGrid() {
 </script>
 <template>
   <Page auto-content-height>
-    <Grid table-title="操作日志列表">
-      <template #status="{ row }">
-        <Tag :color="row.statusDisplay.type">{{ row.statusDisplay.label }}</Tag>
-      </template>
-    </Grid>
+    <Grid table-title="操作日志列表" />
   </Page>
 </template>

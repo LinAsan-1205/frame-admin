@@ -4,6 +4,7 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { Operation } from '#/api/log/operation';
 
+import { OperationStatus, OperationType } from '#/api/log/operation';
 import { $t } from '#/locales';
 
 export function userSearchFormOptions(): VbenFormProps {
@@ -22,11 +23,7 @@ export function userSearchFormOptions(): VbenFormProps {
         component: 'RadioGroup',
         componentProps: {
           buttonStyle: 'solid',
-          options: [
-            { label: $t('common.all'), value: undefined },
-            { label: $t('common.success'), value: '0' },
-            { label: $t('common.failed'), value: '1' },
-          ],
+          options: OperationStatus.toSelect(),
         },
         fieldName: 'status',
         label: $t('operationLog.status'),
@@ -58,6 +55,10 @@ export function useColumns(
     {
       align: 'center',
       field: 'operationType',
+      cellRender: {
+        name: 'CellTag',
+        options: OperationType.toOriginItems(),
+      },
       title: $t('operationLog.operationType'),
     },
     {
@@ -97,8 +98,8 @@ export function useColumns(
     },
     {
       field: 'status',
-      slots: { default: 'status' },
-      title: $t('loginLog.status'),
+      cellRender: { name: 'CellTag', options: OperationStatus.toOriginItems() },
+      title: $t('operationLog.status'),
       width: 100,
     },
     {

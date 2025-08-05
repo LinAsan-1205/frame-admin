@@ -3,8 +3,6 @@ import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 
 import { Page } from '@vben/common-ui';
 
-import { Tag } from 'ant-design-vue';
-
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { queryLoginLogPage } from '#/api/log/login';
 
@@ -39,10 +37,6 @@ const [Grid] = useVbenVxeGrid({
 </script>
 <template>
   <Page auto-content-height>
-    <Grid table-title="登录日志列表">
-      <template #status="{ row }">
-        <Tag :color="row.statusDisplay.type">{{ row.statusDisplay.label }}</Tag>
-      </template>
-    </Grid>
+    <Grid table-title="登录日志列表" />
   </Page>
 </template>

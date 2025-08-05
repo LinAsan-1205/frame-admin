@@ -2,12 +2,9 @@ import type { VbenFormProps, VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { User } from '#/api/system/user';
 
-import { h } from 'vue';
-
 import { z } from '#/adapter/form';
 import { getDeptList } from '#/api/system/dept';
 import { Sex, Status, UserType } from '#/api/system/user/enum';
-import DisplayBlock from '#/components/model/display-block.vue';
 import { $t } from '#/locales';
 
 export function useFormSchema(): VbenFormSchema[] {
@@ -125,10 +122,7 @@ export function useSearchFormOptions(): VbenFormProps {
         component: 'Select',
         componentProps: {
           allowClear: true,
-          options: [
-            { label: $t('common.enabled'), value: '0' },
-            { label: $t('common.disabled'), value: '1' },
-          ],
+          options: Status.toSelect(),
         },
         fieldName: 'status',
         label: $t('system.role.status'),
@@ -162,10 +156,9 @@ export function useColumns<T = User.View>(
 
     {
       field: 'userType',
-      slots: {
-        default({ row }) {
-          return h(DisplayBlock, row.userTypeDisplay);
-        },
+      cellRender: {
+        name: 'CellTag',
+        options: UserType.toOriginItems(),
       },
       title: $t('system.user.userType'),
       width: 140,
@@ -178,10 +171,9 @@ export function useColumns<T = User.View>(
 
     {
       field: 'sex',
-      slots: {
-        default({ row }) {
-          return h(DisplayBlock, row.sexDisplay);
-        },
+      cellRender: {
+        name: 'CellTag',
+        options: Sex.toOriginItems(),
       },
       title: $t('system.user.sex'),
       width: 140,
@@ -193,10 +185,9 @@ export function useColumns<T = User.View>(
     },
     {
       field: 'status',
-      slots: {
-        default({ row }) {
-          return h(DisplayBlock, row.statusDisplay);
-        },
+      cellRender: {
+        name: 'CellTag',
+        options: Status.toOriginItems(),
       },
       title: $t('system.user.status'),
       width: 140,

@@ -3,6 +3,7 @@ import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 import type { VbenFormProps } from '#/adapter/form';
 import type { LoginLog } from '#/api/log/login';
 
+import { LoginStatus } from '#/api/log/login';
 import { $t } from '#/locales';
 
 export function userSearchFormOptions(): VbenFormProps {
@@ -24,11 +25,7 @@ export function userSearchFormOptions(): VbenFormProps {
         component: 'RadioGroup',
         componentProps: {
           buttonStyle: 'solid',
-          options: [
-            { label: $t('common.all'), value: undefined },
-            { label: $t('common.success'), value: '0' },
-            { label: $t('common.failed'), value: '1' },
-          ],
+          options: LoginStatus.toSelect(),
         },
         fieldName: 'status',
         label: $t('loginLog.status'),
@@ -68,7 +65,10 @@ export function useColumns(): VxeTableGridOptions<LoginLog.View>['columns'] {
     },
     {
       field: 'status',
-      slots: { default: 'status' },
+      cellRender: {
+        name: 'CellTag',
+        options: LoginStatus.toOriginItems(),
+      },
       title: $t('loginLog.status'),
       width: 100,
     },

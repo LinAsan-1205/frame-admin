@@ -1,6 +1,8 @@
 import { initPreferences } from '@vben/preferences';
 import { unmountGlobalLoading } from '@vben/utils';
 
+import { Enum } from 'enum-plus';
+
 import { overridesPreferences } from './preferences';
 
 /**
@@ -17,6 +19,14 @@ async function initApplication() {
   await initPreferences({
     namespace,
     overrides: overridesPreferences,
+  });
+
+  // 扩展enum-plus的方法
+  Enum.extends({
+    toOriginItems(this: ReturnType<typeof Enum>) {
+      const items = this.items.map((item) => item.raw);
+      return [...items];
+    },
   });
 
   // 启动应用并挂载

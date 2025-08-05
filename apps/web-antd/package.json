@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "catalog:",
+    "@types/lodash.clonedeep": "catalog:",
     "@vben-core/menu-ui": "workspace:*",
     "@vben-core/shadcn-ui": "workspace:*",
     "@vben/access": "workspace:*",
@@ -46,6 +47,7 @@
     "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
     "enum-plus": "^2.4.2",
+    "lodash.clonedeep": "catalog:",
     "pinia": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:",

@@ -166,7 +166,7 @@ export function useColumns(
       title: $t('system.dept.email'),
     },
     {
-      cellRender: { name: 'CellTag' },
+      cellRender: { name: 'CellTag', options: Status.toOriginItems() },
       field: 'status',
       title: $t('system.dept.status'),
       width: 100,

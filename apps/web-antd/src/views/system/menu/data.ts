@@ -57,7 +57,7 @@ export function useColumns(
     },
     {
       align: 'center',
-      cellRender: { name: 'CellTag', options: getMenuTypeOptions() },
+      cellRender: { name: 'CellTag', options: MenuType.toOriginItems() },
       field: 'type',
       title: $t('system.menu.type'),
       width: 100,
@@ -96,7 +96,7 @@ export function useColumns(
       title: $t('system.menu.component'),
     },
     {
-      cellRender: { name: 'CellTag' },
+      cellRender: { name: 'CellTag', options: Status.toOriginItems() },
       field: 'status',
       title: $t('system.menu.status'),
       width: 100,
