@@ -15,7 +15,15 @@ import { getPopupContainer } from '@vben/utils';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { createMenu, getMenuList, Menu, updateMenu } from '#/api/system/menu';
+import {
+  BadgeType,
+  createMenu,
+  getMenuList,
+  Menu,
+  MenuType,
+  Status,
+  updateMenu,
+} from '#/api/system/menu';
 import { $t } from '#/locales';
 import { componentKeys } from '#/router/routes';
 
@@ -182,10 +190,10 @@ const schema: VbenFormSchema[] = [
     },
     dependencies: {
       rules: (values) => {
-        return values.type === 'menu' ? 'required' : null;
+        return values.type === MenuType.Menu ? 'required' : null;
       },
       show: (values) => {
-        return values.type === 'menu';
+        return values.type === MenuType.Menu;
       },
       triggerFields: ['type'],
     },
@@ -208,7 +216,7 @@ const schema: VbenFormSchema[] = [
     component: 'Input',
     dependencies: {
       rules: (values) => {
-        return values.type === 'button' ? 'required' : null;
+        return values.type === MenuType.Button ? 'required' : null;
       },
       show: (values) => {
         return ['button', 'catalog', 'embedded', 'menu'].includes(values.type);
@@ -222,13 +230,10 @@ const schema: VbenFormSchema[] = [
     component: 'RadioGroup',
     componentProps: {
       buttonStyle: 'solid',
-      options: [
-        { label: $t('common.enabled'), value: '0' },
-        { label: $t('common.disabled'), value: '1' },
-      ],
+      options: Status.toSelect(),
       optionType: 'button',
     },
-    defaultValue: '0',
+    defaultValue: Status.Normal,
     fieldName: 'status',
     label: $t('system.menu.status'),
   },
@@ -237,14 +242,11 @@ const schema: VbenFormSchema[] = [
     componentProps: {
       allowClear: true,
       class: 'w-full',
-      options: [
-        { label: $t('system.menu.badgeType.dot'), value: 'dot' },
-        { label: $t('system.menu.badgeType.normal'), value: 'normal' },
-      ],
+      options: BadgeType.toSelect(),
     },
     dependencies: {
       show: (values) => {
-        return values.type !== 'button';
+        return values.type !== MenuType.Button;
       },
       triggerFields: ['type'],
     },
@@ -257,12 +259,12 @@ const schema: VbenFormSchema[] = [
       return {
         allowClear: true,
         class: 'w-full',
-        disabled: values?.badgeType !== 'normal',
+        disabled: values?.badgeType !== BadgeType.Text,
       };
     },
     dependencies: {
       show: (values) => {
-        return values.type !== 'button';
+        return values.type !== MenuType.Button;
       },
       triggerFields: ['type'],
     },
@@ -281,7 +283,7 @@ const schema: VbenFormSchema[] = [
     },
     dependencies: {
       show: (values) => {
-        return values.type !== 'button';
+        return values.type !== MenuType.Button;
       },
       triggerFields: ['type'],
     },

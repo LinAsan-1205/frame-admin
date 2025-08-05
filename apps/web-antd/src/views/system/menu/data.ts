@@ -2,24 +2,11 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { Menu } from '#/api/system/menu';
 
+import { MenuType, Status } from '#/api/system/menu';
 import { $t } from '#/locales';
 
 export function getMenuTypeOptions() {
-  return [
-    {
-      color: 'processing',
-      label: $t('system.menu.typeCatalog'),
-      value: 'catalog',
-    },
-    { color: 'default', label: $t('system.menu.typeMenu'), value: 'menu' },
-    { color: 'error', label: $t('system.menu.typeButton'), value: 'button' },
-    {
-      color: 'success',
-      label: $t('system.menu.typeEmbedded'),
-      value: 'embedded',
-    },
-    { color: 'warning', label: $t('system.menu.typeLink'), value: 'link' },
-  ];
+  return [...MenuType.items];
 }
 
 export function userSearchFormOptions(): VbenFormProps {
@@ -45,11 +32,7 @@ export function userSearchFormOptions(): VbenFormProps {
         component: 'RadioGroup',
         componentProps: {
           buttonStyle: 'solid',
-          options: [
-            { label: $t('common.all'), value: undefined },
-            { label: $t('common.enabled'), value: '0' },
-            { label: $t('common.disabled'), value: '1' },
-          ],
+          options: Status.toSelect(),
         },
         fieldName: 'status',
         label: $t('system.menu.status'),

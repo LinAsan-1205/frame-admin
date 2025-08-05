@@ -2,6 +2,7 @@ import type { VbenFormProps, VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { Role } from '#/api/system/role';
 
+import { Status } from '#/api/system/role';
 import { $t } from '#/locales';
 
 export function useFormSchema(): VbenFormSchema[] {
@@ -22,13 +23,10 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'RadioGroup',
       componentProps: {
         buttonStyle: 'solid',
-        options: [
-          { label: $t('common.enabled'), value: '0' },
-          { label: $t('common.disabled'), value: '1' },
-        ],
+        options: Status.toSelect(),
         optionType: 'button',
       },
-      defaultValue: '0',
+      defaultValue: Status.Normal,
       fieldName: 'status',
       label: $t('system.role.status'),
     },
@@ -72,10 +70,7 @@ export function useSearchFormOptions(): VbenFormProps {
         component: 'Select',
         componentProps: {
           allowClear: true,
-          options: [
-            { label: $t('common.enabled'), value: '0' },
-            { label: $t('common.disabled'), value: '1' },
-          ],
+          options: Status.toSelect(),
         },
         fieldName: 'status',
         label: $t('system.role.status'),

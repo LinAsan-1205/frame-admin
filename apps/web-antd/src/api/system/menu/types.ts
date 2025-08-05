@@ -1,25 +1,14 @@
 import type { Recordable } from '@vben/types';
 
+import { BadgeType, BadgeVariant, MenuType } from './enum';
+
 export namespace Menu {
   /** 徽标颜色集合 */
-  export const BadgeVariants = [
-    'default',
-    'destructive',
-    'primary',
-    'success',
-    'warning',
-    '222',
-  ] as const;
+  export const BadgeVariants = BadgeVariant.items.map((item) => item.value);
   /** 徽标类型集合 */
-  export const BadgeTypes = ['dot', 'normal'] as const;
+  export const BadgeTypes = BadgeType.items.map((item) => item.value);
   /** 菜单类型集合 */
-  export const MenuTypes = [
-    'catalog',
-    'menu',
-    'embedded',
-    'link',
-    'button',
-  ] as const;
+  export const MenuTypes = MenuType.items.map((item) => item.value);
 
   export interface Meta {
     /** 激活时显示的图标 */

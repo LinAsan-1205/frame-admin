@@ -1,16 +1,19 @@
+import { Status } from './enum';
+
 export declare namespace Role {
+  export type StatusType = typeof Status.valueType;
   export interface View {
     id: number;
     name: string;
     code: string;
     sort: number;
-    status: string;
+    status: StatusType;
     remark?: string;
   }
   export interface Condition {
     name?: string;
     code?: string;
-    status?: string;
+    status?: StatusType;
     startTime?: string;
     endTime?: string;
   }
