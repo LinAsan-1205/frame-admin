@@ -55,6 +55,7 @@ export function useColumns(
       treeNode: true,
       width: 250,
     },
+
     {
       align: 'center',
       cellRender: { name: 'CellTag', options: MenuType.toOriginItems() },
@@ -62,6 +63,7 @@ export function useColumns(
       title: $t('system.menu.type'),
       width: 100,
     },
+
     {
       field: 'authCode',
       title: $t('system.menu.authCode'),
@@ -76,7 +78,14 @@ export function useColumns(
       title: $t('system.menu.path'),
       width: 200,
     },
-
+    {
+      field: 'name',
+      title: $t('system.menu.menuName'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
+      width: 200,
+    },
     {
       align: 'left',
       field: 'component',
@@ -99,12 +108,78 @@ export function useColumns(
       title: $t('system.menu.component'),
     },
     {
+      cellRender: {
+        name: 'CellState',
+        props: {
+          successText: '隐藏',
+          errorText: '不隐藏',
+          successColor: 'error',
+          errorColor: 'default',
+        },
+      },
+      field: 'meta.hideInMenu',
+      title: $t('system.menu.hideInMenu'),
+      width: 100,
+    },
+    {
+      cellRender: {
+        name: 'CellState',
+        props: {
+          successText: '隐藏',
+          errorText: '不隐藏',
+          successColor: 'error',
+          errorColor: 'default',
+        },
+      },
+      field: 'meta.hideChildrenInMenu',
+      title: $t('system.menu.hideChildrenInMenu'),
+      width: 130,
+    },
+    {
+      cellRender: {
+        name: 'CellState',
+        props: {
+          successText: '隐藏',
+          errorText: '不隐藏',
+          successColor: 'error',
+          errorColor: 'default',
+        },
+      },
+      field: 'meta.hideInBreadcrumb',
+      title: $t('system.menu.hideInBreadcrumb'),
+      width: 130,
+    },
+    {
+      cellRender: {
+        name: 'CellState',
+        props: {
+          successText: '隐藏',
+          errorText: '正常',
+          successColor: 'error',
+          errorColor: 'success',
+        },
+      },
+      field: 'meta.hideInTab',
+      title: $t('system.menu.hideInTab'),
+      width: 130,
+    },
+    {
+      cellRender: { name: 'CellState' },
+      field: 'meta.keepAlive',
+      title: $t('system.menu.keepAlive'),
+      width: 100,
+    },
+    {
       cellRender: { name: 'CellTag', options: Status.toOriginItems() },
       field: 'status',
       title: $t('system.menu.status'),
       width: 100,
     },
-
+    {
+      field: 'createTime',
+      cellRender: { name: 'CellFormatDate' },
+      title: $t('system.menu.createTime'),
+    },
     {
       align: 'right',
       cellRender: {

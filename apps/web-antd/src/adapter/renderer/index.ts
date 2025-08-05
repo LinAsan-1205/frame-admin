@@ -5,7 +5,7 @@ import { h } from 'vue';
 import { get, isEmpty } from '@vben/utils';
 
 import { useClipboard } from '@vueuse/core';
-import { message } from 'ant-design-vue';
+import { message, Tag } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 export function renderers(renderer: VxeGlobalRenderer) {
@@ -80,8 +80,26 @@ export function renderers(renderer: VxeGlobalRenderer) {
   renderer.add('CellFormatEmpty', {
     renderTableDefault(_renderOpts, params) {
       const { column, row } = params;
-      const value = row[column.field];
+      const value = get(row, column.field);
       return h('span', {}, { default: () => (isEmpty(value) ? '-' : value) });
+    },
+  });
+
+  renderer.add('CellState', {
+    renderTableDefault({ props }, params) {
+      const { column, row } = params;
+      const value = get(row, column.field);
+
+      const {
+        successText = '是',
+        successColor = 'success',
+        errorText = '否',
+        errorColor = 'error',
+      } = props ?? {};
+      const text = value ? successText : errorText;
+
+      const color = value ? successColor : errorColor;
+      return h(Tag, { color }, { default: () => text });
     },
   });
 }

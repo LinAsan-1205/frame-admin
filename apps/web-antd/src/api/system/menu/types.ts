@@ -77,6 +77,8 @@ export namespace Menu {
     redirect?: string;
     /** 菜单类型 */
     type: (typeof MenuTypes)[number];
+    /** 创建时间 */
+    createTime: string;
   }
 
   export type OriginView = Meta & Omit<View, 'meta'>;
