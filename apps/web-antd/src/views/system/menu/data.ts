@@ -47,7 +47,7 @@ export function useColumns(
 ): VxeTableGridOptions<Menu.View>['columns'] {
   return [
     {
-      align: 'left',
+      align: 'center',
       field: 'meta.title',
       fixed: 'left',
       slots: { default: 'title' },
@@ -65,6 +65,9 @@ export function useColumns(
     {
       field: 'authCode',
       title: $t('system.menu.authCode'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
       width: 200,
     },
     {

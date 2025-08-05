@@ -154,16 +154,25 @@ export function useColumns(
       align: 'center',
       field: 'leader',
       title: $t('system.dept.leader'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       align: 'center',
       field: 'phone',
       title: $t('system.dept.phone'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       align: 'center',
       field: 'email',
       title: $t('system.dept.email'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       cellRender: { name: 'CellTag', options: Status.toOriginItems() },
@@ -179,6 +188,9 @@ export function useColumns(
     {
       field: 'remark',
       title: $t('system.dept.remark'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       align: 'right',

@@ -96,6 +96,9 @@ export function useColumns<T = Role.View>(
     },
     {
       field: 'code',
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
       title: $t('system.role.code'),
       width: 200,
     },
@@ -112,6 +115,9 @@ export function useColumns<T = Role.View>(
       field: 'remark',
       minWidth: 100,
       title: $t('system.role.remark'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       field: 'createTime',

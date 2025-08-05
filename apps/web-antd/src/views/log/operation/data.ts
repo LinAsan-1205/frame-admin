@@ -80,11 +80,17 @@ export function useColumns(
       align: 'center',
       field: 'params',
       title: $t('operationLog.params'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       align: 'center',
       field: 'result',
       title: $t('operationLog.result'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       align: 'center',

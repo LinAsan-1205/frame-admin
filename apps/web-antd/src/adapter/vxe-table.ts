@@ -87,17 +87,6 @@ setupVbenVxeTable({
       },
     });
 
-    vxeUI.renderer.add('CellMaskPhone', {
-      renderTableDefault(_renderOpts, params) {
-        const { column, row } = params;
-        const text = row[column.field].replace(
-          /(\d{3})\d{4}(\d{4})/,
-          '$1****$2',
-        );
-        return h('span', {}, text);
-      },
-    });
-
     // 单元格渲染： Tag
     vxeUI.renderer.add('CellTag', {
       renderTableDefault({ options, props }, { column, row }) {

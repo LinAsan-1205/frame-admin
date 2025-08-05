@@ -151,6 +151,9 @@ export function useColumns<T = User.View>(
     {
       field: 'userName',
       title: $t('system.user.userName'),
+      cellRender: {
+        name: 'CellCopyText',
+      },
       width: 200,
     },
 
@@ -166,6 +169,9 @@ export function useColumns<T = User.View>(
     {
       field: 'email',
       title: $t('system.user.email'),
+      cellRender: {
+        name: 'CellCopyText',
+      },
       width: 200,
     },
 
@@ -181,6 +187,9 @@ export function useColumns<T = User.View>(
     {
       field: 'dept.name',
       title: $t('system.user.dept'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
       width: 200,
     },
     {
@@ -195,9 +204,15 @@ export function useColumns<T = User.View>(
     {
       field: 'remark',
       title: $t('system.user.remark'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       field: 'loginIp',
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
       title: $t('system.user.loginIp'),
     },
     {
