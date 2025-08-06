@@ -27,9 +27,8 @@ export function queryRolePage(
 /**
  * 创建角色
  * @param data 角色数据
- * @returns
  */
-export function createRole(data: Role.Post) {
+export function addRole(data: Role.Post) {
   return requestClient.post<boolean>('/system/role', data);
 }
 
@@ -37,16 +36,14 @@ export function createRole(data: Role.Post) {
  * 更新角色
  * @param roleId 角色ID
  * @param data 角色数据
- * @returns
  */
-export function updateRole(roleId: number, data: Role.Post) {
+export function setRoleById(roleId: number, data: Role.Post) {
   return requestClient.put<boolean>(`/system/role/${roleId}`, data);
 }
 
 /**
  * 删除角色
  * @param roleId 角色ID
- * @returns
  */
 export function deleteRoleById(roleId: number) {
   return requestClient.delete<boolean>(`/system/role/${roleId}`);
@@ -56,7 +53,6 @@ export function deleteRoleById(roleId: number) {
  * 设置角色状态
  * @param roleId 角色ID
  * @param status 角色状态
- * @returns
  */
 export function setRoleStatus(roleId: number, status: string) {
   return requestClient.post<boolean>(`/system/role/status`, {

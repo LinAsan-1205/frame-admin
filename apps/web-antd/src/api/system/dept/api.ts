@@ -23,7 +23,7 @@ function queryDeptTree() {
  * 创建部门
  * @param data 部门数据
  */
-function createDept(data: Omit<Dept.View, 'children' | 'id'>) {
+function addDept(data: Omit<Dept.View, 'children' | 'id'>) {
   return requestClient.post('/system/dept', data);
 }
 
@@ -33,7 +33,7 @@ function createDept(data: Omit<Dept.View, 'children' | 'id'>) {
  * @param id 部门 ID
  * @param data 部门数据
  */
-function updateDept(id: number, data: Omit<Dept.View, 'children' | 'id'>) {
+function setDeptById(id: number, data: Omit<Dept.View, 'children' | 'id'>) {
   return requestClient.put(`/system/dept/${id}`, data);
 }
 
@@ -41,8 +41,8 @@ function updateDept(id: number, data: Omit<Dept.View, 'children' | 'id'>) {
  * 删除部门
  * @param id 部门 ID
  */
-function deleteDept(id: number) {
+function deleteDeptById(id: number) {
   return requestClient.delete(`/system/dept/${id}`);
 }
 
-export { createDept, deleteDept, getDeptList, queryDeptTree, updateDept };
+export { addDept, deleteDeptById, getDeptList, queryDeptTree, setDeptById };

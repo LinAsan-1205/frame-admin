@@ -14,7 +14,7 @@ import { Spin } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { getMenuList } from '#/api/system/menu';
-import { createRole, updateRole } from '#/api/system/role';
+import { addRole, setRoleById } from '#/api/system/role';
 import { $t } from '#/locales';
 
 import { useFormSchema } from '../data';
@@ -38,7 +38,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (!valid) return;
     const values: Role.Post = await formApi.getValues();
     drawerApi.lock();
-    (id.value ? updateRole(id.value, values) : createRole(values))
+    (id.value ? setRoleById(id.value, values) : addRole(values))
       .then(() => {
         emits('success');
         drawerApi.close();

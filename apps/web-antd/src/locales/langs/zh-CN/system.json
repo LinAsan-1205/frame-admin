@@ -101,5 +101,28 @@
     "permissions": "权限",
     "setPermissions": "授权",
     "code": "用户编码"
+  },
+  "storage": {
+    "title": "文件存储"
+  },
+  "storageConfig": {
+    "title": "存储配置",
+    "pageDescription": "oss存储需要兼容s3协议",
+    "list": "存储配置列表",
+    "name": "存储",
+    "names": "名称",
+    "code": "编码",
+    "type": "类型",
+    "sort": "排序",
+    "description": "描述",
+    "status": "状态",
+    "storagePath": "存储路径",
+    "accessPath": "访问路径",
+    "accessKey": "Access Key",
+    "secretKey": "Secret Key",
+    "bucket": "Bucket",
+    "endpoint": "Endpoint",
+    "domain": "域名",
+    "createTime": "创建时间"
   }
 }

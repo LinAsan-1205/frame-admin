@@ -3,7 +3,7 @@ import type {
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
-import type { Dept } from '#/api/system/dept';
+import type { StorageConfig } from '#/api/system/storage/config';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -11,7 +11,10 @@ import { Plus } from '@vben/icons';
 import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteDeptById, getDeptList } from '#/api/system/dept';
+import {
+  delStorageConfigById,
+  queryStorageConfigPage,
+} from '#/api/system/storage/config';
 import { $t } from '#/locales';
 
 import { useColumns, userSearchFormOptions } from './data';
@@ -26,16 +29,8 @@ const [FormModal, formModalApi] = useVbenModal({
  * 编辑部门
  * @param row
  */
-function onEdit(row: Dept.View) {
+function onEdit(row: StorageConfig.View) {
   formModalApi.setData(row).open();
-}
-
-/**
- * 添加下级部门
- * @param row
- */
-function onAppend(row: Dept.View) {
-  formModalApi.setData({ parentId: row.id }).open();
 }
 
 /**
@@ -49,13 +44,13 @@ function onCreate() {
  * 删除部门
  * @param row
  */
-function onDelete(row: Dept.View) {
+function onDelete(row: StorageConfig.View) {
   const hideLoading = message.loading({
     content: $t('ui.actionMessage.deleting', [row.name]),
     duration: 0,
     key: 'action_process_msg',
   });
-  deleteDeptById(row.id)
+  delStorageConfigById(row.id)
     .then(() => {
       message.success({
         content: $t('ui.actionMessage.deleteSuccess', [row.name]),
@@ -71,12 +66,8 @@ function onDelete(row: Dept.View) {
 /**
  * 表格操作按钮的回调函数
  */
-function onActionClick({ code, row }: OnActionClickParams<Dept.View>) {
+function onActionClick({ code, row }: OnActionClickParams<StorageConfig.View>) {
   switch (code) {
-    case 'append': {
-      onAppend(row);
-      break;
-    }
     case 'delete': {
       onDelete(row);
       break;
@@ -97,20 +88,18 @@ const [Grid, gridApi] = useVbenVxeGrid({
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
-    pagerConfig: {
-      enabled: false,
-    },
     proxyConfig: {
       ajax: {
-        query: async (_, formValues) => {
-          return await getDeptList(formValues);
+        query: async ({ page }, formValues) => {
+          return await queryStorageConfigPage(
+            {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+            },
+            formValues,
+          );
         },
       },
-    },
-    treeConfig: {
-      parentField: 'parentId',
-      rowField: 'id',
-      transform: true,
     },
   } as VxeTableGridOptions,
 });
@@ -123,13 +112,17 @@ function refreshGrid() {
 }
 </script>
 <template>
-  <Page auto-content-height>
+  <Page
+    auto-content-height
+    :description="$t('system.storageConfig.pageDescription')"
+    :title="$t('system.storageConfig.title')"
+  >
     <FormModal @success="refreshGrid" />
-    <Grid table-title="部门列表">
+    <Grid :table-title="$t('system.storageConfig.list')">
       <template #toolbar-tools>
         <Button type="primary" @click="onCreate">
           <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('system.dept.name')]) }}
+          {{ $t('ui.actionTitle.create', [$t('system.storageConfig.name')]) }}
         </Button>
       </template>
     </Grid>

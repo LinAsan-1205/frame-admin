@@ -1,22 +1,25 @@
 <script lang="ts" setup>
-import type { Dept } from '#/api/system/dept';
+import type { StorageConfig } from '#/api/system/storage/config';
 
 import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
 import { useVbenForm } from '#/adapter/form';
-import { addDept, setDeptById } from '#/api/system/dept';
+import {
+  addStorageConfig,
+  setStorageConfig,
+} from '#/api/system/storage/config';
 import { $t } from '#/locales';
 
 import { useSchema } from '../data';
 
 const emit = defineEmits(['success']);
-const formData = ref<Dept.View>();
+const formData = ref<StorageConfig.View>();
 const getTitle = computed(() => {
   return formData.value?.id
-    ? $t('ui.actionTitle.edit', [$t('system.dept.name')])
-    : $t('ui.actionTitle.create', [$t('system.dept.name')]);
+    ? $t('ui.actionTitle.edit', [$t('system.storageConfig.name')])
+    : $t('ui.actionTitle.create', [$t('system.storageConfig.name')]);
 });
 
 const [Form, formApi] = useVbenForm({
@@ -30,11 +33,11 @@ const [Modal, modalApi] = useVbenModal({
     const { valid } = await formApi.validate();
     if (valid) {
       modalApi.lock();
-      const data = await formApi.getValues();
+      const data: StorageConfig.View = await formApi.getValues();
       try {
         await (formData.value?.id
-          ? setDeptById(formData.value.id, data)
-          : addDept(data));
+          ? setStorageConfig(formData.value.id, data)
+          : addStorageConfig(data));
         modalApi.close();
         emit('success');
       } finally {
@@ -44,11 +47,8 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<Dept.View>();
+      const data = modalApi.getData<StorageConfig.View>();
       if (data) {
-        if (data.parentId === 0) {
-          data.parentId = undefined;
-        }
         formData.value = data;
         formApi.setValues(formData.value);
       }
