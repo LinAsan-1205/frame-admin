@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { Recordable } from '@vben/types';
+
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
@@ -8,12 +10,14 @@ import type { StorageConfig } from '#/api/system/storage/config';
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { Button, message } from 'ant-design-vue';
+import { Button, message, Modal } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   delStorageConfigById,
   queryStorageConfigPage,
+  setStorageConfigIsDefault,
+  StorageConfigIsDefault,
 } from '#/api/system/storage/config';
 import { $t } from '#/locales';
 
@@ -63,6 +67,45 @@ function onDelete(row: StorageConfig.View) {
     });
 }
 
+function confirm(content: string, title: string) {
+  return new Promise((reslove, reject) => {
+    Modal.confirm({
+      content,
+      onCancel() {
+        reject(new Error('已取消'));
+      },
+      onOk() {
+        reslove(true);
+      },
+      title,
+    });
+  });
+}
+/**
+ * 状态开关即将改变
+ * @param newStatus 期望改变的状态值
+ * @param row 行数据
+ * @returns 返回false则中止改变，返回其他值（undefined、true）则允许改变
+ */
+async function onIsDefaultChange(
+  newStatus: StorageConfig.IsDefault,
+  row: StorageConfig.View,
+) {
+  const status: Recordable<string> = {
+    1: StorageConfigIsDefault.label(StorageConfigIsDefault.No),
+    0: StorageConfigIsDefault.label(StorageConfigIsDefault.Yes),
+  };
+  try {
+    await confirm(
+      `你要将${row.name}的状态切换为 【${status[newStatus.toString()]}】 吗？`,
+      `切换状态`,
+    );
+    await setStorageConfigIsDefault(row.id, newStatus);
+    return true;
+  } catch {
+    return false;
+  }
+}
 /**
  * 表格操作按钮的回调函数
  */
@@ -85,7 +128,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
   gridEvents: {},
   gridOptions: {
-    columns: useColumns(onActionClick),
+    columns: useColumns(onActionClick, onIsDefaultChange),
     height: 'auto',
     keepSource: true,
     proxyConfig: {

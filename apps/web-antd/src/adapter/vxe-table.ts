@@ -132,6 +132,7 @@ setupVbenVxeTable({
             row[loadingKey] = false;
           }
         }
+
         return h(Switch, finallyProps);
       },
     });

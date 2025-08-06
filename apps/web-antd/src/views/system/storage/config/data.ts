@@ -6,6 +6,7 @@ import type { StorageConfig } from '#/api/system/storage/config';
 
 import { z } from '#/adapter/form';
 import {
+  StorageConfigIsDefault,
   StorageConfigStatus,
   StorageConfigType,
 } from '#/api/system/storage/config';
@@ -128,6 +129,15 @@ export function useSchema(): VbenFormSchema[] {
       },
     },
     {
+      component: 'RadioGroup',
+      componentProps: {
+        options: StorageConfigIsDefault.toSelect(),
+      },
+      defaultValue: StorageConfigIsDefault.No,
+      fieldName: 'isDefault',
+      label: $t('system.storageConfig.isDefault'),
+    },
+    {
       component: 'InputNumber',
       componentProps: {
         placeholder: '请输入',
@@ -195,6 +205,15 @@ export function userSearchFormOptions(): VbenFormProps {
         label: $t('system.storageConfig.status'),
       },
       {
+        component: 'Select',
+        componentProps: {
+          allowClear: true,
+          options: StorageConfigIsDefault.toSelect(),
+        },
+        fieldName: 'isDefault',
+        label: $t('system.storageConfig.isDefault'),
+      },
+      {
         component: 'RangePicker',
         fieldName: 'createTime',
         label: $t('system.storageConfig.createTime'),
@@ -204,9 +223,13 @@ export function userSearchFormOptions(): VbenFormProps {
   };
 }
 
-export function useColumns(
-  onActionClick?: OnActionClickFn<StorageConfig.View>,
-): VxeTableGridOptions<StorageConfig.View>['columns'] {
+export function useColumns<T = StorageConfig.View>(
+  onActionClick?: OnActionClickFn<T>,
+  onIsDefaultChange?: (
+    newStatus: any,
+    row: T,
+  ) => PromiseLike<boolean | undefined>,
+): VxeTableGridOptions<T>['columns'] {
   return [
     {
       align: 'center',
@@ -230,6 +253,7 @@ export function useColumns(
       title: $t('system.storageConfig.type'),
       width: 100,
     },
+
     {
       align: 'center',
       field: 'storagePath',
@@ -298,6 +322,30 @@ export function useColumns(
       },
     },
     {
+      cellRender: {
+        name: 'CellTag',
+        options: StorageConfigStatus.toOriginItems(),
+      },
+      field: 'status',
+      title: $t('system.storageConfig.status'),
+      width: 100,
+    },
+    {
+      cellRender: {
+        attrs: { beforeChange: onIsDefaultChange },
+        name: 'CellSwitch',
+        props: {
+          checkedValue: StorageConfigIsDefault.Yes,
+          unCheckedValue: StorageConfigIsDefault.No,
+          checkedChildren: $t('system.storageConfig.isDefaultText'),
+          inactiveText: $t('system.storageConfig.notDefaultText'),
+        },
+      },
+      field: 'isDefault',
+      title: $t('system.storageConfig.isDefault'),
+      width: 100,
+    },
+    {
       field: 'createTime',
       cellRender: { name: 'CellFormatDate' },
       title: $t('system.storageConfig.createTime'),
@@ -323,7 +371,7 @@ export function useColumns(
       headerAlign: 'center',
       showOverflow: false,
       title: $t('system.dept.operation'),
-      width: 200,
+      width: 120,
     },
   ];
 }

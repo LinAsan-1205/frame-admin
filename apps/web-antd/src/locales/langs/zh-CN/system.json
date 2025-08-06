@@ -116,6 +116,7 @@
     "sort": "排序",
     "description": "描述",
     "status": "状态",
+    "isDefault": "是否默认",
     "storagePath": "存储路径",
     "accessPath": "访问路径",
     "accessKey": "Access Key",
@@ -123,6 +124,9 @@
     "bucket": "Bucket",
     "endpoint": "Endpoint",
     "domain": "域名",
-    "createTime": "创建时间"
+    "createTime": "创建时间",
+    "updateTime": "更新时间",
+    "isDefaultText": "是",
+    "notDefaultText": "否"
   }
 }

@@ -1,8 +1,13 @@
-import { StorageConfigStatus, StorageConfigType } from './enum';
+import {
+  StorageConfigIsDefault,
+  StorageConfigStatus,
+  StorageConfigType,
+} from './enum';
 
 export declare namespace StorageConfig {
   export type Type = typeof StorageConfigType.valueType;
   export type Status = typeof StorageConfigStatus.valueType;
+  export type IsDefault = typeof StorageConfigIsDefault.valueType;
   export interface View {
     id: number;
     name: string;
@@ -19,11 +24,15 @@ export declare namespace StorageConfig {
     endpoint?: string;
     domain?: string;
     createTime: string;
+    isDefault: IsDefault;
   }
 
   export interface Condition {
     type?: Type;
     status?: Status;
+    isDefault?: IsDefault;
+    code?: string;
+    name?: string;
   }
   export type Post = Omit<View, 'createTime' | 'id'>;
 }

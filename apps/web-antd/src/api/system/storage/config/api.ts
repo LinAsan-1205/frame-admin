@@ -42,6 +42,36 @@ function setStorageConfig(configId: number, data: StorageConfig.Post) {
 }
 
 /**
+ * 设置存储配置状态
+ * @param configId 存储配置ID
+ * @param status
+ */
+function setStorageConfigStatus(
+  configId: number,
+  status: StorageConfig.Status,
+) {
+  return requestClient.post<boolean>(`/system/storage/config/status`, {
+    configId,
+    status,
+  });
+}
+
+/**
+ * 设置存储配置状态
+ * @param configId 存储配置ID
+ * @param isDefault
+ */
+function setStorageConfigIsDefault(
+  configId: number,
+  isDefault: StorageConfig.IsDefault,
+) {
+  return requestClient.post<boolean>(`/system/storage/config/is-default`, {
+    configId,
+    isDefault,
+  });
+}
+
+/**
  * 删除存储配置
  * @param configId 存储配置ID
  */
@@ -54,4 +84,6 @@ export {
   delStorageConfigById,
   queryStorageConfigPage,
   setStorageConfig,
+  setStorageConfigIsDefault,
+  setStorageConfigStatus,
 };
