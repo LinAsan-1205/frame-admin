@@ -269,9 +269,6 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
-      titleSuffix: {
-        content: '222',
-      },
     },
     {
       align: 'center',
