@@ -14,13 +14,13 @@ import { useFormSchema } from '../data';
 const emits = defineEmits(['success']);
 
 const formData = ref<User.View>();
+const id = ref();
 
 const [Form, formApi] = useVbenForm({
-  schema: useFormSchema(),
+  schema: useFormSchema(id),
   showDefaultActions: false,
 });
 
-const id = ref();
 const [Drawer, drawerApi] = useVbenDrawer({
   async onConfirm() {
     const { valid } = await formApi.validate();

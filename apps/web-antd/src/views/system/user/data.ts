@@ -1,3 +1,5 @@
+import type { Ref } from 'vue';
+
 import type { VbenFormProps, VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { User } from '#/api/system/user';
@@ -7,7 +9,7 @@ import { getDeptList } from '#/api/system/dept';
 import { Sex, Status, UserType } from '#/api/system/user/enum';
 import { $t } from '#/locales';
 
-export function useFormSchema(): VbenFormSchema[] {
+export function useFormSchema(id: Ref<number | undefined>): VbenFormSchema[] {
   return [
     {
       component: 'Input',
@@ -26,6 +28,10 @@ export function useFormSchema(): VbenFormSchema[] {
       fieldName: 'password',
       label: $t('system.user.password'),
       rules: 'required',
+      dependencies: {
+        show: () => !id.value,
+        triggerFields: ['id'],
+      },
     },
     {
       component: 'Input',
@@ -214,16 +220,19 @@ export function useColumns<T = User.View>(
         name: 'CellFormatEmpty',
       },
       title: $t('system.user.loginIp'),
+      width: 140,
     },
     {
       field: 'loginDate',
       cellRender: { name: 'CellFormatDate' },
       title: $t('system.user.loginDate'),
+      width: 156,
     },
     {
       field: 'createTime',
       cellRender: { name: 'CellFormatDate' },
       title: $t('system.user.createTime'),
+      width: 156,
     },
     {
       align: 'center',

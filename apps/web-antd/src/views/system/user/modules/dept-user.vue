@@ -43,6 +43,8 @@ const onSelect = (selectedKeys: any) => {
     </div>
     <div class="pr-[10px]">
       <Tree
+        v-if="data?.length"
+        default-expand-all
         auto-expand-parent
         block-node
         @select="onSelect"
