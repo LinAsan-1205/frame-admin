@@ -16,6 +16,7 @@ import { get, isFunction, isString } from '@vben/utils';
 import { objectOmit } from '@vueuse/core';
 import { Button, Image, Popconfirm, Switch, Tag } from 'ant-design-vue';
 
+import OperationMoreBtns from '#/components/table/operation-more-btns.vue';
 import { $t } from '#/locales';
 
 import { useVbenForm } from './form';
@@ -166,6 +167,9 @@ setupVbenVxeTable({
           edit: {
             text: $t('common.edit'),
           },
+          more: {
+            text: $t('common.more'),
+          },
         };
         const operations: Array<Recordable<any>> = (
           options || ['edit', 'delete']
@@ -272,9 +276,23 @@ setupVbenVxeTable({
           );
         }
 
-        const btns = operations.map((opt) =>
-          opt.code === 'delete' ? renderConfirm(opt) : renderBtn(opt),
-        );
+        const btns = operations.map((opt) => {
+          if (opt.code === 'more') {
+            return h(OperationMoreBtns, {
+              text: opt.text,
+              row,
+              moreOptions: get(props, 'moreOptions'),
+              onClick: (code: string) => {
+                attrs?.onClick?.({
+                  code,
+                  row,
+                });
+              },
+            });
+          }
+          return opt.code === 'delete' ? renderConfirm(opt) : renderBtn(opt);
+        });
+
         return h(
           'div',
           {

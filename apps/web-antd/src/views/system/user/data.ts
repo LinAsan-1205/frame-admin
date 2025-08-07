@@ -83,9 +83,7 @@ export function useFormSchema(id: Ref<number | undefined>): VbenFormSchema[] {
     {
       component: 'RadioGroup',
       componentProps: {
-        buttonStyle: 'solid',
         options: Status.toSelect(),
-        optionType: 'button',
       },
       defaultValue: Status.Normal,
       fieldName: 'status',
@@ -243,15 +241,25 @@ export function useColumns<T = User.View>(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: [
-          'edit',
-          {
-            code: 'delete',
-            disabled: (row: User.View) => {
-              return row.userType === UserType.Admin;
+        options: ['edit', 'more'],
+        props: {
+          moreOptions: [
+            {
+              code: 'delete',
+              text: $t('system.user.deleteUser'),
+              disabled: (row: User.View) => {
+                return row.userType === UserType.Admin;
+              },
             },
-          },
-        ],
+            {
+              code: 'resetPwd',
+              text: $t('system.user.resetPwd'),
+              disabled: (row: User.View) => {
+                return row.userType === UserType.Admin;
+              },
+            },
+          ],
+        },
       },
       field: 'operation',
       fixed: 'right',

@@ -56,9 +56,7 @@ export function useSchema(): VbenFormSchema[] {
     {
       component: 'RadioGroup',
       componentProps: {
-        buttonStyle: 'solid',
         options: Status.toSelect(),
-        optionType: 'button',
       },
       defaultValue: Status.Normal,
       fieldName: 'status',
