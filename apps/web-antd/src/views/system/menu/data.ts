@@ -29,9 +29,9 @@ export function userSearchFormOptions(): VbenFormProps {
         label: $t('system.menu.component'),
       },
       {
-        component: 'RadioGroup',
+        component: 'Select',
         componentProps: {
-          buttonStyle: 'solid',
+          allowClear: true,
           options: Status.toSelect(),
         },
         fieldName: 'status',
@@ -53,7 +53,7 @@ export function useColumns(
       slots: { default: 'title' },
       title: $t('system.menu.menuTitle'),
       treeNode: true,
-      width: 250,
+      width: 140,
     },
 
     {
@@ -78,14 +78,7 @@ export function useColumns(
       title: $t('system.menu.path'),
       width: 200,
     },
-    {
-      field: 'name',
-      title: $t('system.menu.menuName'),
-      cellRender: {
-        name: 'CellFormatEmpty',
-      },
-      width: 200,
-    },
+
     {
       align: 'left',
       field: 'component',

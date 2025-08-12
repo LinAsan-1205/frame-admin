@@ -43,11 +43,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     rowConfig: {
       keyField: 'id',
+      drag: true,
+    },
+    rowDragConfig: {
+      isCrossDrag: true,
     },
     treeConfig: {
       parentField: 'parentId',
       rowField: 'id',
-      transform: false,
+      transform: true,
     },
   } as VxeTableGridOptions,
 });
@@ -82,7 +86,7 @@ function onCreate() {
   formDrawerApi.setData({}).open();
 }
 function onAppend(row: Menu.View) {
-  formDrawerApi.setData({ pid: row.id }).open();
+  formDrawerApi.setData({ parentId: row.id }).open();
 }
 
 function onDelete(row: Menu.View) {
@@ -128,8 +132,7 @@ function onDelete(row: Menu.View) {
               class="size-full"
             />
           </div>
-          <span class="flex-auto">{{ $t(row.meta?.title) }}</span>
-          <div class="items-center justify-end"></div>
+          <span>{{ $t(row.meta?.title) }}</span>
         </div>
         <MenuBadge
           v-if="row.meta?.badgeType"
