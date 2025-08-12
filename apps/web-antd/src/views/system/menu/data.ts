@@ -47,13 +47,13 @@ export function useColumns(
 ): VxeTableGridOptions<Menu.View>['columns'] {
   return [
     {
-      align: 'center',
+      align: 'left',
       field: 'meta.title',
       fixed: 'left',
       slots: { default: 'title' },
       title: $t('system.menu.menuTitle'),
       treeNode: true,
-      width: 140,
+      width: 200,
     },
 
     {
