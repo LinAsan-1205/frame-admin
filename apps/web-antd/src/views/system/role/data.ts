@@ -92,7 +92,6 @@ export function useColumns<T = Role.View>(
     {
       field: 'name',
       title: $t('system.role.roleName'),
-      width: 200,
     },
     {
       field: 'code',
@@ -100,7 +99,6 @@ export function useColumns<T = Role.View>(
         name: 'CellFormatEmpty',
       },
       title: $t('system.role.code'),
-      width: 200,
     },
     {
       cellRender: {
@@ -109,7 +107,6 @@ export function useColumns<T = Role.View>(
       },
       field: 'status',
       title: $t('system.role.status'),
-      width: 100,
     },
     {
       field: 'remark',
