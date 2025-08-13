@@ -345,7 +345,7 @@ export function useColumns<T = StorageConfig.View>(
           checkedValue: StorageConfigIsDefault.Yes,
           unCheckedValue: StorageConfigIsDefault.No,
           checkedChildren: $t('system.storageConfig.isDefaultText'),
-          inactiveText: $t('system.storageConfig.notDefaultText'),
+          unCheckedChildren: $t('system.storageConfig.notDefaultText'),
         },
       },
       field: 'isDefault',
