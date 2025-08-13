@@ -1,3 +1,5 @@
+import type { Ref } from 'vue';
+
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 
 import type { VbenFormProps, VbenFormSchema } from '#/adapter/form';
@@ -15,7 +17,9 @@ import { $t } from '#/locales';
 /**
  * 获取编辑表单的字段配置。如果没有使用多语言，可以直接export一个数组常量
  */
-export function useSchema(): VbenFormSchema[] {
+export function useSchema(
+  formData: Ref<StorageConfig.View | undefined>,
+): VbenFormSchema[] {
   return [
     {
       component: 'RadioGroup',
@@ -136,6 +140,12 @@ export function useSchema(): VbenFormSchema[] {
       defaultValue: StorageConfigIsDefault.No,
       fieldName: 'isDefault',
       label: $t('system.storageConfig.isDefault'),
+      dependencies: {
+        show: () => {
+          return !formData.value?.id;
+        },
+        triggerFields: ['type'],
+      },
     },
     {
       component: 'InputNumber',
