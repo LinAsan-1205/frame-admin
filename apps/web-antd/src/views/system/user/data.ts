@@ -5,7 +5,7 @@ import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { User } from '#/api/system/user';
 
 import { z } from '#/adapter/form';
-import { getDeptList } from '#/api/system/dept';
+import { queryDeptTree } from '#/api/system/dept';
 import { Sex, Status, UserType } from '#/api/system/user/enum';
 import { $t } from '#/locales';
 
@@ -70,7 +70,7 @@ export function useFormSchema(id: Ref<number | undefined>): VbenFormSchema[] {
       component: 'ApiTreeSelect',
       componentProps: {
         allowClear: true,
-        api: getDeptList,
+        api: queryDeptTree,
         class: 'w-full',
         labelField: 'name',
         valueField: 'id',
