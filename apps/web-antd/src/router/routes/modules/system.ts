@@ -52,7 +52,7 @@ const routes: RouteRecordRaw[] = [
         path: '/system/file/storage',
         name: 'SystemFileStorage',
         meta: {
-          icon: 'ant-design:file-outlined',
+          icon: 'ant-design:folder-outlined',
           title: $t('system.storage.title'),
         },
         redirect: '/system/file/storage/config',
@@ -61,7 +61,7 @@ const routes: RouteRecordRaw[] = [
             path: '/system/file/storage/config',
             name: 'SystemFileStorageConfig',
             meta: {
-              icon: 'charm:organisation',
+              icon: 'ant-design:cloud-upload-outlined',
               title: $t('system.storageConfig.title'),
             },
             component: () => import('#/views/system/storage/config/index.vue'),

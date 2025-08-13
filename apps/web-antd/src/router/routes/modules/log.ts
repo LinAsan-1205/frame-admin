@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
         path: '/log/login',
         component: () => import('#/views/log/login/index.vue'),
         meta: {
-          icon: 'ant-design:user-outlined',
+          icon: 'ant-design:login-outlined',
           title: $t('page.log.loginLog'),
         },
       },
