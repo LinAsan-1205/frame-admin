@@ -1,7 +1,8 @@
 {
   "name": "@vben/web-antd",
-  "version": "5.5.8",
-  "homepage": "https://frame-admin.pro",
+  "version": "5.5.9",
+  "homepage": "https://vben.pro",
+  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LinAsan-1205/frame-admin.git",
