@@ -7,6 +7,10 @@ interface BasicUserInfo {
    */
   avatar: string;
   /**
+   * 首页路径
+   */
+  homePath?: string;
+  /**
    * 用户id
    */
   id: number;

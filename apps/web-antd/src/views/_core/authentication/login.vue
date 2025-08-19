@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormSchema } from '@vben/common-ui';
 
-import { computed, markRaw, ref } from 'vue';
+import { computed, markRaw, ref, useTemplateRef } from 'vue';
 
 import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -15,6 +15,9 @@ defineOptions({ name: 'Login' });
 const authStore = useAuthStore();
 
 const captchaId = ref('');
+
+const loginRef =
+  useTemplateRef<InstanceType<typeof AuthenticationLogin>>('loginRef');
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -73,10 +76,19 @@ const formSchema = computed((): VbenFormSchema[] => {
 });
 
 const authLogin = (values: any) => {
-  authStore.authLogin({
-    ...values,
-    captchaId: captchaId.value,
-  });
+  authStore
+    .authLogin({
+      ...values,
+      captchaId: captchaId.value,
+    })
+    .catch(() => {
+      const formApi = loginRef.value?.getFormApi();
+      formApi
+        ?.getFieldComponentRef<
+          InstanceType<typeof FoundationCaptcha>
+        >('verifyCode')
+        ?.resume();
+    });
 };
 </script>
 
@@ -87,6 +99,7 @@ const authLogin = (values: any) => {
     :show-forget-password="false"
     :show-qrcode-login="false"
     :show-code-login="false"
+    ref="loginRef"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
     @submit="authLogin"

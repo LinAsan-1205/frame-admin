@@ -22,6 +22,14 @@ const reloadGenerateFoundationCaptcha = async () => {
   emits('reload', captchaId.value);
 };
 
+const resume = async () => {
+  await reloadGenerateFoundationCaptcha();
+  modelValue.value = undefined;
+};
+
+defineExpose({
+  resume,
+});
 onMounted(reloadGenerateFoundationCaptcha);
 </script>
 

@@ -35,6 +35,7 @@ export declare namespace User {
     nickName: string;
     avatar: string;
     roles: string[];
+    homePath?: string;
   }
 
   export interface Post {

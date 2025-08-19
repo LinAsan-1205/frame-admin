@@ -25,7 +25,7 @@ export const overridesPreferences = defineOverridesPreferences({
   },
   theme: {
     mode: 'light',
-    semiDarkSidebar: false,
+    semiDarkSidebar: true,
     builtinType: 'custom',
     colorPrimary: 'hsl(219 100% 34%)',
   },
