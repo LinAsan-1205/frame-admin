@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     path: '/log',
     children: [
       {
-        name: 'Login',
+        name: 'LogLogin',
         path: '/log/login',
         component: () => import('#/views/log/login/index.vue'),
         meta: {
@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        name: 'Operation',
+        name: 'LogOperation',
         path: '/log/operation',
         component: () => import('#/views/log/operation/index.vue'),
         meta: {
