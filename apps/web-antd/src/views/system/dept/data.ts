@@ -42,16 +42,25 @@ export function useSchema(): VbenFormSchema[] {
       component: 'Input',
       fieldName: 'leader',
       label: $t('system.dept.leader'),
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
       fieldName: 'phone',
       label: $t('system.dept.phone'),
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
       fieldName: 'email',
       label: $t('system.dept.email'),
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'RadioGroup',
@@ -98,6 +107,7 @@ export function userSearchFormOptions(): VbenFormProps {
         component: 'Input',
         componentProps: {
           placeholder: $t('system.dept.deptNamePlaceholder'),
+          allowClear: true,
         },
         fieldName: 'name',
         label: $t('system.dept.deptName'),
@@ -106,6 +116,7 @@ export function userSearchFormOptions(): VbenFormProps {
         component: 'Input',
         componentProps: {
           placeholder: $t('system.dept.leaderPlaceholder'),
+          allowClear: true,
         },
         fieldName: 'leader',
         label: $t('system.dept.leader'),
@@ -114,6 +125,7 @@ export function userSearchFormOptions(): VbenFormProps {
         component: 'Input',
         componentProps: {
           placeholder: $t('system.dept.phonePlaceholder'),
+          allowClear: true,
         },
         fieldName: 'phone',
         label: $t('system.dept.phone'),

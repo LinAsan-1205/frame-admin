@@ -16,12 +16,18 @@ export function useFormSchema(id: Ref<number | undefined>): VbenFormSchema[] {
       fieldName: 'nickName',
       label: $t('system.user.nickName'),
       rules: 'required',
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
       fieldName: 'userName',
       label: $t('system.user.userName'),
       rules: 'required',
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'InputPassword',
@@ -32,6 +38,9 @@ export function useFormSchema(id: Ref<number | undefined>): VbenFormSchema[] {
         show: () => !id.value,
         triggerFields: ['id'],
       },
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
@@ -41,12 +50,18 @@ export function useFormSchema(id: Ref<number | undefined>): VbenFormSchema[] {
         .string()
         .regex(/^1[3-9]\d{9}$/, '请输入正确的手机号')
         .optional(),
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
       fieldName: 'email',
       label: $t('system.user.email'),
       rules: z.string().email('请输入正确的邮箱').optional(),
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'RadioGroup',
@@ -106,21 +121,33 @@ export function useSearchFormOptions(): VbenFormProps {
         component: 'Input',
         fieldName: 'userName',
         label: $t('system.user.userName'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Input',
         fieldName: 'nickName',
         label: $t('system.user.nickName'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Input',
         fieldName: 'phone',
         label: $t('system.user.phone'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Input',
         fieldName: 'email',
         label: $t('system.user.email'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Select',

@@ -9,11 +9,12 @@ import { $t } from '#/locales';
 
 export function userSearchFormOptions(): VbenFormProps {
   return {
-    collapsed: true,
+    collapsed: false,
     schema: [
       {
         component: 'Input',
         componentProps: {
+          allowClear: true,
           placeholder: $t('operationLog.usernamePlaceholder'),
         },
         fieldName: 'username',

@@ -35,12 +35,18 @@ export function useSchema(
       fieldName: 'name',
       label: $t('system.storageConfig.names'),
       rules: 'required',
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
       fieldName: 'code',
       label: $t('system.storageConfig.code'),
       rules: 'required',
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
@@ -56,6 +62,9 @@ export function useSchema(
         .string()
         .nonempty($t('ui.formRules.required'))
         .regex(/^[\w/]+$/, $t('ui.formRules.invalid')),
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
@@ -84,6 +93,9 @@ export function useSchema(
         triggerFields: ['type'],
       },
       rules: 'required',
+      componentProps: {
+        allowClear: true,
+      },
     },
     {
       component: 'Input',
@@ -190,11 +202,17 @@ export function userSearchFormOptions(): VbenFormProps {
         component: 'Input',
         fieldName: 'name',
         label: $t('system.storageConfig.names'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Input',
         fieldName: 'code',
         label: $t('system.storageConfig.code'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Select',

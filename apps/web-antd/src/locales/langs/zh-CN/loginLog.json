@@ -1,9 +1,11 @@
 {
   "id": "编号",
-  "username": "用户名",
-  "ip": "IP地址",
+  "username": "登录用户名",
+  "ip": "登录IP",
   "browser": "浏览器",
-  "os": "操作系统",
+  "os": "终端系统",
   "status": "状态",
-  "loginTime": "登录时间"
+  "loginTime": "登录时间",
+  "address": "登录地点",
+  "behavior": "登录行为"
 }

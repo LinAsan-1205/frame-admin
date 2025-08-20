@@ -8,13 +8,24 @@ import { $t } from '#/locales';
 
 export function userSearchFormOptions(): VbenFormProps {
   return {
-    collapsed: true,
+    collapsed: false,
     fieldMappingTime: [['loginTime', ['createFormDate', 'createToDate']]],
     schema: [
       {
         component: 'Input',
         fieldName: 'username',
         label: $t('loginLog.username'),
+        componentProps: {
+          allowClear: true,
+        },
+      },
+      {
+        component: 'Input',
+        fieldName: 'behavior',
+        label: $t('loginLog.behavior'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Input',
@@ -22,9 +33,9 @@ export function userSearchFormOptions(): VbenFormProps {
         label: $t('loginLog.ip'),
       },
       {
-        component: 'RadioGroup',
+        component: 'Select',
         componentProps: {
-          buttonStyle: 'solid',
+          allowClear: true,
           options: LoginStatus.toSelect(),
         },
         fieldName: 'status',
@@ -54,19 +65,11 @@ export function useColumns(): VxeTableGridOptions<LoginLog.View>['columns'] {
     },
     {
       align: 'center',
-      field: 'ip',
-      title: $t('loginLog.ip'),
-    },
-
-    {
-      align: 'center',
-      field: 'browser',
-      title: $t('loginLog.browser'),
-    },
-    {
-      align: 'center',
-      field: 'os',
-      title: $t('loginLog.os'),
+      field: 'behavior',
+      title: $t('loginLog.behavior'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       field: 'status',
@@ -76,6 +79,29 @@ export function useColumns(): VxeTableGridOptions<LoginLog.View>['columns'] {
       },
       title: $t('loginLog.status'),
       width: 100,
+    },
+    {
+      align: 'center',
+      field: 'ip',
+      title: $t('loginLog.ip'),
+    },
+    {
+      align: 'center',
+      field: 'address',
+      title: $t('loginLog.address'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
+    },
+    {
+      align: 'center',
+      field: 'browser',
+      title: $t('loginLog.browser'),
+    },
+    {
+      align: 'center',
+      field: 'os',
+      title: $t('loginLog.os'),
     },
   ];
 }

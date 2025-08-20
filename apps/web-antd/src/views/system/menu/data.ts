@@ -17,16 +17,25 @@ export function userSearchFormOptions(): VbenFormProps {
         component: 'Input',
         fieldName: 'title',
         label: $t('system.menu.menuTitle'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Input',
         fieldName: 'path',
         label: $t('system.menu.path'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Input',
         fieldName: 'component',
         label: $t('system.menu.component'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Select',

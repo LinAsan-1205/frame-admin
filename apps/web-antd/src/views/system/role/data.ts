@@ -60,11 +60,17 @@ export function useSearchFormOptions(): VbenFormProps {
         component: 'Input',
         fieldName: 'name',
         label: $t('system.role.roleName'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Input',
         fieldName: 'code',
         label: $t('system.role.code'),
+        componentProps: {
+          allowClear: true,
+        },
       },
       {
         component: 'Select',
