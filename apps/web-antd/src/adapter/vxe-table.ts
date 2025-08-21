@@ -101,6 +101,7 @@ setupVbenVxeTable({
         return h(
           Tag,
           {
+            bordered: false,
             ...props,
             ...objectOmit(tagItem ?? {}, ['label']),
           },
