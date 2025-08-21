@@ -1,5 +1,7 @@
 {
   "verifyCode": "请输入验证码",
   "verifyCodeTip": "请输入验证码",
-  "maxVerifyCodeTip": "验证码长度为4位"
+  "maxVerifyCodeTip": "验证码长度为4位",
+  "pageTitle": "开箱即用的大型中后台管理系统",
+  "pageDesc": "基于 NestJS 框架开发的企业级后台管理系统"
 }
