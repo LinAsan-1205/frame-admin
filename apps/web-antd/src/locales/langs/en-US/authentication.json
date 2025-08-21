@@ -1,0 +1,7 @@
+{
+  "verifyCode": "Please enter the verification code",
+  "verifyCodeTip": "Please enter the verification code",
+  "maxVerifyCodeTip": "The verification code length is 4 digits",
+  "pageTitle": "Large-scale mid-backend management system",
+  "pageDesc": "An enterprise-level backend management system developed based on NestJS framework"
+}
