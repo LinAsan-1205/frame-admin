@@ -21,9 +21,9 @@ export function userSearchFormOptions(): VbenFormProps {
         label: $t('operationLog.username'),
       },
       {
-        component: 'RadioGroup',
+        component: 'Select',
         componentProps: {
-          buttonStyle: 'solid',
+          allowClear: true,
           options: OperationStatus.toSelect(),
         },
         fieldName: 'status',
