@@ -95,6 +95,7 @@ export function useColumns<T = Role.View>(
   onStatusChange?: (newStatus: any, row: T) => PromiseLike<boolean | undefined>,
 ): VxeTableGridOptions['columns'] {
   return [
+    { title: '#', type: 'seq', width: 50 },
     {
       field: 'name',
       title: $t('system.role.roleName'),

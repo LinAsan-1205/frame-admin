@@ -176,7 +176,6 @@ export function useColumns<T = User.View>(
       field: 'userBlock',
       title: $t('system.user.userBlock'),
       showOverflow: false,
-      fixed: 'left',
       width: 140,
     },
     {

@@ -148,6 +148,7 @@ export function useColumns(
   onActionClick?: OnActionClickFn<Dept.View>,
 ): VxeTableGridOptions<Dept.View>['columns'] {
   return [
+    { title: '#', type: 'seq', width: 50, fixed: 'left' },
     {
       align: 'center',
       field: 'name',

@@ -55,6 +55,7 @@ export function useColumns(
   onActionClick: OnActionClickFn<Menu.View>,
 ): VxeTableGridOptions<Menu.View>['columns'] {
   return [
+    { title: '#', type: 'seq', width: 50, fixed: 'left' },
     {
       align: 'left',
       field: 'meta.title',
