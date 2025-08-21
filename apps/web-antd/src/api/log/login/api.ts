@@ -6,8 +6,6 @@ import { requestClient } from '#/api/request';
 
 /**
  * 获取操作日志列表数据
- * @param params
- * @returns
  */
 export function queryLoginLogPage(
   pageCursor: Api.PageCursor = {},
@@ -22,4 +20,14 @@ export function queryLoginLogPage(
       },
     },
   );
+}
+
+/**
+ * 批量删除登录日志
+ * @param ids
+ */
+export function deleteByIds(ids: number[]) {
+  return requestClient.post(`/admin/log/login/delete-batch`, {
+    ids,
+  });
 }
