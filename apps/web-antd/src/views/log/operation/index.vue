@@ -5,12 +5,18 @@ import type {
 } from '#/adapter/vxe-table';
 import type { Operation } from '#/api/log/operation';
 
+import { computed, ref } from 'vue';
+
 import { Page } from '@vben/common-ui';
 
-import { message } from 'ant-design-vue';
+import { Button, message, Modal } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteById, queryOperationLogpage } from '#/api/log/operation';
+import {
+  deleteById,
+  deleteByIds,
+  queryOperationLogpage,
+} from '#/api/log/operation';
 import { $t } from '#/locales';
 
 import { useColumns, userSearchFormOptions } from './data';
@@ -38,6 +44,31 @@ function onDelete(row: Operation.View) {
     });
 }
 
+function onDeleteBatch() {
+  Modal.confirm({
+    content: $t('ui.actionMessage.deleteConfirm'),
+    onOk: () => {
+      const hideLoading = message.loading({
+        content: $t('ui.actionMessage.deleting'),
+        duration: 0,
+        key: 'action_process_msg',
+      });
+      const ids = selectedRows.value.map((row) => row.id);
+      deleteByIds(ids)
+        .then(() => {
+          message.success({
+            content: $t('ui.actionMessage.deleteSuccess'),
+            key: 'action_process_msg',
+          });
+          refreshGrid();
+        })
+        .catch(() => {
+          hideLoading();
+        });
+    },
+  });
+}
+
 function onActionClick({ code, row }: OnActionClickParams<Operation.View>) {
   switch (code) {
     case 'delete': {
@@ -48,6 +79,12 @@ function onActionClick({ code, row }: OnActionClickParams<Operation.View>) {
 }
 
 const formOptions = userSearchFormOptions();
+
+const selectedRows = ref<Operation.View[]>([]);
+
+const isBatchDelete = computed(() => {
+  return selectedRows.value.length > 0;
+});
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
@@ -72,6 +109,14 @@ const [Grid, gridApi] = useVbenVxeGrid({
       },
     },
   } as VxeTableGridOptions,
+  gridEvents: {
+    checkboxAll: () => {
+      selectedRows.value = gridApi.grid.getCheckboxRecords();
+    },
+    checkboxChange: () => {
+      selectedRows.value = gridApi.grid.getCheckboxRecords();
+    },
+  },
 });
 
 /**
@@ -83,6 +128,16 @@ function refreshGrid() {
 </script>
 <template>
   <Page auto-content-height>
-    <Grid table-title="操作日志列表" />
+    <Grid table-title="操作日志列表">
+      <template #toolbar-actions>
+        <Button
+          type="primary"
+          @click="onDeleteBatch"
+          :disabled="!isBatchDelete"
+        >
+          删除
+        </Button>
+      </template>
+    </Grid>
   </Page>
 </template>

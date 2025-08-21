@@ -53,6 +53,8 @@ export function userSearchFormOptions(): VbenFormProps {
 
 export function useColumns(): VxeTableGridOptions<LoginLog.View>['columns'] {
   return [
+    { align: 'center', type: 'checkbox', width: 100 },
+    { title: '#', type: 'seq', width: 50 },
     {
       field: 'loginTime',
       cellRender: { name: 'CellFormatDate' },

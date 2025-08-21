@@ -38,6 +38,8 @@ export function useColumns(
   onActionClick?: OnActionClickFn<Operation.View>,
 ): VxeTableGridOptions<Operation.View>['columns'] {
   return [
+    { align: 'center', type: 'checkbox', width: 100 },
+    { title: '#', type: 'seq', width: 50 },
     {
       align: 'center',
       field: 'username',

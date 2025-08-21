@@ -27,8 +27,17 @@ export function queryOperationLogpage(
 /**
  * 删除操作日志
  * @param id
- * @returns
  */
 export function deleteById(id: number) {
   return requestClient.delete(`/admin/operation-log/${id}`);
+}
+
+/**
+ * 批量删除操作日志
+ * @param ids
+ */
+export function deleteByIds(ids: number[]) {
+  return requestClient.post(`/admin/operation-log/delete-batch`, {
+    ids,
+  });
 }
