@@ -56,6 +56,7 @@ setupVbenVxeTable({
         round: true,
         showOverflow: true,
         size: 'small',
+        stripe: false,
       } as VxeTableGridOptions,
     });
 
