@@ -6,8 +6,6 @@ import { requestClient } from '#/api/request';
 
 /**
  * 获取操作日志列表数据
- * @param params
- * @returns
  */
 export function queryOperationLogpage(
   pageCursor: Api.PageCursor = {},
