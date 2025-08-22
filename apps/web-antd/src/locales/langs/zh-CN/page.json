@@ -19,5 +19,9 @@
     "title": "日志管理",
     "operationLog": "操作日志",
     "loginLog": "登录日志"
+  },
+  "user": {
+    "title": "用户管理",
+    "profile": "个人信息"
   }
 }
