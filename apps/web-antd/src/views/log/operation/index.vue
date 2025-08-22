@@ -34,7 +34,7 @@ function onDelete(row: Operation.View) {
   deleteById(row.id)
     .then(() => {
       message.success({
-        content: $t('ui.actionMessage.deleteSuccess'),
+        content: $t('ui.actionMessage.deleteSuccess', [row.description]),
         key: 'action_process_msg',
       });
       refreshGrid();
@@ -45,8 +45,11 @@ function onDelete(row: Operation.View) {
 }
 
 function onDeleteBatch() {
+  const descriptions = selectedRows.value
+    .map((row) => row.description)
+    .join(',');
   Modal.confirm({
-    content: $t('ui.actionMessage.deleteConfirm'),
+    content: $t('ui.actionMessage.deleteConfirm', [descriptions]),
     onOk: () => {
       const hideLoading = message.loading({
         content: $t('ui.actionMessage.deleting'),
@@ -57,7 +60,7 @@ function onDeleteBatch() {
       deleteByIds(ids)
         .then(() => {
           message.success({
-            content: $t('ui.actionMessage.deleteSuccess'),
+            content: $t('ui.actionMessage.deleteSuccess', [descriptions]),
             key: 'action_process_msg',
           });
           refreshGrid();

@@ -23,8 +23,9 @@ const isBatchDelete = computed(() => {
 });
 
 function onDeleteBatch() {
+  const userNames = selectedRows.value.map((row) => row.username).join(',');
   Modal.confirm({
-    content: $t('ui.actionMessage.deleteConfirm'),
+    content: $t('ui.actionMessage.deleteConfirm', [userNames]),
     onOk: () => {
       const hideLoading = message.loading({
         content: $t('ui.actionMessage.deleting'),
@@ -35,7 +36,7 @@ function onDeleteBatch() {
       deleteByIds(ids)
         .then(() => {
           message.success({
-            content: $t('ui.actionMessage.deleteSuccess'),
+            content: $t('ui.actionMessage.deleteSuccess', [userNames]),
             key: 'action_process_msg',
           });
           refreshGrid();

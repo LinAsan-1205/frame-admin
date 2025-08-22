@@ -120,7 +120,7 @@ export function useColumns(
       align: 'center',
       cellRender: {
         attrs: {
-          nameField: 'name',
+          nameField: 'description',
           onClick: onActionClick,
         },
         name: 'CellOperation',
