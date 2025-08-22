@@ -3,4 +3,8 @@ export declare namespace CaptchaApi {
     captchaId: string;
     image: string;
   }
+
+  export interface FoundationCondition {
+    isDarkBackground?: boolean;
+  }
 }
