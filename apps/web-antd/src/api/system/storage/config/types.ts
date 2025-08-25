@@ -8,7 +8,7 @@ export declare namespace StorageConfig {
   export type Type = typeof StorageConfigType.valueType;
   export type Status = typeof StorageConfigStatus.valueType;
   export type IsDefault = typeof StorageConfigIsDefault.valueType;
-  
+
   /**
    * 存储配置视图类型
    */

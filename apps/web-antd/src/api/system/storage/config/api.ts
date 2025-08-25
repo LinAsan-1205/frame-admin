@@ -36,7 +36,9 @@ function queryEnabledStorageConfigs() {
  * @param configId 存储配置ID
  */
 function getStorageConfigById(configId: number) {
-  return requestClient.get<StorageConfig.View>(`/system/storage/config/${configId}`);
+  return requestClient.get<StorageConfig.View>(
+    `/system/storage/config/${configId}`,
+  );
 }
 
 /**
@@ -108,7 +110,9 @@ function batchDeleteStorageConfigs(configIds: number[]) {
  * 获取存储配置统计信息
  */
 function getStorageConfigStatistics() {
-  return requestClient.get<StorageConfig.Statistics>('/system/storage/config/statistics/overview');
+  return requestClient.get<StorageConfig.Statistics>(
+    '/system/storage/config/statistics/overview',
+  );
 }
 
 export {
