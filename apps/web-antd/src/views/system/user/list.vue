@@ -13,7 +13,11 @@ import { Plus } from '@vben/icons';
 import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { delUserById, queryUserPage } from '#/api/system/user';
+import {
+  delUserById,
+  queryUserPage,
+  setInitializePassword,
+} from '#/api/system/user';
 import UserBlock from '#/components/model/system/user/user-block.vue';
 import { $t } from '#/locales';
 
@@ -63,18 +67,22 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<User.View>,
 });
 
-function onActionClick(e: OnActionClickParams<User.View>) {
-  switch (e.code) {
+function onActionClick(event: OnActionClickParams<User.View>) {
+  switch (event.code) {
     case 'assignedRole': {
-      assignedRoleModalApi.setData(e.row).open();
+      assignedRoleModalApi.setData(event.row).open();
       break;
     }
     case 'delete': {
-      onDelete(e.row);
+      onDelete(event.row);
       break;
     }
     case 'edit': {
-      onEdit(e.row);
+      onEdit(event.row);
+      break;
+    }
+    case 'initializePassword': {
+      onInitializePassword(event.row);
       break;
     }
   }
@@ -88,23 +96,26 @@ function onCreate() {
   formDrawerApi.setData({}).open();
 }
 
-function onDelete(row: User.View) {
+async function onDelete(row: User.View) {
   const hideLoading = message.loading({
     content: $t('ui.actionMessage.deleting', [row.userName]),
     duration: 0,
-    key: 'action_process_msg',
   });
-  delUserById(row.id)
-    .then(() => {
-      message.success({
-        content: $t('ui.actionMessage.deleteSuccess', [row.userName]),
-        key: 'action_process_msg',
-      });
-      onRefresh();
-    })
-    .catch(() => {
-      hideLoading();
-    });
+  await delUserById(row.id).finally(() => {
+    hideLoading();
+  });
+  message.success({
+    content: $t('ui.actionMessage.deleteSuccess', [row.userName]),
+  });
+  onRefresh();
+}
+
+async function onInitializePassword(row: User.View) {
+  await setInitializePassword(row.id);
+  message.success({
+    content: $t('ui.actionMessage.operationSuccess'),
+  });
+  onRefresh();
 }
 
 function onRefresh() {

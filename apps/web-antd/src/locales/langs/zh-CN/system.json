@@ -102,7 +102,7 @@
     "setPermissions": "授权",
     "code": "用户编码",
     "deleteUser": "删除用户",
-    "resetPwd": "重置密码",
+    "initializePassword": "初始化密码",
     "assignedRole": "分配角色"
   },
   "storage": {

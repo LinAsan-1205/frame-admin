@@ -283,8 +283,8 @@ export function useColumns<T = User.View>(
               text: $t('system.user.assignedRole'),
             },
             {
-              code: 'resetPwd',
-              text: $t('system.user.resetPwd'),
+              code: 'initializePassword',
+              text: $t('system.user.initializePassword'),
               disabled: (row: User.View) => {
                 return row.userType === UserType.Admin;
               },

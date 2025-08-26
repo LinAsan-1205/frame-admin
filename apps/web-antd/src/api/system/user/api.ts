@@ -65,11 +65,22 @@ function assignUserRole(userId: number, roleIds: number[]) {
   });
 }
 
+/**
+ * 初始化用户密码
+ * @param userId
+ */
+function setInitializePassword(userId: number) {
+  return requestClient.post<boolean>(`/system/user/initialize-password`, {
+    userId,
+  });
+}
+
 export {
   addUser,
   assignUserRole,
   delUserById,
   getMineProfile,
   queryUserPage,
+  setInitializePassword,
   setUser,
 };
