@@ -53,4 +53,23 @@ function delUserById(userId: number) {
   return requestClient.delete<boolean>(`/system/user/${userId}`);
 }
 
-export { addUser, delUserById, getMineProfile, queryUserPage, setUser };
+/**
+ * 分配用户角色
+ * @param userId
+ * @param roleIds
+ */
+function assignUserRole(userId: number, roleIds: number[]) {
+  return requestClient.post<boolean>(`/system/user/assign-user-role`, {
+    userId,
+    roleIds,
+  });
+}
+
+export {
+  addUser,
+  assignUserRole,
+  delUserById,
+  getMineProfile,
+  queryUserPage,
+  setUser,
+};

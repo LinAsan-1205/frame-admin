@@ -1,3 +1,5 @@
+import type { Role } from '../role';
+
 import type { Api } from '#/api/types';
 
 import { UserType } from './enum';
@@ -19,6 +21,7 @@ export declare namespace User {
     deptId?: number;
     userType: UserType;
     userTypeDisplay: Api.StatusDisplay;
+    roles: Role.View[];
   }
   export interface Condition {
     userName?: string;

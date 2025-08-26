@@ -7,7 +7,7 @@ import type { User } from '#/api/system/user';
 
 import { watch } from 'vue';
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { Button, message } from 'ant-design-vue';
@@ -18,12 +18,18 @@ import UserBlock from '#/components/model/system/user/user-block.vue';
 import { $t } from '#/locales';
 
 import { useColumns, useSearchFormOptions } from './data';
+import AssignedRole from './modules/assigned-role.vue';
 import Form from './modules/form.vue';
 
 const deptId = defineModel<number | undefined>('deptId');
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
+  destroyOnClose: true,
+});
+
+const [AssignedRoleModal, assignedRoleModalApi] = useVbenModal({
+  connectedComponent: AssignedRole,
   destroyOnClose: true,
 });
 
@@ -59,6 +65,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 function onActionClick(e: OnActionClickParams<User.View>) {
   switch (e.code) {
+    case 'assignedRole': {
+      assignedRoleModalApi.setData(e.row).open();
+      break;
+    }
     case 'delete': {
       onDelete(e.row);
       break;
@@ -106,6 +116,7 @@ watch(() => deptId.value, onRefresh);
 <template>
   <Page auto-content-height>
     <FormDrawer @success="onRefresh" />
+    <AssignedRoleModal @success="onRefresh" />
     <Grid :table-title="$t('system.user.list')">
       <template #userBlock="{ row }">
         <UserBlock :origin="row" />

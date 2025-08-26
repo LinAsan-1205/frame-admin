@@ -25,6 +25,14 @@ export function queryRolePage(
 }
 
 /**
+ * 获取所有启用的角色
+ * @returns 角色列表
+ */
+export function findAllEnabledRoles() {
+  return requestClient.get<Role.View[]>('/system/role/list');
+}
+
+/**
  * 创建角色
  * @param data 角色数据
  */
