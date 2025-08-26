@@ -21,7 +21,7 @@ export declare namespace User {
     deptId?: number;
     userType: UserType;
     userTypeDisplay: Api.StatusDisplay;
-    roles: Role.View[];
+    roles: Pick<Role.View, 'id' | 'name'>[];
   }
   export interface Condition {
     userName?: string;

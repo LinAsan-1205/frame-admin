@@ -5,6 +5,8 @@ import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
+import { message } from 'ant-design-vue';
+
 import { useVbenForm } from '#/adapter/form';
 import { findAllEnabledRoles } from '#/api/system/role';
 import { assignUserRole } from '#/api/system/user';
@@ -19,6 +21,14 @@ const getTitle = computed(() => {
 const [Form, formApi] = useVbenForm({
   layout: 'horizontal',
   schema: [
+    {
+      component: 'Input',
+      componentProps: {
+        disabled: true,
+      },
+      fieldName: 'userName',
+      label: $t('system.user.userName'),
+    },
     {
       component: 'ApiSelect',
       componentProps: {
@@ -50,6 +60,12 @@ const [Modal, modalApi] = useVbenModal({
         if (!formData.value?.id) return;
         await assignUserRole(formData.value.id, roleIds);
         modalApi.close();
+        message.success({
+          content: $t('ui.actionMessage.assignSuccess', [
+            formData.value?.userName,
+          ]),
+          key: 'action_process_msg',
+        });
         emit('success');
       } finally {
         modalApi.lock(false);
@@ -61,8 +77,11 @@ const [Modal, modalApi] = useVbenModal({
       const data = modalApi.getData<User.View>();
       if (data) {
         formData.value = data;
+        const roleIds = data.roles.map((role) => role.id);
+        const userName = data.userName;
         formApi.setValues({
-          roleIds: data?.roles?.map((role) => role.id),
+          roleIds,
+          userName,
         });
       }
     }
