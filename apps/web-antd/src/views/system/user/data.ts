@@ -223,6 +223,13 @@ export function useColumns<T = User.View>(
       width: 200,
     },
     {
+      slots: { default: 'rolesBlock' },
+      field: 'roles',
+      title: $t('system.user.roles'),
+      showOverflow: false,
+      width: 140,
+    },
+    {
       field: 'status',
       cellRender: {
         name: 'CellTag',

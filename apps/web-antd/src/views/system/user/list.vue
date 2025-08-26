@@ -24,6 +24,7 @@ import { $t } from '#/locales';
 import { useColumns, useSearchFormOptions } from './data';
 import AssignedRole from './modules/assigned-role.vue';
 import Form from './modules/form.vue';
+import RolesBlock from './modules/roles-block.vue';
 
 const deptId = defineModel<number | undefined>('deptId');
 
@@ -131,6 +132,9 @@ watch(() => deptId.value, onRefresh);
     <Grid :table-title="$t('system.user.list')">
       <template #userBlock="{ row }">
         <UserBlock :origin="row" />
+      </template>
+      <template #rolesBlock="{ row }">
+        <RolesBlock :origin="row" />
       </template>
       <template #toolbar-tools>
         <Button type="primary" @click="onCreate">
