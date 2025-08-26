@@ -61,9 +61,7 @@ const [Modal, modalApi] = useVbenModal({
         await assignUserRole(formData.value.id, roleIds);
         modalApi.close();
         message.success({
-          content: $t('ui.actionMessage.assignSuccess', [
-            formData.value?.userName,
-          ]),
+          content: $t('ui.actionMessage.operationSuccess'),
           key: 'action_process_msg',
         });
         emit('success');
