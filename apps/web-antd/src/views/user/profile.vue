@@ -1,2 +1,4 @@
 <script lang="ts" setup></script>
-<template>profile</template>
+<template>
+  <div>userProfile</div>
+</template>
