@@ -237,6 +237,7 @@ export function useColumns<T = User.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
+      minWidth: 200,
     },
     {
       field: 'loginIp',
@@ -276,6 +277,10 @@ export function useColumns<T = User.View>(
               disabled: (row: User.View) => {
                 return row.userType === UserType.Admin;
               },
+            },
+            {
+              code: 'assignedRole',
+              text: $t('system.user.assignedRole'),
             },
             {
               code: 'resetPwd',

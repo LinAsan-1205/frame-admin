@@ -11,11 +11,11 @@ const deptId = ref<number | undefined>();
 
 <template>
   <Page auto-content-height>
-    <div class="flex">
-      <div class="pt-4">
+    <div class="flex gap-4">
+      <div class="min-w-64 flex-shrink-0 pt-4">
         <DeptUser v-model="deptId" />
       </div>
-      <div class="flex-1">
+      <div class="min-w-0 flex-1">
         <UserList v-model:dept-id="deptId" />
       </div>
     </div>
