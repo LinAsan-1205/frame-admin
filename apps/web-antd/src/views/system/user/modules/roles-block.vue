@@ -10,15 +10,15 @@ const { origin } = defineProps<{
 }>();
 
 const displayRoles = computed(() => {
-  return origin.roles.slice(0, 3);
+  return origin.roles.slice(0, 1);
 });
 
 const hasMore = computed(() => {
-  return origin.roles.length > 3;
+  return origin.roles.length > 2;
 });
 
 const remainingRoles = computed(() => {
-  return origin.roles.slice(3);
+  return origin.roles;
 });
 </script>
 <template>
@@ -34,7 +34,7 @@ const remainingRoles = computed(() => {
     </Tag>
     <Popover v-if="hasMore" placement="bottom">
       <template #content>
-        <Space>
+        <div class="flex flex-col gap-2">
           <Tag
             :bordered="false"
             v-for="role in remainingRoles"
@@ -43,9 +43,11 @@ const remainingRoles = computed(() => {
           >
             {{ role.name }}
           </Tag>
-        </Space>
+        </div>
       </template>
-      <Tag color="processing" :bordered="false">...</Tag>
+      <Tag color="processing" :bordered="false" class="cursor-pointer">
+        +{{ origin.roles.length }}
+      </Tag>
     </Popover>
   </Space>
 </template>
