@@ -105,7 +105,6 @@ async function onSubmit(values: Record<string, any>) {
   });
   const userInfo = await authStore.fetchUserInfo();
   formApi.setValues(userInfo);
-  hideLoading();
 }
 </script>
 
