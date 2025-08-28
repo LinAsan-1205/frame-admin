@@ -7,7 +7,7 @@ import type {
 } from '#/adapter/vxe-table';
 import type { Role } from '#/api/system/role';
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { Button, message, Modal } from 'ant-design-vue';
@@ -21,6 +21,7 @@ import {
 import { $t } from '#/locales';
 
 import { useColumns, useSearchFormOptions } from './data';
+import AssignedAuth from './modules/assigned-auth.vue';
 import Form from './modules/form.vue';
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
@@ -55,8 +56,17 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<Role.View>,
 });
 
+const [AssignedAuthModal, assignedAuthModalApi] = useVbenModal({
+  connectedComponent: AssignedAuth,
+  destroyOnClose: true,
+});
+
 function onActionClick(e: OnActionClickParams<Role.View>) {
   switch (e.code) {
+    case 'assignedAuth': {
+      assignedAuthModalApi.setData(e.row).open();
+      break;
+    }
     case 'delete': {
       onDelete(e.row);
       break;
@@ -145,6 +155,7 @@ function onCreate() {
 <template>
   <Page auto-content-height>
     <FormDrawer @success="onRefresh" />
+    <AssignedAuthModal @success="onRefresh" />
     <Grid :table-title="$t('system.role.list')">
       <template #toolbar-tools>
         <Button type="primary" @click="onCreate">

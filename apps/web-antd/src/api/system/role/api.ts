@@ -6,10 +6,10 @@ import { requestClient } from '#/api/request';
 
 /**
  * 获取角色分页列表
- * @param params 查询参数
- * @returns 角色分页列表
+ * @param pageCursor 分页参数
+ * @param condition 查询条件
  */
-export function queryRolePage(
+function queryRolePage(
   pageCursor: Api.PageCursor = {},
   condition: Role.Condition = {},
 ) {
@@ -28,7 +28,7 @@ export function queryRolePage(
  * 获取所有启用的角色
  * @returns 角色列表
  */
-export function findAllEnabledRoles() {
+function findAllEnabledRoles() {
   return requestClient.get<Role.View[]>('/system/role/list');
 }
 
@@ -36,7 +36,7 @@ export function findAllEnabledRoles() {
  * 创建角色
  * @param data 角色数据
  */
-export function addRole(data: Role.Post) {
+function addRole(data: Role.Post) {
   return requestClient.post<boolean>('/system/role', data);
 }
 
@@ -45,7 +45,7 @@ export function addRole(data: Role.Post) {
  * @param roleId 角色ID
  * @param data 角色数据
  */
-export function setRoleById(roleId: number, data: Role.Post) {
+function setRoleById(roleId: number, data: Role.Post) {
   return requestClient.put<boolean>(`/system/role/${roleId}`, data);
 }
 
@@ -53,7 +53,7 @@ export function setRoleById(roleId: number, data: Role.Post) {
  * 删除角色
  * @param roleId 角色ID
  */
-export function deleteRoleById(roleId: number) {
+function deleteRoleById(roleId: number) {
   return requestClient.delete<boolean>(`/system/role/${roleId}`);
 }
 
@@ -62,9 +62,31 @@ export function deleteRoleById(roleId: number) {
  * @param roleId 角色ID
  * @param status 角色状态
  */
-export function setRoleStatus(roleId: number, status: string) {
-  return requestClient.post<boolean>(`/system/role/status`, {
+function setRoleStatus(roleId: number, status: string) {
+  return requestClient.post<boolean>('/system/role/status', {
     roleId,
     status,
   });
 }
+
+/**
+ * 分配角色菜单
+ * @param roleId 角色ID
+ * @param menuIds 菜单ID列表
+ */
+function assignRoleMenu(roleId: number, menuIds: string[]) {
+  return requestClient.post<boolean>('/system/role/assign-role-menu', {
+    roleId,
+    menuIds,
+  });
+}
+
+export {
+  addRole,
+  assignRoleMenu,
+  deleteRoleById,
+  findAllEnabledRoles,
+  queryRolePage,
+  setRoleById,
+  setRoleStatus,
+};

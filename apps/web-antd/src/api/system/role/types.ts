@@ -9,6 +9,7 @@ export declare namespace Role {
     sort: number;
     status: StatusType;
     remark?: string;
+    menuIds: number[];
   }
   export interface Condition {
     name?: string;

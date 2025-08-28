@@ -138,6 +138,19 @@ export function useColumns<T = Role.View>(
           onClick: onActionClick,
         },
         name: 'CellOperation',
+        options: ['edit', 'more'],
+        props: {
+          moreOptions: [
+            {
+              code: 'assignedAuth',
+              text: $t('system.role.assignedAuth'),
+            },
+            {
+              code: 'delete',
+              text: $t('system.role.delete'),
+            },
+          ],
+        },
       },
       field: 'operation',
       fixed: 'right',
