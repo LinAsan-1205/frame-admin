@@ -13,12 +13,14 @@ import { assignUserRole } from '#/api/system/user';
 import { $t } from '#/locales';
 
 const emit = defineEmits(['success']);
-const formData = ref<User.View>();
-const getTitle = computed(() => {
+
+const currentUserData = ref<User.View>();
+
+const assignedRoleTitle = computed(() => {
   return $t('system.user.assignedRole');
 });
 
-const [Form, formApi] = useVbenForm({
+const [AssignedRoleForm, assignedRoleFormApi] = useVbenForm({
   layout: 'horizontal',
   schema: [
     {
@@ -33,52 +35,58 @@ const [Form, formApi] = useVbenForm({
       component: 'ApiSelect',
       componentProps: {
         api: async () => {
-          const roles = await findAllEnabledRoles();
-          return roles.map((role) => ({
-            label: role.name,
-            value: role.id,
+          // 查询所有启用的角色
+          const enabledRoleList = await findAllEnabledRoles();
+          return enabledRoleList.map((roleItem) => ({
+            label: roleItem.name,
+            value: roleItem.id,
           }));
         },
         mode: 'multiple',
         class: 'w-full',
         allowClear: true,
       },
-      fieldName: 'roleIds',
+      fieldName: 'roleIdList',
       label: $t('system.role.name'),
     },
   ],
   showDefaultActions: false,
 });
 
-const [Modal, modalApi] = useVbenModal({
+const [AssignedRoleModal, assignedRoleModalApi] = useVbenModal({
+  /**
+   * 确认分配角色
+   */
   async onConfirm() {
-    const { valid } = await formApi.validate();
+    const { valid } = await assignedRoleFormApi.validate();
     if (valid) {
-      modalApi.lock();
-      const { roleIds = [] } = await formApi.getValues();
+      assignedRoleModalApi.lock();
+      // 获取表单中的角色ID列表
+      const { roleIdList = [] } = await assignedRoleFormApi.getValues();
       try {
-        if (!formData.value?.id) return;
-        await assignUserRole(formData.value.id, roleIds);
-        modalApi.close();
+        if (!currentUserData.value?.id) return;
+        await assignUserRole(currentUserData.value.id, roleIdList);
+        assignedRoleModalApi.close();
         message.success({
           content: $t('ui.actionMessage.operationSuccess'),
           key: 'action_process_msg',
         });
         emit('success');
       } finally {
-        modalApi.lock(false);
+        assignedRoleModalApi.lock(false);
       }
     }
   },
+
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = modalApi.getData<User.View>();
-      if (data) {
-        formData.value = data;
-        const roleIds = data.roles.map((role) => role.id);
-        const userName = data.userName;
-        formApi.setValues({
-          roleIds,
+      const userViewData = assignedRoleModalApi.getData<User.View>();
+      if (userViewData) {
+        currentUserData.value = userViewData;
+        const roleIdList = userViewData.roles.map((roleItem) => roleItem.id);
+        const userName = userViewData.userName;
+        assignedRoleFormApi.setValues({
+          roleIdList,
           userName,
         });
       }
@@ -88,7 +96,7 @@ const [Modal, modalApi] = useVbenModal({
 </script>
 
 <template>
-  <Modal :title="getTitle">
-    <Form class="mx-4" />
-  </Modal>
+  <AssignedRoleModal :title="assignedRoleTitle">
+    <AssignedRoleForm class="mx-4" />
+  </AssignedRoleModal>
 </template>
