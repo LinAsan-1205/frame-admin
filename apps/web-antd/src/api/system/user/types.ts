@@ -54,4 +54,10 @@ export declare namespace User {
     deptId?: number;
     userType?: UserType;
   }
+
+  export interface Foundation {
+    nickName?: string;
+    sex: string;
+    avatar?: string;
+  }
 }

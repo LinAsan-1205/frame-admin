@@ -75,12 +75,21 @@ function setInitializePassword(userId: number) {
   });
 }
 
+/**
+ * 设置用户基础信息
+ * @param user
+ */
+function setFoundation(user: User.Foundation) {
+  return requestClient.post(`/system/user/mine/foundation`, user);
+}
+
 export {
   addUser,
   assignUserRole,
   delUserById,
   getMineProfile,
   queryUserPage,
+  setFoundation,
   setInitializePassword,
   setUser,
 };

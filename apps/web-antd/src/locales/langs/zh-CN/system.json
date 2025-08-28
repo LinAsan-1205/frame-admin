@@ -104,7 +104,10 @@
     "deleteUser": "删除用户",
     "initializePassword": "初始化密码",
     "assignedRole": "分配角色",
-    "roles": "角色"
+    "roles": "角色",
+    "nickNameMin": "昵称长度不能小于2个字符",
+    "nickNameMax": "昵称长度不能超过20个字符",
+    "avatar": "头像"
   },
   "storage": {
     "title": "文件存储"
