@@ -11,7 +11,7 @@ const deptId = ref<number | undefined>();
 
 <template>
   <Page auto-content-height>
-    <div class="flex gap-4">
+    <div class="flex w-full">
       <div class="min-w-64 flex-shrink-0 pt-4">
         <DeptUser v-model="deptId" />
       </div>
