@@ -18,7 +18,7 @@ import { useVbenForm, z } from '#/adapter/form';
 import {
   BadgeType,
   createMenu,
-  getMenuList,
+  getMenuTreeList,
   Menu,
   MenuType,
   Status,
@@ -59,7 +59,7 @@ const schema: VbenFormSchema[] = [
   {
     component: 'ApiTreeSelect',
     componentProps: {
-      api: getMenuList,
+      api: getMenuTreeList,
       class: 'w-full',
       filterTreeNode(input: string, node: Recordable<any>) {
         if (!input || input.length === 0) {

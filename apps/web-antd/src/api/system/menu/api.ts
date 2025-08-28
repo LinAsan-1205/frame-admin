@@ -11,6 +11,13 @@ async function getMenuList(condition?: Menu.Condition) {
 }
 
 /**
+ * 获取菜单树形数据列表
+ */
+async function getMenuTreeList() {
+  return requestClient.get<Array<Menu.TreeView>>('/system/menu/tree-list');
+}
+
+/**
  * 创建菜单
  * @param data 菜单数据
  */
@@ -39,4 +46,4 @@ async function deleteMenu(id: string) {
   return requestClient.delete(`/system/menu/${id}`);
 }
 
-export { createMenu, deleteMenu, getMenuList, updateMenu };
+export { createMenu, deleteMenu, getMenuList, getMenuTreeList, updateMenu };

@@ -13,7 +13,7 @@ import { IconifyIcon } from '@vben/icons';
 import { message, Spin } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { getMenuList } from '#/api/system/menu';
+import { getMenuTreeList } from '#/api/system/menu';
 import { assignRoleMenu } from '#/api/system/role';
 import { $t } from '#/locales';
 
@@ -67,7 +67,7 @@ function showOperationSuccessMsg() {
 async function loadMenuTreeData() {
   isMenuLoading.value = true;
   try {
-    const menuList = await getMenuList();
+    const menuList = await getMenuTreeList();
     menuTreeData.value = menuList as unknown as DataNode[];
   } finally {
     isMenuLoading.value = false;

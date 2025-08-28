@@ -59,8 +59,6 @@ export namespace Menu {
     [key: string]: any;
     /** 后端权限标识 */
     authCode: string;
-    /** 子级 */
-    children?: View[];
     /** 组件 */
     component?: string;
     /** 菜单ID */
@@ -79,6 +77,10 @@ export namespace Menu {
     type: (typeof MenuTypes)[number];
     /** 创建时间 */
     createTime: string;
+  }
+
+  export interface TreeView extends View {
+    children?: TreeView[];
   }
 
   export type OriginView = Meta & Omit<View, 'meta'>;
