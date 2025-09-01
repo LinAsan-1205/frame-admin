@@ -5,9 +5,9 @@ import { Enum } from 'enum-plus';
  */
 export const StorageConfigType = Enum({
   /** 本地存储：将文件存储在服务器本地文件系统中 */
-  Local: { value: 'Local', label: '本地存储', color: 'success' },
+  Local: { value: 1, label: '本地存储', color: 'success' },
   /** 对象存储：将文件存储在云服务商的对象存储服务中 */
-  OSS: { value: 'OSS', label: '对象存储', color: 'pink' },
+  OSS: { value: 2, label: '对象存储', color: 'pink' },
 } as const);
 
 /**
