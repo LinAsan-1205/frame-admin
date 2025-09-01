@@ -25,7 +25,7 @@ export const StorageConfigStatus = Enum({
  */
 export const StorageConfigIsDefault = Enum({
   /** 是：该配置为系统默认存储配置 */
-  Yes: { value: 'Yes', label: '是' },
+  Yes: { value: 1, label: '是' },
   /** 否：该配置不是系统默认存储配置 */
-  No: { value: 'No', label: '否' },
+  No: { value: 0, label: '否' },
 } as const);

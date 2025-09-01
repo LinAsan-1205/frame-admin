@@ -107,6 +107,9 @@ async function handleIsDefaultStatusChange(
     const confirmTitle = `切换状态`;
     await showConfirmModal(confirmContent, confirmTitle);
     await setStorageConfigIsDefault(storageConfigRow.id, isDefaultStatus);
+    message.success({
+      content: $t('ui.actionMessage.operationSuccess'),
+    });
     return true;
   } catch {
     return false;
