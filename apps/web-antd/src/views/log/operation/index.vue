@@ -21,78 +21,77 @@ import { $t } from '#/locales';
 
 import { useColumns, userSearchFormOptions } from './data';
 
-/**
- * 删除操作日志
- * @param row
- */
-function onDelete(row: Operation.View) {
-  const hideLoading = message.loading({
-    content: $t('ui.actionMessage.deleting'),
-    duration: 0,
-    key: 'action_process_msg',
-  });
-  deleteById(row.id)
-    .then(() => {
-      message.success({
-        content: $t('ui.actionMessage.deleteSuccess', [row.description]),
-        key: 'action_process_msg',
-      });
-      refreshGrid();
-    })
-    .catch(() => {
-      hideLoading();
-    });
+const operationLogSelectedRows = ref<Operation.View[]>([]);
+
+const isAllowBatchDelete = computed(() => {
+  return operationLogSelectedRows.value.length > 0;
+});
+
+function refreshOperationLogGrid() {
+  operationLogGridApi.query();
 }
 
-function onDeleteBatch() {
-  const descriptions = selectedRows.value
-    .map((row) => row.description)
+/**
+ * 删除单条操作日志
+ * @param operationLogRow 操作日志行
+ */
+async function deleteOperationLogByRow(operationLogRow: Operation.View) {
+  await deleteById(operationLogRow.id);
+  const deleteSuccessMessage = $t('ui.actionMessage.deleteSuccess', [
+    operationLogRow.description,
+  ]);
+  message.success({
+    content: deleteSuccessMessage,
+    key: 'action_process_msg',
+  });
+  refreshOperationLogGrid();
+}
+
+/**
+ * 批量删除操作日志
+ */
+function deleteOperationLogBatch() {
+  // 拼接所有选中日志的描述
+  const operationLogDescriptions = operationLogSelectedRows.value
+    .map((operationLogRow) => operationLogRow.description)
     .join(',');
   Modal.confirm({
-    content: $t('ui.actionMessage.deleteConfirm', [descriptions]),
-    onOk: () => {
-      const hideLoading = message.loading({
-        content: $t('ui.actionMessage.deleting'),
-        duration: 0,
+    content: $t('ui.actionMessage.deleteConfirm', [operationLogDescriptions]),
+    async onOk() {
+      const operationLogIds = operationLogSelectedRows.value.map(
+        (operationLogRow) => operationLogRow.id,
+      );
+      await deleteByIds(operationLogIds);
+      const deleteSuccessMessage = $t('ui.actionMessage.deleteSuccess', [
+        operationLogDescriptions,
+      ]);
+      message.success({
+        content: deleteSuccessMessage,
         key: 'action_process_msg',
       });
-      const ids = selectedRows.value.map((row) => row.id);
-      deleteByIds(ids)
-        .then(() => {
-          message.success({
-            content: $t('ui.actionMessage.deleteSuccess', [descriptions]),
-            key: 'action_process_msg',
-          });
-          refreshGrid();
-        })
-        .catch(() => {
-          hideLoading();
-        });
+      refreshOperationLogGrid();
     },
   });
 }
 
-function onActionClick({ code, row }: OnActionClickParams<Operation.View>) {
+function handleOperationLogActionClick({
+  code,
+  row,
+}: OnActionClickParams<Operation.View>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      deleteOperationLogByRow(row);
       break;
     }
   }
 }
 
-const formOptions = userSearchFormOptions();
+const operationLogFormOptions = userSearchFormOptions();
 
-const selectedRows = ref<Operation.View[]>([]);
-
-const isBatchDelete = computed(() => {
-  return selectedRows.value.length > 0;
-});
-
-const [Grid, gridApi] = useVbenVxeGrid({
-  formOptions,
+const [OperationLogGrid, operationLogGridApi] = useVbenVxeGrid({
+  formOptions: operationLogFormOptions,
   gridOptions: {
-    columns: useColumns(onActionClick),
+    columns: useColumns(handleOperationLogActionClick),
     height: 'auto',
     keepSource: true,
     pagerConfig: {
@@ -114,33 +113,28 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions,
   gridEvents: {
     checkboxAll: () => {
-      selectedRows.value = gridApi.grid.getCheckboxRecords();
+      operationLogSelectedRows.value =
+        operationLogGridApi.grid.getCheckboxRecords();
     },
     checkboxChange: () => {
-      selectedRows.value = gridApi.grid.getCheckboxRecords();
+      operationLogSelectedRows.value =
+        operationLogGridApi.grid.getCheckboxRecords();
     },
   },
 });
-
-/**
- * 刷新表格
- */
-function refreshGrid() {
-  gridApi.query();
-}
 </script>
 <template>
   <Page auto-content-height>
-    <Grid table-title="操作日志列表">
+    <OperationLogGrid :table-title="$t('operationLog.list')">
       <template #toolbar-actions>
         <Button
           type="primary"
-          @click="onDeleteBatch"
-          :disabled="!isBatchDelete"
+          @click="deleteOperationLogBatch"
+          :disabled="!isAllowBatchDelete"
         >
-          删除
+          {{ $t('common.delete') }}
         </Button>
       </template>
-    </Grid>
+    </OperationLogGrid>
   </Page>
 </template>

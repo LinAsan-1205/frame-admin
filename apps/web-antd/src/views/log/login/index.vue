@@ -14,42 +14,44 @@ import { $t } from '#/locales';
 
 import { useColumns, userSearchFormOptions } from './data';
 
-const formOptions = userSearchFormOptions();
+const loginLogFormOptions = userSearchFormOptions();
 
-const selectedRows = ref<LoginLog.View[]>([]);
+const loginLogSelectedRows = ref<LoginLog.View[]>([]);
 
-const isBatchDelete = computed(() => {
-  return selectedRows.value.length > 0;
+const isAllowBatchDelete = computed(() => {
+  return loginLogSelectedRows.value.length > 0;
 });
 
-function onDeleteBatch() {
-  const userNames = selectedRows.value.map((row) => row.username).join(',');
+function refreshLoginLogGrid() {
+  loginLogGridApi.query();
+}
+
+/**
+ * 批量删除登录日志
+ */
+async function deleteLoginLogBatch() {
+  // 拼接所有选中日志的用户名
+  const loginLogUserNames = loginLogSelectedRows.value
+    .map((loginLogRow) => loginLogRow.username)
+    .join(',');
   Modal.confirm({
-    content: $t('ui.actionMessage.deleteConfirm', [userNames]),
-    onOk: () => {
-      const hideLoading = message.loading({
-        content: $t('ui.actionMessage.deleting'),
-        duration: 0,
+    content: $t('ui.actionMessage.deleteConfirm', [loginLogUserNames]),
+    async onOk() {
+      const loginLogIds = loginLogSelectedRows.value.map(
+        (loginLogRow) => loginLogRow.id,
+      );
+      await deleteByIds(loginLogIds);
+      message.success({
+        content: $t('ui.actionMessage.deleteSuccess', [loginLogUserNames]),
         key: 'action_process_msg',
       });
-      const ids = selectedRows.value.map((row) => row.id);
-      deleteByIds(ids)
-        .then(() => {
-          message.success({
-            content: $t('ui.actionMessage.deleteSuccess', [userNames]),
-            key: 'action_process_msg',
-          });
-          refreshGrid();
-        })
-        .catch(() => {
-          hideLoading();
-        });
+      refreshLoginLogGrid();
     },
   });
 }
 
-const [Grid, gridApi] = useVbenVxeGrid({
-  formOptions,
+const [LoginLogGrid, loginLogGridApi] = useVbenVxeGrid({
+  formOptions: loginLogFormOptions,
   gridOptions: {
     columns: useColumns(),
     height: 'auto',
@@ -73,30 +75,26 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions,
   gridEvents: {
     checkboxAll: () => {
-      selectedRows.value = gridApi.grid.getCheckboxRecords();
+      loginLogSelectedRows.value = loginLogGridApi.grid.getCheckboxRecords();
     },
     checkboxChange: () => {
-      selectedRows.value = gridApi.grid.getCheckboxRecords();
+      loginLogSelectedRows.value = loginLogGridApi.grid.getCheckboxRecords();
     },
   },
 });
-
-function refreshGrid() {
-  gridApi.query();
-}
 </script>
 <template>
   <Page auto-content-height>
-    <Grid table-title="登录日志列表">
+    <LoginLogGrid :table-title="$t('loginLog.list')">
       <template #toolbar-actions>
         <Button
           type="primary"
-          @click="onDeleteBatch"
-          :disabled="!isBatchDelete"
+          @click="deleteLoginLogBatch"
+          :disabled="!isAllowBatchDelete"
         >
-          删除
+          {{ $t('common.delete') }}
         </Button>
       </template>
-    </Grid>
+    </LoginLogGrid>
   </Page>
 </template>
