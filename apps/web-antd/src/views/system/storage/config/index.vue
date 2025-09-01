@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { Recordable } from '@vben/types';
-
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
@@ -24,111 +22,127 @@ import { $t } from '#/locales';
 import { useColumns, userSearchFormOptions } from './data';
 import Form from './modules/form.vue';
 
-const [FormModal, formModalApi] = useVbenModal({
+const [storageConfigFormModal, storageConfigFormModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
 
 /**
- * 编辑部门
- * @param row
+ * 编辑存储配置
+ * @param storageConfigRow 存储配置行数据
  */
-function onEdit(row: StorageConfig.View) {
-  formModalApi.setData(row).open();
+function handleEditStorageConfig(storageConfigRow: StorageConfig.View) {
+  storageConfigFormModalApi.setData(storageConfigRow).open();
 }
 
 /**
- * 创建新部门
+ * 创建新存储配置
  */
-function onCreate() {
-  formModalApi.setData(null).open();
+function handleCreateStorageConfig() {
+  storageConfigFormModalApi.setData(null).open();
 }
 
 /**
- * 删除部门
- * @param row
+ * 删除存储配置
+ * @param storageConfigRow 存储配置行数据
  */
-function onDelete(row: StorageConfig.View) {
-  const hideLoading = message.loading({
-    content: $t('ui.actionMessage.deleting', [row.name]),
+async function handleDeleteStorageConfig(storageConfigRow: StorageConfig.View) {
+  const deletingMessageContent = $t('ui.actionMessage.deleting', [
+    storageConfigRow.name,
+  ]);
+  const hideLoadingMessage = message.loading({
+    content: deletingMessageContent,
     duration: 0,
     key: 'action_process_msg',
   });
-  delStorageConfigById(row.id)
-    .then(() => {
-      message.success({
-        content: $t('ui.actionMessage.deleteSuccess', [row.name]),
-        key: 'action_process_msg',
-      });
-      refreshGrid();
-    })
-    .catch(() => {
-      hideLoading();
+  try {
+    await delStorageConfigById(storageConfigRow.id);
+    const deleteSuccessMessage = $t('ui.actionMessage.deleteSuccess', [
+      storageConfigRow.name,
+    ]);
+    message.success({
+      content: deleteSuccessMessage,
+      key: 'action_process_msg',
     });
+    refreshStorageConfigGrid();
+  } catch {
+    hideLoadingMessage();
+  }
 }
 
-function confirm(content: string, title: string) {
-  return new Promise((reslove, reject) => {
+/**
+ * 通用确认弹窗
+ * @param confirmContent 确认内容
+ * @param confirmTitle 标题
+ * @returns Promise
+ */
+function showConfirmModal(confirmContent: string, confirmTitle: string) {
+  return new Promise((resolve, reject) => {
     Modal.confirm({
-      content,
+      content: confirmContent,
       onCancel() {
         reject(new Error('已取消'));
       },
       onOk() {
-        reslove(true);
+        resolve(true);
       },
-      title,
+      title: confirmTitle,
     });
   });
 }
+
 /**
- * 状态开关即将改变
- * @param newStatus 期望改变的状态值
- * @param row 行数据
+ * 存储配置默认状态切换
+ * @param isDefaultStatus 期望切换的默认状态
+ * @param storageConfigRow 行数据
  * @returns 返回false则中止改变，返回其他值（undefined、true）则允许改变
  */
-async function onIsDefaultChange(
-  newStatus: StorageConfig.IsDefault,
-  row: StorageConfig.View,
+async function handleIsDefaultStatusChange(
+  isDefaultStatus: StorageConfig.IsDefault,
+  storageConfigRow: StorageConfig.View,
 ) {
-  const status: Recordable<string> = {
-    1: StorageConfigIsDefault.label(StorageConfigIsDefault.No),
-    0: StorageConfigIsDefault.label(StorageConfigIsDefault.Yes),
-  };
+  const isDefaultStatusLabel = StorageConfigIsDefault.label(isDefaultStatus);
   try {
-    await confirm(
-      `你要将${row.name}的状态切换为 【${status[newStatus.toString()]}】 吗？`,
-      `切换状态`,
-    );
-    await setStorageConfigIsDefault(row.id, newStatus);
+    const confirmContent = `你要将${storageConfigRow.name}的状态切换为 【${isDefaultStatusLabel}】 吗？`;
+    const confirmTitle = `切换状态`;
+    await showConfirmModal(confirmContent, confirmTitle);
+    await setStorageConfigIsDefault(storageConfigRow.id, isDefaultStatus);
     return true;
   } catch {
     return false;
   }
 }
-/**
- * 表格操作按钮的回调函数
- */
-function onActionClick({ code, row }: OnActionClickParams<StorageConfig.View>) {
+
+function handleStorageConfigActionClick({
+  code,
+  row,
+}: OnActionClickParams<StorageConfig.View>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      handleDeleteStorageConfig(row);
       break;
     }
     case 'edit': {
-      onEdit(row);
+      handleEditStorageConfig(row);
       break;
     }
   }
 }
 
-const formOptions = userSearchFormOptions();
+const storageConfigFormOptions = userSearchFormOptions();
 
-const [Grid, gridApi] = useVbenVxeGrid({
-  formOptions,
+function refreshStorageConfigGrid() {
+  storageConfigGridApi.query();
+}
+
+const [storageConfigGrid, storageConfigGridApi] = useVbenVxeGrid({
+  formOptions: storageConfigFormOptions,
   gridEvents: {},
   gridOptions: {
-    columns: useColumns(onActionClick, onIsDefaultChange),
+    columns: useColumns(
+      handleStorageConfigActionClick,
+      handleIsDefaultStatusChange,
+    ),
     height: 'auto',
     keepSource: true,
     proxyConfig: {
@@ -146,13 +160,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
   } as VxeTableGridOptions,
 });
-
-/**
- * 刷新表格
- */
-function refreshGrid() {
-  gridApi.query();
-}
 </script>
 <template>
   <Page
@@ -160,14 +167,14 @@ function refreshGrid() {
     :description="$t('system.storageConfig.pageDescription')"
     :title="$t('system.storageConfig.title')"
   >
-    <FormModal @success="refreshGrid" />
-    <Grid :table-title="$t('system.storageConfig.list')">
+    <storageConfigFormModal @success="refreshStorageConfigGrid" />
+    <storageConfigGrid :table-title="$t('system.storageConfig.list')">
       <template #toolbar-tools>
-        <Button type="primary" @click="onCreate">
+        <Button type="primary" @click="handleCreateStorageConfig">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.storageConfig.name')]) }}
         </Button>
       </template>
-    </Grid>
+    </storageConfigGrid>
   </Page>
 </template>
