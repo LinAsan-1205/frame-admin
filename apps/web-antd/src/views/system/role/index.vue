@@ -29,10 +29,10 @@ const [FormDrawer, formDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 });
 
-const formOptions = useSearchFormOptions();
+const searchFormOptions = useSearchFormOptions();
 
-const [Grid, gridApi] = useVbenVxeGrid({
-  formOptions,
+const [RoleGrid, roleGridApi] = useVbenVxeGrid({
+  formOptions: searchFormOptions,
   gridOptions: {
     columns: useColumns(onActionClick, onStatusChange),
     height: 'auto',
@@ -61,37 +61,32 @@ const [AssignedAuthModal, assignedAuthModalApi] = useVbenModal({
   destroyOnClose: true,
 });
 
-function onActionClick(e: OnActionClickParams<Role.View>) {
-  switch (e.code) {
+async function onActionClick(actionParams: OnActionClickParams<Role.View>) {
+  switch (actionParams.code) {
     case 'assignedAuth': {
-      assignedAuthModalApi.setData(e.row).open();
+      assignedAuthModalApi.setData(actionParams.row).open();
       break;
     }
     case 'delete': {
-      onDelete(e.row);
+      await onDeleteRole(actionParams.row);
       break;
     }
     case 'edit': {
-      onEdit(e.row);
+      onEditRole(actionParams.row);
       break;
     }
   }
 }
 
-/**
- * 将Antd的Modal.confirm封装为promise，方便在异步函数中调用。
- * @param content 提示内容
- * @param title 提示标题
- */
-function confirm(content: string, title: string) {
-  return new Promise((reslove, reject) => {
+function confirmModal(content: string, title: string) {
+  return new Promise((resolve, reject) => {
     Modal.confirm({
       content,
       onCancel() {
         reject(new Error('已取消'));
       },
       onOk() {
-        reslove(true);
+        resolve(true);
       },
       title,
     });
@@ -101,68 +96,77 @@ function confirm(content: string, title: string) {
 /**
  * 状态开关即将改变
  * @param newStatus 期望改变的状态值
- * @param row 行数据
+ * @param roleView 行数据
  * @returns 返回false则中止改变，返回其他值（undefined、true）则允许改变
  */
-async function onStatusChange(newStatus: string, row: Role.View) {
-  const status: Recordable<string> = {
+async function onStatusChange(newStatus: string, roleView: Role.View) {
+  // 状态映射
+  const statusMap: Recordable<string> = {
     1: '禁用',
     0: '启用',
   };
   try {
-    await confirm(
-      `你要将${row.name}的状态切换为 【${status[newStatus.toString()]}】 吗？`,
+    const statusText = statusMap[newStatus.toString()];
+    await confirmModal(
+      `你要将${roleView.name}的状态切换为 【${statusText}】 吗？`,
       `切换状态`,
     );
-    await setRoleStatus(row.id, newStatus);
+    await setRoleStatus(roleView.id, newStatus);
     return true;
   } catch {
     return false;
   }
 }
 
-function onEdit(row: Role.View) {
-  formDrawerApi.setData(row).open();
+function onEditRole(roleView: Role.View) {
+  formDrawerApi.setData(roleView).open();
 }
 
-function onDelete(row: Role.View) {
+/**
+ * 删除角色
+ * @param roleView 角色数据
+ */
+async function onDeleteRole(roleView: Role.View) {
+  const deletingContent = $t('ui.actionMessage.deleting', [roleView.name]);
+  const deleteSuccessContent = $t('ui.actionMessage.deleteSuccess', [
+    roleView.name,
+  ]);
   const hideLoading = message.loading({
-    content: $t('ui.actionMessage.deleting', [row.name]),
+    content: deletingContent,
     duration: 0,
     key: 'action_process_msg',
   });
-  deleteRoleById(row.id)
-    .then(() => {
-      message.success({
-        content: $t('ui.actionMessage.deleteSuccess', [row.name]),
-        key: 'action_process_msg',
-      });
-      onRefresh();
-    })
-    .catch(() => {
-      hideLoading();
+  try {
+    await deleteRoleById(roleView.id);
+    message.success({
+      content: deleteSuccessContent,
+      key: 'action_process_msg',
     });
+    onRefreshRoleList();
+  } catch {
+    hideLoading();
+  }
 }
 
-function onRefresh() {
-  gridApi.query();
+function onRefreshRoleList() {
+  roleGridApi.query();
 }
 
-function onCreate() {
+function onCreateRole() {
   formDrawerApi.setData({}).open();
 }
 </script>
 <template>
   <Page auto-content-height>
-    <FormDrawer @success="onRefresh" />
-    <AssignedAuthModal @success="onRefresh" />
-    <Grid :table-title="$t('system.role.list')">
+    <FormDrawer @success="onRefreshRoleList" />
+    <AssignedAuthModal @success="onRefreshRoleList" />
+    <RoleGrid :table-title="$t('system.role.list')">
       <template #toolbar-tools>
-        <Button type="primary" @click="onCreate">
+        <Button type="primary" @click="onCreateRole">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.role.name')]) }}
         </Button>
       </template>
-    </Grid>
+    </RoleGrid>
   </Page>
 </template>
