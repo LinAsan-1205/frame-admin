@@ -15,9 +15,9 @@ export const StorageConfigType = Enum({
  */
 export const StorageConfigStatus = Enum({
   /** 启用状态：存储配置正常可用 */
-  Enabled: { value: 'Enabled', label: '启用', color: 'success' },
+  Enabled: { value: 0, label: '启用', color: 'success' },
   /** 禁用状态：存储配置暂时不可用 */
-  Disabled: { value: 'Disabled', label: '禁用', color: 'error' },
+  Disabled: { value: 1, label: '禁用', color: 'error' },
 } as const);
 
 /**
