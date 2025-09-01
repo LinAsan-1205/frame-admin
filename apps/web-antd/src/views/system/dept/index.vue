@@ -17,84 +17,84 @@ import { $t } from '#/locales';
 import { useColumns, userSearchFormOptions } from './data';
 import Form from './modules/form.vue';
 
-const [FormModal, formModalApi] = useVbenModal({
+const [formDeptModal, formDeptModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
 
 /**
  * 编辑部门
- * @param row
+ * @param deptView 部门数据
  */
-function onEdit(row: Dept.View) {
-  formModalApi.setData(row).open();
+function onEditDept(deptView: Dept.View) {
+  formDeptModalApi.setData(deptView).open();
 }
 
 /**
  * 添加下级部门
- * @param row
+ * @param deptView 部门数据
  */
-function onAppend(row: Dept.View) {
-  formModalApi.setData({ parentId: row.id }).open();
+function onAppendDept(deptView: Dept.View) {
+  formDeptModalApi.setData({ parentId: deptView.id }).open();
 }
 
 /**
  * 创建新部门
  */
-function onCreate() {
-  formModalApi.setData(null).open();
+function onCreateDept() {
+  formDeptModalApi.setData(null).open();
 }
 
 /**
  * 删除部门
- * @param row
+ * @param deptView 部门数据
  */
-function onDelete(row: Dept.View) {
+async function onDeleteDept(deptView: Dept.View) {
+  const deletingContent = $t('ui.actionMessage.deleting', [deptView.name]);
+  const deleteSuccessContent = $t('ui.actionMessage.deleteSuccess', [
+    deptView.name,
+  ]);
   const hideLoading = message.loading({
-    content: $t('ui.actionMessage.deleting', [row.name]),
+    content: deletingContent,
     duration: 0,
     key: 'action_process_msg',
   });
-  deleteDeptById(row.id)
-    .then(() => {
-      message.success({
-        content: $t('ui.actionMessage.deleteSuccess', [row.name]),
-        key: 'action_process_msg',
-      });
-      refreshGrid();
-    })
-    .catch(() => {
-      hideLoading();
+  try {
+    await deleteDeptById(deptView.id);
+    message.success({
+      content: deleteSuccessContent,
+      key: 'action_process_msg',
     });
+    refreshDeptGrid();
+  } catch {
+    hideLoading();
+  }
 }
 
-/**
- * 表格操作按钮的回调函数
- */
-function onActionClick({ code, row }: OnActionClickParams<Dept.View>) {
+function onDeptActionClick({ code, row }: OnActionClickParams<Dept.View>) {
   switch (code) {
     case 'append': {
-      onAppend(row);
+      onAppendDept(row);
       break;
     }
     case 'delete': {
-      onDelete(row);
+      onDeleteDept(row);
       break;
     }
     case 'edit': {
-      onEdit(row);
+      onEditDept(row);
       break;
     }
   }
 }
 
-const formOptions = userSearchFormOptions();
+const deptFormOptions = userSearchFormOptions();
 
-const [Grid, gridApi] = useVbenVxeGrid({
-  formOptions,
+const [DeptGrid, deptGridApi] = useVbenVxeGrid({
+  formOptions: deptFormOptions,
   gridEvents: {},
   gridOptions: {
-    columns: useColumns(onActionClick),
+    columns: useColumns(onDeptActionClick),
     height: 'auto',
     keepSource: true,
     pagerConfig: {
@@ -102,8 +102,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     proxyConfig: {
       ajax: {
-        query: async (_, formValues) => {
-          return await getDeptList(formValues);
+        query: async (_: any, deptFormValues: any) => {
+          return await getDeptList(deptFormValues);
         },
       },
     },
@@ -115,23 +115,20 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions,
 });
 
-/**
- * 刷新表格
- */
-function refreshGrid() {
-  gridApi.query();
+function refreshDeptGrid() {
+  deptGridApi.query();
 }
 </script>
 <template>
   <Page auto-content-height>
-    <FormModal @success="refreshGrid" />
-    <Grid table-title="部门列表">
+    <formDeptModal @success="refreshDeptGrid" />
+    <DeptGrid :table-title="$t('system.dept.list')">
       <template #toolbar-tools>
-        <Button type="primary" @click="onCreate">
+        <Button type="primary" @click="onCreateDept">
           <Plus class="size-5" />
           {{ $t('ui.actionTitle.create', [$t('system.dept.name')]) }}
         </Button>
       </template>
-    </Grid>
+    </DeptGrid>
   </Page>
 </template>
