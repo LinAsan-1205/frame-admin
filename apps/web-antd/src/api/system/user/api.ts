@@ -41,6 +41,13 @@ async function getBindMenus() {
 }
 
 /**
+ * 获取用户所有权限码
+ */
+async function getBindAccessCodes() {
+  return requestClient.get<string[]>('/system/user/mine/bind-access-codes');
+}
+
+/**
  * 新增用户
  */
 function addUser(user: User.Post) {
@@ -98,6 +105,7 @@ export {
   addUser,
   assignUserRole,
   delUserById,
+  getBindAccessCodes,
   getBindMenus,
   getMineProfile,
   queryUserPage,

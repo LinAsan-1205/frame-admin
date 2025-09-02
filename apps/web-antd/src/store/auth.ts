@@ -13,7 +13,7 @@ import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
 import { accountLogin, accountLogout } from '#/api/auth';
-import { getMineProfile } from '#/api/system/user';
+import { getBindAccessCodes, getMineProfile } from '#/api/system/user';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -43,11 +43,15 @@ export const useAuthStore = defineStore('auth', () => {
         accessStore.setAccessToken(accessToken);
 
         // 获取用户信息并存储到 accessStore 中
-        const fetchUserInfoResult = await fetchUserInfo();
+        const [fetchUserInfoResult, bindAccessCodes] = await Promise.all([
+          fetchUserInfo(),
+          getBindAccessCodes(),
+        ]);
+
         userInfo = fetchUserInfoResult;
 
         userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes([]);
+        accessStore.setAccessCodes(bindAccessCodes);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
