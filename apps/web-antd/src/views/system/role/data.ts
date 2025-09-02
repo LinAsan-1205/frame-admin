@@ -148,6 +148,9 @@ export function useColumns<T = Role.View>(
             {
               code: 'delete',
               text: $t('system.role.delete'),
+              disabled: (row: Role.View) => {
+                return row.type === 'system';
+              },
             },
           ],
         },

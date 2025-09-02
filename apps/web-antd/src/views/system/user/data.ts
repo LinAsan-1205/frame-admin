@@ -75,7 +75,7 @@ export function useFormSchema(id: Ref<number | undefined>): VbenFormSchema[] {
     {
       component: 'RadioGroup',
       componentProps: {
-        options: UserType.toSelect(),
+        options: UserType.toSelect().filter((item) => item.value !== '02'),
       },
       defaultValue: UserType.System,
       fieldName: 'userType',
