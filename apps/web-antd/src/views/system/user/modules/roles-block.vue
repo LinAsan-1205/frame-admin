@@ -9,45 +9,61 @@ const { origin } = defineProps<{
   origin: User.View;
 }>();
 
-const displayRoles = computed(() => {
+const isRoleNotAssigned = computed(() => {
+  return !origin.roles || origin.roles.length === 0;
+});
+
+const displayRoleList = computed(() => {
   return origin.roles.slice(0, 1);
 });
 
-const hasMore = computed(() => {
+const hasMoreRoles = computed(() => {
   return origin.roles.length > 2;
 });
 
-const remainingRoles = computed(() => {
+const allRoleList = computed(() => {
   return origin.roles;
 });
 </script>
 <template>
   <Space :size="5">
+    <!-- 未分配角色时的提示 -->
     <Tag
+      v-if="isRoleNotAssigned"
+      color="warning"
       :bordered="false"
       class="!m-0"
-      v-for="role in displayRoles"
-      :key="role.id"
-      color="processing"
     >
-      {{ role.name }}
+      未分配角色
     </Tag>
-    <Popover v-if="hasMore" placement="bottom">
-      <template #content>
-        <div class="flex flex-col gap-2">
-          <Tag
-            :bordered="false"
-            v-for="role in remainingRoles"
-            :key="role.id"
-            color="processing"
-          >
-            {{ role.name }}
-          </Tag>
-        </div>
-      </template>
-      <Tag color="processing" :bordered="false" class="cursor-pointer">
-        +{{ origin.roles.length }}
+    <!-- 已分配角色时的展示 -->
+    <template v-else>
+      <Tag
+        :bordered="false"
+        class="!m-0"
+        v-for="roleItem in displayRoleList"
+        :key="roleItem.id"
+        color="processing"
+      >
+        {{ roleItem.name }}
       </Tag>
-    </Popover>
+      <Popover v-if="hasMoreRoles" placement="bottom">
+        <template #content>
+          <div class="flex flex-col gap-2">
+            <Tag
+              :bordered="false"
+              v-for="roleItem in allRoleList"
+              :key="roleItem.id"
+              color="processing"
+            >
+              {{ roleItem.name }}
+            </Tag>
+          </div>
+        </template>
+        <Tag color="processing" :bordered="false" class="cursor-pointer">
+          +{{ origin.roles.length }}
+        </Tag>
+      </Popover>
+    </template>
   </Space>
 </template>
