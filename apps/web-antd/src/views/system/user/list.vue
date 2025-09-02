@@ -10,7 +10,7 @@ import { watch } from 'vue';
 import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { Button, message } from 'ant-design-vue';
+import { Button, message, Modal } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -112,11 +112,19 @@ async function onDelete(row: User.View) {
 }
 
 async function onInitializePassword(row: User.View) {
-  await setInitializePassword(row.id);
-  message.success({
-    content: $t('ui.actionMessage.operationSuccess'),
+  Modal.confirm({
+    content: $t('system.user.confirmInitializePassword', [row.userName]),
+    onOk: async () => {
+      const password = await setInitializePassword(row.id);
+      message.success({
+        content: $t('system.user.operationInitializePasswordSuccess', [
+          password,
+        ]),
+        duration: 5,
+      });
+      onRefresh();
+    },
   });
-  onRefresh();
 }
 
 function onRefresh() {

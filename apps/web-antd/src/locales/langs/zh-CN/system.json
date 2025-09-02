@@ -107,6 +107,8 @@
     "code": "用户编码",
     "deleteUser": "删除用户",
     "initializePassword": "初始化密码",
+    "confirmInitializePassword": "您确认初始化[{0}]的密码吗？",
+    "operationInitializePasswordSuccess": "初始化密码成功，密码为[{0}]",
     "assignedRole": "分配角色",
     "roles": "角色",
     "nickNameMin": "昵称长度不能小于2个字符",

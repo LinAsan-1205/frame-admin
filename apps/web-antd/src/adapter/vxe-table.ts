@@ -283,7 +283,7 @@ setupVbenVxeTable({
             return h(OperationMoreBtns, {
               text: opt.text,
               row,
-              disabled: get(props, 'moreDisabled'),
+              moreDisabled: get(props, 'moreDisabled'),
               moreOptions: get(props, 'moreOptions'),
               onClick: (code: string) => {
                 attrs?.onClick?.({
