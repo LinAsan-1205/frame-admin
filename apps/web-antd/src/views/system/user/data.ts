@@ -275,8 +275,20 @@ export function useColumns<T = User.View>(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: ['edit', 'more'],
+        options: [
+          {
+            code: 'edit',
+            text: $t('common.edit'),
+            disabled: (row: User.View) => {
+              return row.userType === UserType.Admin;
+            },
+          },
+          'more',
+        ],
         props: {
+          moreDisabled: (row: User.View) => {
+            return row.userType === UserType.Admin;
+          },
           moreOptions: [
             {
               code: 'delete',
@@ -288,6 +300,9 @@ export function useColumns<T = User.View>(
             {
               code: 'assignedRole',
               text: $t('system.user.assignedRole'),
+              disabled: (row: User.View) => {
+                return row.userType === UserType.Admin;
+              },
             },
             {
               code: 'initializePassword',

@@ -15,7 +15,10 @@ const {
   text,
   moreOptions,
   row = {},
+  moreDisabled,
 } = defineProps<{
+  // eslint-disable-next-line vue/require-default-prop
+  moreDisabled?: (row: any) => boolean | boolean;
   moreOptions: Array<MoreOption>;
   row?: any;
   text: string;
@@ -29,6 +32,13 @@ const onClick: MenuProps['onClick'] = ({ key }) => {
   emits('click', key as string);
 };
 
+const getMoreDisabled = (row: any) => {
+  if (isFunction(moreDisabled)) {
+    return moreDisabled(row);
+  }
+  return moreDisabled;
+};
+
 const getDisabled = (opt: MoreOption) => {
   if (isFunction(opt.disabled)) {
     return opt.disabled(row);
@@ -38,7 +48,12 @@ const getDisabled = (opt: MoreOption) => {
 </script>
 <template>
   <Dropdown destroy-popup-on-hide placement="bottomRight">
-    <Button type="link" size="small" @click.prevent>
+    <Button
+      type="link"
+      size="small"
+      @click.prevent
+      :disabled="getMoreDisabled(row)"
+    >
       {{ text }}
     </Button>
     <template #overlay>
