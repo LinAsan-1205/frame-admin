@@ -36,6 +36,7 @@
       "title": "徽标类型"
     },
     "component": "页面组件",
+    "appendChild": "新增下级",
     "hideChildrenInMenu": "隐藏子菜单",
     "hideInBreadcrumb": "在面包屑中隐藏",
     "hideInMenu": "隐藏菜单",

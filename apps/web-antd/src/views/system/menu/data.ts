@@ -195,7 +195,7 @@ export function useColumns(
         options: [
           {
             code: 'append',
-            text: '新增下级',
+            text: $t('system.menu.appendChild'),
           },
           'edit',
           'delete',
