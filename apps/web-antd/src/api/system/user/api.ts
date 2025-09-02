@@ -1,3 +1,5 @@
+import type { RouteRecordStringComponent } from '@vben/types';
+
 import type { User } from '#/api/system/user';
 import type { Api } from '#/api/types';
 
@@ -27,6 +29,15 @@ function queryUserPage(
  */
 function getMineProfile() {
   return requestClient.get<User.profile>('/system/user/mine/profile');
+}
+
+/**
+ * 获取用户所有菜单
+ */
+async function getBindMenus() {
+  return requestClient.get<RouteRecordStringComponent[]>(
+    '/system/user/mine/bind-menus',
+  );
 }
 
 /**
@@ -87,6 +98,7 @@ export {
   addUser,
   assignUserRole,
   delUserById,
+  getBindMenus,
   getMineProfile,
   queryUserPage,
   setFoundation,

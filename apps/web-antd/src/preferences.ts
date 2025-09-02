@@ -15,6 +15,7 @@ export const overridesPreferences = defineOverridesPreferences({
     defaultHomePath: '/workspace',
     defaultAvatar,
     layout: 'sidebar-mixed-nav',
+    accessMode: 'backend',
   },
   logo: {
     enable: true,

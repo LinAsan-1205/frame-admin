@@ -201,6 +201,21 @@ const schema: VbenFormSchema[] = [
     label: $t('system.menu.component'),
   },
   {
+    component: 'InputNumber',
+    dependencies: {
+      show: (values) => {
+        return !['button'].includes(values.type);
+      },
+      triggerFields: ['type'],
+    },
+    componentProps: {
+      class: 'w-full',
+    },
+    defaultValue: -1,
+    fieldName: 'orderNum',
+    label: $t('system.menu.orderNum'),
+  },
+  {
     component: 'Input',
     dependencies: {
       show: (values) => {
