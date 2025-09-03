@@ -125,7 +125,7 @@
     "name": "存储",
     "names": "名称",
     "code": "编码",
-    "type": "类型",
+    "type": "存储类型",
     "sort": "排序",
     "description": "描述",
     "status": "状态",
