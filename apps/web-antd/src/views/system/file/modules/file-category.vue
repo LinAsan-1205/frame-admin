@@ -132,16 +132,19 @@ const onRefresh = () => {
         :field-names="fieldNames"
         :tree-data="data as any"
       >
-        <template #title="{ name, id }">
+        <template #title="{ name, id, icon }">
           <Dropdown :trigger="['contextmenu']">
-            <div v-if="name.includes(searchValue)" class="w-full">
-              {{ name.substring(0, name.indexOf(searchValue)) }}
-              <span style="color: #f50">{{ searchValue }}</span>
-              {{
-                name.substring(name.indexOf(searchValue) + searchValue.length)
-              }}
+            <div class="flex items-center gap-1">
+              <VbenIcon v-if="icon" :icon="icon" class="size-4" />
+              <div v-if="name.includes(searchValue)" class="w-full">
+                {{ name.substring(0, name.indexOf(searchValue)) }}
+                <span style="color: #f50">{{ searchValue }}</span>
+                {{
+                  name.substring(name.indexOf(searchValue) + searchValue.length)
+                }}
+              </div>
+              <div v-else>{{ name }}</div>
             </div>
-            <span v-else>{{ name }}</span>
             <template #overlay>
               <Menu
                 @click="({ key: menuKey }) => onContextMenuClick(id, menuKey)"
