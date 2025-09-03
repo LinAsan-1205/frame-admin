@@ -279,7 +279,6 @@ export function useColumns<T = StorageConfig.View>(
       },
       field: 'type',
       title: $t('system.storageConfig.type'),
-      width: 120,
     },
 
     {
