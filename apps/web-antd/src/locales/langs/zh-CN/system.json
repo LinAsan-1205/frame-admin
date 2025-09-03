@@ -141,5 +141,9 @@
     "updateTime": "更新时间",
     "isDefaultText": "是",
     "notDefaultText": "否"
+  },
+  "storageFiles": {
+    "title": "文件管理",
+    "list": "文件列表"
   }
 }
