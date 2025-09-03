@@ -279,7 +279,7 @@ export function useColumns<T = StorageConfig.View>(
       },
       field: 'type',
       title: $t('system.storageConfig.type'),
-      width: 100,
+      width: 120,
     },
 
     {
@@ -305,6 +305,7 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
+      width: 240,
     },
     {
       align: 'center',
@@ -313,6 +314,7 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
+      width: 240,
     },
     {
       align: 'center',
@@ -321,6 +323,7 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
+      width: 120,
     },
     {
       align: 'center',
@@ -329,6 +332,7 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
+      width: 240,
     },
     {
       align: 'center',
@@ -337,6 +341,7 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
+      width: 240,
     },
 
     {
@@ -374,6 +379,7 @@ export function useColumns<T = StorageConfig.View>(
       field: 'createTime',
       cellRender: { name: 'CellFormatDate' },
       title: $t('system.storageConfig.createTime'),
+      width: 200,
     },
     {
       align: 'right',
