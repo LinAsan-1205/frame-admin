@@ -145,5 +145,22 @@
   "storageFiles": {
     "title": "文件管理",
     "list": "文件列表"
+  },
+  "fileCategory": {
+    "title": "文件分类",
+    "secretKeyPlaceholder": "请输入名称",
+    "name": "名称",
+    "refresh": "刷新",
+    "add": "新增",
+    "code": "编码",
+    "description": "描述",
+    "type": "类型",
+    "status": "状态",
+    "icon": "图标",
+    "allowedMimeTypes": "允许类型",
+    "maxFileSize": "文件大小",
+    "maxFileSizeHelp": "单个文件最大文件大小（字节）",
+    "allowedMimeTypesHelp": "允许的MIME类型，多个类型用逗号分隔",
+    "setFailed": "设置失败"
   }
 }

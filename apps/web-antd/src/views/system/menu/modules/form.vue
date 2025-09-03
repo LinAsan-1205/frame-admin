@@ -212,7 +212,7 @@ const schema: VbenFormSchema[] = [
       class: 'w-full',
     },
     defaultValue: -1,
-    fieldName: 'orderNum',
+    fieldName: 'order',
     label: $t('system.menu.orderNum'),
   },
   {
@@ -467,6 +467,7 @@ async function onSubmit() {
       data.meta = { ...data.meta, iframeSrc: data.linkSrc };
     }
     delete data.linkSrc;
+
     try {
       await (formData.value?.id
         ? updateMenu(formData.value.id, data)
