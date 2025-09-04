@@ -304,7 +304,6 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
-      width: 240,
     },
     {
       align: 'center',
@@ -313,7 +312,6 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
-      width: 240,
     },
     {
       align: 'center',
@@ -331,7 +329,6 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
-      width: 240,
     },
     {
       align: 'center',
@@ -340,7 +337,6 @@ export function useColumns<T = StorageConfig.View>(
       cellRender: {
         name: 'CellFormatEmpty',
       },
-      width: 240,
     },
 
     {
