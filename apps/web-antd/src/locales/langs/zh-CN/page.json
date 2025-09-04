@@ -23,5 +23,8 @@
   "user": {
     "title": "用户管理",
     "profile": "个人信息"
+  },
+  "schedule": {
+    "title": "任务调度"
   }
 }
