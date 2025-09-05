@@ -36,10 +36,12 @@ export function useColumns(): VxeTableGridOptions['columns'] {
     },
     {
       field: 'startTime',
+      cellRender: { name: 'CellFormatDate' },
       title: $t('schedule.log.startTime'),
     },
     {
       field: 'endTime',
+      cellRender: { name: 'CellFormatDate' },
       title: $t('schedule.log.endTime'),
     },
     {

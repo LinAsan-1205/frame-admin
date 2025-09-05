@@ -16,7 +16,7 @@ import { useColumns, useSearchFormOptions } from './execution-log-data';
 const taskId = ref<number>();
 
 const [Modal, modalApi] = useVbenModal({
-  class: 'w-1/2',
+  class: 'w-3/4',
   showConfirmButton: false,
   footer: false,
   showCancelButton: false,
@@ -33,10 +33,14 @@ const [Modal, modalApi] = useVbenModal({
 
 const searchFormOptions = useSearchFormOptions();
 const [TaskLogGrid, taskLogGridApi] = useVbenVxeGrid({
+  separator: false,
   formOptions: searchFormOptions,
   gridOptions: {
     columns: useColumns(),
     keepSource: true,
+    toolbarConfig: {
+      zoom: false,
+    },
     proxyConfig: {
       ajax: {
         query: ({ page }, formValues) => {
@@ -65,6 +69,6 @@ const getDrawerTitle = computed(() => {
 </script>
 <template>
   <Modal :title="getDrawerTitle">
-    <TaskLogGrid :table-title="$t('schedule.task.list')" />
+    <TaskLogGrid />
   </Modal>
 </template>
