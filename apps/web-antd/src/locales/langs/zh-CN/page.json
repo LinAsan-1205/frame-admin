@@ -25,6 +25,12 @@
     "profile": "个人信息"
   },
   "schedule": {
-    "title": "任务调度"
+    "title": "任务调度",
+    "task": {
+      "title": "任务管理"
+    },
+    "log": {
+      "title": "执行日志"
+    }
   }
 }
