@@ -8,5 +8,7 @@
   "status": "状态",
   "loginTime": "登录时间",
   "address": "登录地点",
-  "behavior": "登录行为"
+  "behavior": "登录行为",
+  "errorMsg": "错误信息",
+  "errorMsgHelper": "登录失败后的错误信息展示"
 }

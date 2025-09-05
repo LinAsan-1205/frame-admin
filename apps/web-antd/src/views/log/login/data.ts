@@ -83,6 +83,16 @@ export function useColumns(): VxeTableGridOptions<LoginLog.View>['columns'] {
       width: 100,
     },
     {
+      field: 'errorMsg',
+      title: $t('loginLog.errorMsg'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
+      titleSuffix: {
+        content: $t('loginLog.errorMsgHelper'),
+      },
+    },
+    {
       align: 'center',
       field: 'ip',
       title: $t('loginLog.ip'),

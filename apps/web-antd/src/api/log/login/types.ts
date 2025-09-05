@@ -10,6 +10,7 @@ export declare namespace LoginLog {
     os: string;
     status: StatusType;
     loginTime: number;
+    errorMsg?: string;
   }
 
   export interface Condition {
