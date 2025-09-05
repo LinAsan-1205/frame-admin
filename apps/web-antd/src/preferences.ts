@@ -1,5 +1,6 @@
 import { defineOverridesPreferences } from '@vben/preferences';
 
+import logo from '#/assets/images/logo.png';
 import defaultAvatar from '#/assets/images/user/avatar.png';
 
 /**
@@ -21,7 +22,7 @@ export const overridesPreferences = defineOverridesPreferences({
   },
   logo: {
     enable: true,
-    source: defaultAvatar,
+    source: logo,
   },
   sidebar: {
     width: 200,
