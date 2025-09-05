@@ -100,6 +100,7 @@ const authLogin = (values: any) => {
     :show-qrcode-login="false"
     :show-code-login="false"
     ref="loginRef"
+    :title="$t('authentication.welcomeBack')"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
     @submit="authLogin"
