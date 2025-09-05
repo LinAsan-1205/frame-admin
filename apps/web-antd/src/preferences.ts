@@ -16,6 +16,8 @@ export const overridesPreferences = defineOverridesPreferences({
     defaultAvatar,
     layout: 'sidebar-mixed-nav',
     accessMode: 'mixed',
+    enableCheckUpdates: true,
+    checkUpdatesInterval: 1,
   },
   logo: {
     enable: true,
