@@ -28,18 +28,12 @@ const allRoleList = computed(() => {
 <template>
   <Space :size="5">
     <!-- 未分配角色时的提示 -->
-    <Tag
-      v-if="isRoleNotAssigned"
-      color="warning"
-      :bordered="false"
-      class="!m-0"
-    >
+    <Tag v-if="isRoleNotAssigned" color="warning" class="!m-0">
       未分配角色
     </Tag>
     <!-- 已分配角色时的展示 -->
     <template v-else>
       <Tag
-        :bordered="false"
         class="!m-0"
         v-for="roleItem in displayRoleList"
         :key="roleItem.id"
