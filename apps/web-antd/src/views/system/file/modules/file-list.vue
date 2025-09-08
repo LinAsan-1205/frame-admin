@@ -3,7 +3,6 @@ import type { File } from '#/api/system/file/types';
 
 import { computed, ref } from 'vue';
 
-import { Page } from '@vben/common-ui';
 import { Plus, Search } from '@vben/icons';
 import { downloadFileFromUrl } from '@vben/utils';
 
@@ -27,6 +26,8 @@ import { delFileById, queryFilePage } from '#/api/system/file';
 import { FileStatus, FileType, StorageType } from '#/api/system/file/enum';
 import { $t } from '#/locales';
 
+const categoryId = defineModel<number | undefined>('categoryId');
+
 const searchKeyword = ref('');
 const selectedCategory = ref<number | undefined>();
 const currentPage = ref(1);
@@ -44,6 +45,7 @@ const {
     pageSize,
     searchKeyword,
     selectedCategory,
+    categoryId,
   ],
   queryFn: () =>
     queryFilePage(
@@ -216,184 +218,182 @@ function handleUpload() {
 </script>
 
 <template>
-  <Page auto-content-height>
-    <div class="space-y-4">
-      <!-- 搜索和操作栏 -->
-      <Card>
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <Input
-              v-model:value="searchKeyword"
-              :placeholder="$t('system.storageFiles.searchPlaceholder')"
-              class="w-64"
-              @press-enter="handleSearch"
-            >
-              <template #prefix>
-                <Search class="size-4 text-gray-400" />
+  <div class="space-y-4">
+    <!-- 搜索和操作栏 -->
+    <Card>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <Input
+            v-model:value="searchKeyword"
+            :placeholder="$t('system.storageFiles.searchPlaceholder')"
+            class="w-64"
+            @press-enter="handleSearch"
+          >
+            <template #prefix>
+              <Search class="size-4 text-gray-400" />
+            </template>
+          </Input>
+          <Button @click="handleSearch">
+            {{ $t('system.storageFiles.search') }}
+          </Button>
+          <Button>
+            <VbenIcon icon="ri:filter-line" class="size-4" />
+            {{ $t('system.storageFiles.filter') }}
+          </Button>
+        </div>
+        <div class="flex items-center space-x-2">
+          <Button type="primary" @click="handleUpload">
+            <Plus class="size-4" />
+            {{ $t('system.storageFiles.upload') }}
+          </Button>
+        </div>
+      </div>
+    </Card>
+
+    <!-- 文件列表 -->
+    <div
+      class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
+      <Card
+        v-for="file in displayFileList"
+        :key="file.id"
+        class="group cursor-pointer transition-shadow hover:shadow-lg"
+        @click="handleFileAction('view', file)"
+      >
+        <div class="space-y-3">
+          <!-- 文件图标和操作按钮 -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="text-3xl" :class="[getFileColor(file.fileType)]">
+                <VbenIcon :icon="getFileIcon(file.fileType)" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <h3
+                  class="truncate text-sm font-medium"
+                  :title="file.originalName"
+                >
+                  {{ file.originalName }}
+                </h3>
+                <p class="text-xs text-gray-500">
+                  {{ formatFileSize(file.fileSize) }}
+                </p>
+              </div>
+            </div>
+            <Dropdown :trigger="['click']" @click.stop>
+              <Button
+                type="text"
+                size="small"
+                class="opacity-0 transition-opacity group-hover:opacity-100"
+              >
+                <VbenIcon icon="ri:more-2-line" />
+              </Button>
+              <template #overlay>
+                <Menu
+                  @click="({ key }) => handleFileAction(key as string, file)"
+                >
+                  <MenuItem key="view">
+                    <VbenIcon icon="ri:eye-line" class="size-4" />
+                    {{ $t('system.storageFiles.preview') }}
+                  </MenuItem>
+                  <MenuItem key="download">
+                    <VbenIcon icon="ri:download-line" class="size-4" />
+                    {{ $t('system.storageFiles.download') }}
+                  </MenuItem>
+                  <MenuItem key="edit">
+                    <VbenIcon icon="ri:edit-line" class="size-4" />
+                    {{ $t('system.storageFiles.edit') }}
+                  </MenuItem>
+                  <MenuItem key="delete" class="text-red-500">
+                    <VbenIcon icon="ri:delete-bin-line" class="size-4" />
+                    {{ $t('system.storageFiles.delete') }}
+                  </MenuItem>
+                </Menu>
               </template>
-            </Input>
-            <Button @click="handleSearch">
-              {{ $t('system.storageFiles.search') }}
-            </Button>
-            <Button>
-              <VbenIcon icon="ri:filter-line" class="size-4" />
-              {{ $t('system.storageFiles.filter') }}
-            </Button>
+            </Dropdown>
           </div>
-          <div class="flex items-center space-x-2">
-            <Button type="primary" @click="handleUpload">
-              <Plus class="size-4" />
-              {{ $t('system.storageFiles.upload') }}
-            </Button>
+
+          <!-- 文件信息 -->
+          <div class="space-y-1 text-xs text-gray-500">
+            <div class="flex items-center justify-between">
+              <span>{{ $t('system.storageFiles.type') }}：</span>
+              <Badge
+                :color="getFileColor(file.fileType)"
+                :text="getFileTypeLabel(file.fileType)"
+              />
+            </div>
+            <div class="flex items-center justify-between">
+              <span>{{ $t('system.storageFiles.storage') }}：</span>
+              <span>{{ getStorageTypeLabel(file.storageType) }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>{{ $t('system.storageFiles.mime') }}：</span>
+              <span class="truncate">{{ file.mimeType }}</span>
+            </div>
+          </div>
+
+          <!-- 状态指示器 -->
+          <div class="flex items-center justify-between">
+            <Badge
+              :status="isFileStatusNormal(file.status) ? 'success' : 'error'"
+              :text="getFileStatusLabel(file.status)"
+            />
+            <div class="flex space-x-1">
+              <VbenIconButton
+                @click.stop="handleFileAction('view', file)"
+                :tooltip="$t('system.storageFiles.preview')"
+              >
+                <VbenIcon icon="ri:eye-line" class="size-3" />
+              </VbenIconButton>
+              <VbenIconButton
+                @click.stop="handleFileAction('download', file)"
+                :tooltip="$t('system.storageFiles.download')"
+              >
+                <VbenIcon icon="ri:download-line" class="size-3" />
+              </VbenIconButton>
+            </div>
           </div>
         </div>
       </Card>
-
-      <!-- 文件列表 -->
-      <div
-        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
-        <Card
-          v-for="file in displayFileList"
-          :key="file.id"
-          class="group cursor-pointer transition-shadow hover:shadow-lg"
-          @click="handleFileAction('view', file)"
-        >
-          <div class="space-y-3">
-            <!-- 文件图标和操作按钮 -->
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-3">
-                <div class="text-3xl" :class="[getFileColor(file.fileType)]">
-                  <VbenIcon :icon="getFileIcon(file.fileType)" />
-                </div>
-                <div class="min-w-0 flex-1">
-                  <h3
-                    class="truncate text-sm font-medium"
-                    :title="file.originalName"
-                  >
-                    {{ file.originalName }}
-                  </h3>
-                  <p class="text-xs text-gray-500">
-                    {{ formatFileSize(file.fileSize) }}
-                  </p>
-                </div>
-              </div>
-              <Dropdown :trigger="['click']" @click.stop>
-                <Button
-                  type="text"
-                  size="small"
-                  class="opacity-0 transition-opacity group-hover:opacity-100"
-                >
-                  <VbenIcon icon="ri:more-2-line" />
-                </Button>
-                <template #overlay>
-                  <Menu
-                    @click="({ key }) => handleFileAction(key as string, file)"
-                  >
-                    <MenuItem key="view">
-                      <VbenIcon icon="ri:eye-line" class="size-4" />
-                      {{ $t('system.storageFiles.preview') }}
-                    </MenuItem>
-                    <MenuItem key="download">
-                      <VbenIcon icon="ri:download-line" class="size-4" />
-                      {{ $t('system.storageFiles.download') }}
-                    </MenuItem>
-                    <MenuItem key="edit">
-                      <VbenIcon icon="ri:edit-line" class="size-4" />
-                      {{ $t('system.storageFiles.edit') }}
-                    </MenuItem>
-                    <MenuItem key="delete" class="text-red-500">
-                      <VbenIcon icon="ri:delete-bin-line" class="size-4" />
-                      {{ $t('system.storageFiles.delete') }}
-                    </MenuItem>
-                  </Menu>
-                </template>
-              </Dropdown>
-            </div>
-
-            <!-- 文件信息 -->
-            <div class="space-y-1 text-xs text-gray-500">
-              <div class="flex items-center justify-between">
-                <span>{{ $t('system.storageFiles.type') }}：</span>
-                <Badge
-                  :color="getFileColor(file.fileType)"
-                  :text="getFileTypeLabel(file.fileType)"
-                />
-              </div>
-              <div class="flex items-center justify-between">
-                <span>{{ $t('system.storageFiles.storage') }}：</span>
-                <span>{{ getStorageTypeLabel(file.storageType) }}</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span>{{ $t('system.storageFiles.mime') }}：</span>
-                <span class="truncate">{{ file.mimeType }}</span>
-              </div>
-            </div>
-
-            <!-- 状态指示器 -->
-            <div class="flex items-center justify-between">
-              <Badge
-                :status="isFileStatusNormal(file.status) ? 'success' : 'error'"
-                :text="getFileStatusLabel(file.status)"
-              />
-              <div class="flex space-x-1">
-                <VbenIconButton
-                  @click.stop="handleFileAction('view', file)"
-                  :tooltip="$t('system.storageFiles.preview')"
-                >
-                  <VbenIcon icon="ri:eye-line" class="size-3" />
-                </VbenIconButton>
-                <VbenIconButton
-                  @click.stop="handleFileAction('download', file)"
-                  :tooltip="$t('system.storageFiles.download')"
-                >
-                  <VbenIcon icon="ri:download-line" class="size-3" />
-                </VbenIconButton>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      <!-- 加载状态 -->
-      <div v-if="isLoading" class="py-12 text-center">
-        <VbenIcon
-          icon="ri:loader-4-line"
-          class="mx-auto mb-4 size-16 animate-spin text-gray-300"
-        />
-        <p class="text-lg text-gray-500">
-          {{ $t('system.storageFiles.loading') }}
-        </p>
-      </div>
-
-      <!-- 空状态 -->
-      <div v-else-if="displayFileList.length === 0" class="py-12 text-center">
-        <VbenIcon
-          icon="ri:file-line"
-          class="mx-auto mb-4 size-16 text-gray-300"
-        />
-        <p class="mb-2 text-lg text-gray-500">
-          {{ $t('system.storageFiles.noFiles') }}
-        </p>
-        <p class="text-sm text-gray-400">
-          {{ $t('system.storageFiles.noFilesDesc') }}
-        </p>
-      </div>
-
-      <!-- 分页 -->
-      <div v-if="!isLoading && total > pageSize" class="flex justify-center">
-        <Pagination
-          v-model:current="currentPage"
-          v-model:page-size="pageSize"
-          :total="total"
-          :show-size-changer="true"
-          :show-quick-jumper="true"
-          :show-total="
-            (total, range) => `第 ${range[0]}-${range[1]} 条，共 ${total} 条`
-          "
-          @change="handlePageChange"
-        />
-      </div>
     </div>
-  </Page>
+
+    <!-- 加载状态 -->
+    <div v-if="isLoading" class="py-12 text-center">
+      <VbenIcon
+        icon="ri:loader-4-line"
+        class="mx-auto mb-4 size-16 animate-spin text-gray-300"
+      />
+      <p class="text-lg text-gray-500">
+        {{ $t('system.storageFiles.loading') }}
+      </p>
+    </div>
+
+    <!-- 空状态 -->
+    <div v-else-if="displayFileList.length === 0" class="py-12 text-center">
+      <VbenIcon
+        icon="ri:file-line"
+        class="mx-auto mb-4 size-16 text-gray-300"
+      />
+      <p class="mb-2 text-lg text-gray-500">
+        {{ $t('system.storageFiles.noFiles') }}
+      </p>
+      <p class="text-sm text-gray-400">
+        {{ $t('system.storageFiles.noFilesDesc') }}
+      </p>
+    </div>
+
+    <!-- 分页 -->
+    <div v-if="!isLoading && total > pageSize" class="flex justify-center">
+      <Pagination
+        v-model:current="currentPage"
+        v-model:page-size="pageSize"
+        :total="total"
+        :show-size-changer="true"
+        :show-quick-jumper="true"
+        :show-total="
+          (total, range) => `第 ${range[0]}-${range[1]} 条，共 ${total} 条`
+        "
+        @change="handlePageChange"
+      />
+    </div>
+  </div>
 </template>
