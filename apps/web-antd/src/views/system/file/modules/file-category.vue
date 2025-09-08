@@ -314,9 +314,7 @@ onUnmounted(() => {
 
             <!-- 操作按钮 -->
             <Dropdown :trigger="['click']" @click.stop>
-              <VbenIconButton
-                class="opacity-0 transition-opacity group-hover:opacity-100"
-              >
+              <VbenIconButton>
                 <VbenIcon icon="ri:more-2-line" />
               </VbenIconButton>
               <template #overlay>
@@ -326,12 +324,16 @@ onUnmounted(() => {
                   "
                 >
                   <MenuItem key="edit">
-                    <VbenIcon icon="ri:edit-line" class="size-4" />
-                    {{ $t('common.edit') }}
+                    <span class="flex items-center">
+                      <VbenIcon icon="ri:edit-line" class="mr-1 size-4" />
+                      {{ $t('common.edit') }}
+                    </span>
                   </MenuItem>
                   <MenuItem key="delete" class="text-red-500">
-                    <VbenIcon icon="ri:delete-bin-line" class="size-4" />
-                    {{ $t('common.delete') }}
+                    <span class="flex items-center">
+                      <VbenIcon icon="ri:delete-bin-line" class="mr-1 size-4" />
+                      {{ $t('common.delete') }}
+                    </span>
                   </MenuItem>
                 </Menu>
               </template>
