@@ -3,7 +3,7 @@ import type { File } from '#/api/system/file/types';
 
 import { computed, ref } from 'vue';
 
-import { Plus, Search } from '@vben/icons';
+import { Search } from '@vben/icons';
 import { downloadFileFromUrl } from '@vben/utils';
 
 import { VbenIcon, VbenIconButton } from '@vben-core/shadcn-ui';
@@ -25,6 +25,8 @@ import {
 import { delFileById, queryFilePage } from '#/api/system/file';
 import { FileStatus, FileType, StorageType } from '#/api/system/file/enum';
 import { $t } from '#/locales';
+
+import FileUpload from './file-upload.vue';
 
 const categoryId = defineModel<number | undefined>('categoryId');
 
@@ -210,10 +212,25 @@ function handlePageChange(page: number, size: number) {
 }
 
 /**
- * 上传文件
+ * 处理上传成功
+ * @param _file 上传的文件
+ * @param _fileList 文件列表
  */
-function handleUpload() {
-  message.info($t('system.storageFiles.uploadInDevelopment'));
+function handleUploadSuccess(_file: any, _fileList: any[]) {
+  message.success($t('system.storageFiles.uploadSuccess'));
+  // 刷新文件列表
+  refetchFiles();
+}
+
+/**
+ * 处理上传失败
+ * @param error 错误信息
+ * @param _file 上传的文件
+ * @param _fileList 文件列表
+ */
+function handleUploadError(error: Error, _file: any, _fileList: any[]) {
+  message.error($t('system.storageFiles.uploadFailed'));
+  console.error('Upload error:', error);
 }
 </script>
 
@@ -242,10 +259,15 @@ function handleUpload() {
           </Button>
         </div>
         <div class="flex items-center space-x-2">
-          <Button type="primary" @click="handleUpload">
-            <Plus class="size-4" />
-            {{ $t('system.storageFiles.upload') }}
-          </Button>
+          <FileUpload
+            :multiple="true"
+            :max-size="50"
+            :max-count="10"
+            :button-text="$t('system.storageFiles.upload')"
+            button-icon="ri:upload-line"
+            @success="handleUploadSuccess"
+            @error="handleUploadError"
+          />
         </div>
       </div>
     </Card>

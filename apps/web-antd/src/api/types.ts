@@ -26,4 +26,15 @@ export declare namespace Api {
     type: string;
     value: string;
   }
+
+  export interface Response<T = any> {
+    /** 是否成功 */
+    success: boolean;
+    /** 响应数据 */
+    data: T;
+    /** 错误信息 */
+    message?: string;
+    /** 错误代码 */
+    code?: number;
+  }
 }

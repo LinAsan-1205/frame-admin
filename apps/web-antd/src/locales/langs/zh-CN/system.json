@@ -180,7 +180,12 @@
     "uploadInDevelopment": "上传功能开发中...",
     "unknown": "未知",
     "normal": "正常",
-    "deleted": "已删除"
+    "deleted": "已删除",
+    "fileSizeExceeded": "文件大小不能超过 {0}MB",
+    "fileTypeNotAllowed": "不支持的文件类型",
+    "fileValidationFailed": "文件验证失败",
+    "uploadSuccess": "上传成功",
+    "uploadFailed": "上传失败"
   },
   "fileCategory": {
     "title": "文件分类",
