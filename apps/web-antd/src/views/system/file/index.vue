@@ -3,9 +3,13 @@ import { ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-// import FileCategoryList from './list.vue';
 import FileCategory from './modules/file-category.vue';
+import FileList from './modules/file-list.vue';
 
+/**
+ * 文件管理页面
+ * 左侧显示分类树，右侧显示文件列表
+ */
 const categoryId = ref<number | undefined>();
 </script>
 
@@ -16,7 +20,7 @@ const categoryId = ref<number | undefined>();
         <FileCategory v-model="categoryId" />
       </div>
       <div class="min-w-0 flex-1">
-        <!-- <UserList v-model:dept-id="deptId" /> -->
+        <FileList />
       </div>
     </div>
   </Page>

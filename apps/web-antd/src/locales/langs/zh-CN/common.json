@@ -5,5 +5,10 @@
   "operation": "操作",
   "edit": "编辑",
   "more": "更多",
-  "createTime": "创建时间"
+  "createTime": "创建时间",
+  "upload": "上传",
+  "download": "下载",
+  "view": "查看",
+  "delete": "删除",
+  "filter": "筛选"
 }
