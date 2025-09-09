@@ -110,6 +110,7 @@ async function handleIsDefaultStatusChange(
     message.success({
       content: $t('ui.actionMessage.operationSuccess'),
     });
+    refreshStorageConfigGrid();
     return true;
   } catch {
     return false;
