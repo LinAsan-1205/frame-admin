@@ -10,8 +10,8 @@ const categoryId = ref<number | undefined>();
 </script>
 
 <template>
-  <Page>
-    <div class="flex w-full space-x-2">
+  <Page auto-content-height>
+    <div class="flex h-full w-full space-x-2">
       <div class="min-w-64 flex-shrink-0">
         <FileCategory v-model="categoryId" />
       </div>
