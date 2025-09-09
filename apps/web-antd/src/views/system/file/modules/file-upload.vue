@@ -133,9 +133,9 @@ const customRequest = async (options: any) => {
       onProgress({ percent: progress });
     }, 100);
 
-    const response = await uploadAuto(file, props.data);
-
-    clearInterval(progressTimer);
+    const response = await uploadAuto(file, props.data).finally(() => {
+      clearInterval(progressTimer);
+    });
 
     if (response) {
       onSuccess({
@@ -150,6 +150,7 @@ const customRequest = async (options: any) => {
     }
   } catch (error) {
     console.error('Upload error:', error);
+
     onError(error as Error);
   }
 };
