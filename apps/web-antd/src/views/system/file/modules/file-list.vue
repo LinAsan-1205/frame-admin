@@ -35,7 +35,6 @@ const selectedCategory = ref<number | undefined>();
 const currentPage = ref(1);
 const pageSize = ref(12);
 
-// 使用 useQuery 获取文件列表数据
 const {
   data: filePageData,
   refetch: refetchFiles,
@@ -216,9 +215,7 @@ function handlePageChange(page: number, size: number) {
  * @param _file 上传的文件
  * @param _fileList 文件列表
  */
-function handleUploadSuccess(_file: any, _fileList: any[]) {
-  message.success($t('system.storageFiles.uploadSuccess'));
-  // 刷新文件列表
+function handleUploadSuccess() {
   refetchFiles();
 }
 
@@ -228,8 +225,7 @@ function handleUploadSuccess(_file: any, _fileList: any[]) {
  * @param _file 上传的文件
  * @param _fileList 文件列表
  */
-function handleUploadError(error: Error, _file: any, _fileList: any[]) {
-  message.error($t('system.storageFiles.uploadFailed'));
+function handleUploadError(error: Error) {
   console.error('Upload error:', error);
 }
 </script>
@@ -314,20 +310,22 @@ function handleUploadError(error: Error, _file: any, _fileList: any[]) {
                   @click="({ key }) => handleFileAction(key as string, file)"
                 >
                   <MenuItem key="view">
-                    <VbenIcon icon="ri:eye-line" class="size-4" />
-                    {{ $t('system.storageFiles.preview') }}
+                    <div class="flex items-center">
+                      <VbenIcon icon="ri:eye-line" class="size-4" />
+                      {{ $t('system.storageFiles.preview') }}
+                    </div>
                   </MenuItem>
                   <MenuItem key="download">
-                    <VbenIcon icon="ri:download-line" class="size-4" />
-                    {{ $t('system.storageFiles.download') }}
-                  </MenuItem>
-                  <MenuItem key="edit">
-                    <VbenIcon icon="ri:edit-line" class="size-4" />
-                    {{ $t('system.storageFiles.edit') }}
+                    <div class="flex items-center">
+                      <VbenIcon icon="ri:download-line" class="size-4" />
+                      {{ $t('system.storageFiles.download') }}
+                    </div>
                   </MenuItem>
                   <MenuItem key="delete" class="text-red-500">
-                    <VbenIcon icon="ri:delete-bin-line" class="size-4" />
-                    {{ $t('system.storageFiles.delete') }}
+                    <div class="flex items-center">
+                      <VbenIcon icon="ri:delete-bin-line" class="size-4" />
+                      {{ $t('system.storageFiles.delete') }}
+                    </div>
                   </MenuItem>
                 </Menu>
               </template>

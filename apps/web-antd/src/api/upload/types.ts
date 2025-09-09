@@ -1,15 +1,15 @@
 export declare namespace Upload {
   export interface View {
     /** 文件URL */
-    url: string;
+    fileUrl: string;
     /** 文件名 */
-    name: string;
+    originalName: string;
     /** 文件大小 */
-    size: number;
+    fileSize: number;
     /** 文件ID */
     id?: number;
     /** 文件类型 */
-    type?: string;
+    fileType?: string;
     /** 上传时间 */
     uploadTime?: string;
   }
