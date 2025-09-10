@@ -272,7 +272,7 @@ function handleUploadError(error: Error) {
     <div class="flex-1">
       <!-- 文件列表 -->
       <div
-        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6"
+        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <Card
           v-for="file in displayFileList"
