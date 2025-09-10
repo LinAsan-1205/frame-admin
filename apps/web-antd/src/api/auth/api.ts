@@ -1,6 +1,6 @@
 import type { Auth } from './types';
 
-import { baseRequestClient, requestClient } from '#/api/request';
+import { requestClient } from '#/api/request';
 
 /**
  * 登录
@@ -17,9 +17,7 @@ export async function accountLogin(data: Auth.LoginParams) {
  * 刷新accessToken
  */
 export async function refreshTokenApi() {
-  return baseRequestClient.post<Auth.RefreshTokenResult>('/auth/refresh', {
-    withCredentials: true,
-  });
+  return requestClient.post<Auth.RefreshTokenResult>('/auth/refresh-token');
 }
 
 /**

@@ -19,6 +19,7 @@ export const overridesPreferences = defineOverridesPreferences({
     accessMode: 'mixed',
     enableCheckUpdates: true,
     checkUpdatesInterval: 1,
+    enableRefreshToken: true,
   },
   logo: {
     enable: true,
