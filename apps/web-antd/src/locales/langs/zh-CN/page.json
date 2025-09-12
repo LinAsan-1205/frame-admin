@@ -13,7 +13,9 @@
   },
   "system": {
     "title": "系统管理",
-    "dept": "部门管理"
+    "dept": "部门管理",
+    "monitor": "监控",
+    "session": "会话管理"
   },
   "log": {
     "title": "日志管理",

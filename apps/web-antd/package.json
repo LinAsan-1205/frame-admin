@@ -50,6 +50,7 @@
     "json-bigint": "catalog:",
     "lodash.clonedeep": "catalog:",
     "pinia": "catalog:",
+    "socket.io-client": "^4.8.1",
     "vue": "catalog:",
     "vue-router": "catalog:",
     "vxe-pc-ui": "catalog:",

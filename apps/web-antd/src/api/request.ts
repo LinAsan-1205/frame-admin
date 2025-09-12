@@ -19,7 +19,7 @@ import JSONBigInt from 'json-bigint';
 
 import { useAuthStore } from '#/store';
 
-import { refreshTokenApi } from './system/session';
+import { refreshToken as refreshTokenApi } from './system/session';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 

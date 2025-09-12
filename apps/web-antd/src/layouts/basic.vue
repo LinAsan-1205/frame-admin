@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, watch } from 'vue';
+import { computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
@@ -10,11 +10,13 @@ import { useAccessStore, useUserStore } from '@vben/stores';
 
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
+import { useWebSocketStore } from '#/store/websocket';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const accessStore = useAccessStore();
+const websocketStore = useWebSocketStore();
 const { destroyWatermark, updateWatermark } = useWatermark();
 const router = useRouter();
 
@@ -36,6 +38,16 @@ async function handleLogout() {
   await authStore.logout(false);
 }
 
+onMounted(() => {
+  if (accessStore.accessToken) {
+    websocketStore.connect();
+  }
+});
+
+onUnmounted(() => {
+  websocketStore.disconnect();
+});
+
 watch(
   () => preferences.app.watermark,
   async (enable) => {
@@ -51,6 +63,18 @@ watch(
     immediate: true,
   },
 );
+
+accessStore.$subscribe((_, state) => {
+  if (
+    state.accessToken &&
+    !websocketStore.isConnected &&
+    !websocketStore.isConnecting
+  ) {
+    websocketStore.connect();
+  } else if (!state.accessToken && websocketStore.isConnected) {
+    websocketStore.disconnect();
+  }
+});
 </script>
 
 <template>
