@@ -97,7 +97,7 @@ function confirmModal(content: string, title: string) {
     Modal.confirm({
       content,
       onCancel() {
-        reject(new Error('已取消'));
+        reject(new Error($t('system.session.canceled')));
       },
       onOk() {
         resolve(true);
@@ -141,12 +141,12 @@ async function onDeleteSession(sessionView: Session.View) {
  */
 async function onForceLogout(sessionView: Session.View) {
   await confirmModal(
-    `确定要强制下线设备 ${sessionView.deviceName} 吗？`,
-    '强制下线',
+    $t('system.session.confirmForceLogoutContent', [sessionView.deviceName]),
+    $t('system.session.confirmForceLogout'),
   );
 
   const hideLoading = message.loading({
-    content: '正在强制下线...',
+    content: $t('system.session.forceLogoutLoading'),
     duration: 0,
     key: 'action_process_msg',
   });
@@ -175,12 +175,12 @@ function onRefreshSessionList() {
  */
 async function onCleanupExpiredSessions() {
   await confirmModal(
-    '确定要清理所有过期会话吗？此操作不可撤销。',
-    '清理过期会话',
+    $t('system.session.confirmCleanupExpiredContent'),
+    $t('system.session.confirmCleanupExpired'),
   );
 
   const hideLoading = message.loading({
-    content: '正在清理过期会话...',
+    content: $t('system.session.cleanupExpiredLoading'),
     duration: 0,
     key: 'cleanup_process_msg',
   });
@@ -190,7 +190,7 @@ async function onCleanupExpiredSessions() {
   });
 
   message.success({
-    content: '清理过期会话成功',
+    content: $t('system.session.cleanupExpiredSuccess'),
     key: 'cleanup_process_msg',
   });
 

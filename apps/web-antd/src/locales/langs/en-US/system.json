@@ -64,7 +64,7 @@
     "deviceTypeDesktop": "Desktop App",
     "deviceTypeTablet": "Tablet",
     "confirmForceLogout": "Confirm Force Logout",
-    "confirmForceLogoutContent": "Are you sure to force logout user {0}'s device {1}?",
+    "confirmForceLogoutContent": "Are you sure to force logout device {0}?",
     "adminOperation": "Admin Operation",
     "forceLogoutSuccess": "Force logout success",
     "forceLogoutFailed": "Force logout failed",
@@ -78,6 +78,9 @@
     "confirmCleanupExpiredContent": "Are you sure to cleanup all expired sessions? This operation cannot be undone.",
     "cleanupExpiredSuccess": "Cleanup expired sessions success",
     "cleanupExpiredFailed": "Cleanup expired sessions failed",
+    "cleanupExpiredLoading": "Cleaning up expired sessions...",
+    "forceLogoutLoading": "Force logging out...",
+    "canceled": "Canceled",
     "loadStatisticsFailed": "Load statistics failed"
   },
   "websocket": {

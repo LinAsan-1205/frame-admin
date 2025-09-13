@@ -263,7 +263,7 @@
     "deviceTypeDesktop": "桌面应用",
     "deviceTypeTablet": "平板",
     "confirmForceLogout": "确认强制下线",
-    "confirmForceLogoutContent": "确定要强制下线用户 {0} 的设备 {1} 吗？",
+    "confirmForceLogoutContent": "确定要强制下线设备 {0} 吗？",
     "adminOperation": "管理员操作",
     "forceLogoutSuccess": "强制下线成功",
     "forceLogoutFailed": "强制下线失败",
@@ -277,6 +277,9 @@
     "confirmCleanupExpiredContent": "确定要清理所有过期的会话吗？此操作不可撤销。",
     "cleanupExpiredSuccess": "清理过期会话成功",
     "cleanupExpiredFailed": "清理过期会话失败",
+    "cleanupExpiredLoading": "正在清理过期会话...",
+    "forceLogoutLoading": "正在强制下线...",
+    "canceled": "已取消",
     "loadStatisticsFailed": "加载统计数据失败"
   },
   "websocket": {
