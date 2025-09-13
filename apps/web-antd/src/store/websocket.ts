@@ -155,7 +155,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
 
     socket?.value?.disconnect();
     socket.value = null;
-    authStore.logout(true);
+    authStore.forceLogout();
   }
 
   // 处理系统消息

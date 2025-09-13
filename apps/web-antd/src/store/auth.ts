@@ -41,7 +41,6 @@ export const useAuthStore = defineStore('auth', () => {
       // 如果成功获取到 accessToken
       if (accessToken) {
         accessStore.setAccessToken(accessToken);
-        accessStore.setRefreshToken(refreshToken);
         // 获取用户信息并存储到 accessStore 中
         const [fetchUserInfoResult, bindAccessCodes] = await Promise.all([
           fetchUserInfo(),
@@ -69,6 +68,9 @@ export const useAuthStore = defineStore('auth', () => {
             message: $t('authentication.loginSuccess'),
           });
         }
+      }
+      if (refreshToken) {
+        accessStore.setRefreshToken(refreshToken);
       }
     } finally {
       loginLoading.value = false;
@@ -99,6 +101,11 @@ export const useAuthStore = defineStore('auth', () => {
     });
   }
 
+  async function forceLogout() {
+    accessStore.setRefreshToken(null);
+    logout(true);
+  }
+
   async function fetchUserInfo() {
     let userInfo: null | User.profile = null;
     userInfo = await getMineProfile();
@@ -116,5 +123,6 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUserInfo,
     loginLoading,
     logout,
+    forceLogout,
   };
 });
