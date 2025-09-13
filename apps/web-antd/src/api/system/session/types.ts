@@ -1,3 +1,4 @@
+import type { User } from '../user';
 import type { DeviceType, PlatformType, SessionStatus } from './enum';
 
 export declare namespace Session {
@@ -25,6 +26,7 @@ export declare namespace Session {
     logoutAt?: string;
     createdAt: string;
     updatedAt: string;
+    user: User.View;
   }
 
   // 查询条件

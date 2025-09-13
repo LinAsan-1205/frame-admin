@@ -31,7 +31,6 @@ const websocketStore = useWebSocketStore();
 
 const userStore = useUserStore();
 
-// 监听会话变更通知
 const lastChangeCount = computed(() => websocketStore.sessionChangeCount);
 let previousChangeCount = 0;
 
@@ -208,9 +207,9 @@ async function onCleanupExpiredSessions() {
           {{ $t('system.session.cleanupExpired') }}
         </Button>
       </template>
-      <template #userBlock="{ row: { user } }">
+      <template #userBlock="{ row: { user, userId } }">
         {{ user?.userName }}
-        <Tag v-if="userStore.userInfo?.userId === user?.userId" color="success">
+        <Tag v-if="userStore.userInfo?.id === userId" color="success">
           {{ $t('system.session.isMe') }}
         </Tag>
       </template>
