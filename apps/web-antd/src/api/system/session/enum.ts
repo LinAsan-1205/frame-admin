@@ -25,7 +25,7 @@ export const PlatformType = Enum({
  * 设备类型枚举
  */
 export const DeviceType = Enum({
-  Web: { value: 'web', label: 'Web浏览器', color: 'blue' },
+  Web: { value: 'web', label: 'pc', color: 'blue' },
   Mobile: { value: 'mobile', label: '移动端', color: 'success' },
   Desktop: { value: 'desktop', label: '桌面应用', color: 'cyan' },
   Tablet: { value: 'tablet', label: '平板', color: 'geekblue' },

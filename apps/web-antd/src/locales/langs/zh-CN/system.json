@@ -227,6 +227,8 @@
     "deviceType": "设备类型",
     "user": "所属用户",
     "isMe": "是我",
+    "lastActiveAt": "最后活跃时间",
+    "logoutAt": "最近下线时间",
     "ipAddress": "IP地址",
     "loginLocation": "登录地点",
     "loginTime": "登录时间",

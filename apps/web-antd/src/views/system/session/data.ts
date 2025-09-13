@@ -2,6 +2,8 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { Session } from '#/api/system/session';
 
+import { useUserStore } from '@vben/stores';
+
 import {
   ActiveStatus,
   DeviceType,
@@ -91,14 +93,6 @@ export function useColumns<T = Session.View>(
       },
     },
     {
-      field: 'platform',
-      title: $t('system.session.platform'),
-      cellRender: {
-        name: 'CellTag',
-        options: PlatformType.toOriginItems(),
-      },
-    },
-    {
       field: 'deviceType',
       title: $t('system.session.deviceType'),
       cellRender: {
@@ -124,8 +118,13 @@ export function useColumns<T = Session.View>(
       title: $t('system.session.loginTime'),
     },
     {
+      field: 'lastActiveAt',
+      title: $t('system.session.lastActiveAt'),
+      cellRender: { name: 'CellFormatDate' },
+    },
+    {
       field: 'logoutAt',
-      title: $t('system.session.logoutTime'),
+      title: $t('system.session.logoutAt'),
       cellRender: { name: 'CellFormatDate' },
     },
     {
@@ -141,15 +140,20 @@ export function useColumns<T = Session.View>(
           {
             code: 'forceLogout',
             text: $t('system.session.forceLogout'),
-            disabled: (row: Session.View) =>
-              row.status !== SessionStatus.Active,
+            disabled: (row: Session.View) => {
+              const userStore = useUserStore();
+              return (
+                row.status !== SessionStatus.Active ||
+                row.userId === userStore.userInfo?.id
+              );
+            },
           },
           'delete',
         ],
       },
       field: 'operation',
       fixed: 'right',
-      title: $t('ui.common.operation'),
+      title: $t('common.operation'),
       width: 130,
     },
   ];
