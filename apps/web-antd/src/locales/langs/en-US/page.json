@@ -26,6 +26,9 @@
     "title": "User Management",
     "profile": "Profile"
   },
+  "monitor": {
+    "redisCache": "Redis Monitor"
+  },
   "schedule": {
     "title": "Task Schedule",
     "task": {

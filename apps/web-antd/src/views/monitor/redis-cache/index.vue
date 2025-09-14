@@ -8,6 +8,7 @@ import { Page } from '@vben/common-ui';
 import { Card, Progress, Statistic, Tag } from 'ant-design-vue';
 
 import { getRedisCacheInfo } from '#/api/monitor/redis';
+import { $t } from '#/locales';
 
 const loading = ref(false);
 const redisInfo = ref<null | RedisCache.Info>(null);
@@ -94,8 +95,8 @@ onUnmounted(() => {
 
 <template>
   <Page
-    description="实时监控Redis缓存服务运行状态和性能指标"
-    title="Redis 缓存监控"
+    :description="$t('monitor.redis.description')"
+    :title="$t('monitor.redis.title')"
   >
     <div v-if="redisInfo" class="p-4">
       <!-- 基本信息 -->
@@ -103,28 +104,28 @@ onUnmounted(() => {
         <Card class="flex-1">
           <Statistic
             :value="redisInfo.version"
-            title="Redis 版本"
+            :title="$t('monitor.redis.version')"
             :value-style="{ color: '#1890ff' }"
           />
         </Card>
         <Card class="flex-1">
           <Statistic
             :value="redisInfo.mode"
-            title="运行模式"
+            :title="$t('monitor.redis.mode')"
             :value-style="{ color: '#722ed1' }"
           />
         </Card>
         <Card class="flex-1">
           <Statistic
             :value="redisInfo.port"
-            title="端口"
+            :title="$t('monitor.redis.port')"
             :value-style="{ color: '#13c2c2' }"
           />
         </Card>
         <Card class="flex-1">
           <Statistic
             :value="getUptimeText(redisInfo)"
-            title="运行时间"
+            :title="$t('monitor.redis.uptime')"
             :value-style="{ color: '#52c41a' }"
           />
         </Card>
@@ -135,32 +136,38 @@ onUnmounted(() => {
         <Card class="flex-1">
           <Statistic
             :value="redisInfo.connectedClients"
-            suffix="个"
-            title="连接客户端"
+            :suffix="$t('monitor.redis.unit.count')"
+            :title="$t('monitor.redis.connectedClients')"
             :value-style="{ color: '#eb2f96' }"
           />
         </Card>
         <Card class="flex-1">
           <Statistic
             :value="redisInfo.totalKeys"
-            suffix="个"
-            title="Key 总数"
+            :suffix="$t('monitor.redis.unit.count')"
+            :title="$t('monitor.redis.totalKeys')"
             :value-style="{ color: '#fa541c' }"
           />
         </Card>
         <Card class="flex-1">
           <Statistic
             :value="redisInfo.expiredKeys"
-            suffix="个"
-            title="过期 Key"
+            :suffix="$t('monitor.redis.unit.count')"
+            :title="$t('monitor.redis.expiredKeys')"
             :value-style="{ color: '#faad14' }"
           />
         </Card>
         <Card class="flex-1">
           <div class="text-center">
-            <div class="mb-2 text-sm text-gray-500">AOF 持久化</div>
+            <div class="mb-2 text-sm text-gray-500">
+              {{ $t('monitor.redis.aofPersistence') }}
+            </div>
             <Tag :color="redisInfo.aofEnabled ? 'success' : 'error'">
-              {{ redisInfo.aofEnabled ? '已开启' : '未开启' }}
+              {{
+                redisInfo.aofEnabled
+                  ? $t('monitor.redis.aofEnabled')
+                  : $t('monitor.redis.aofDisabled')
+              }}
             </Tag>
           </div>
         </Card>
@@ -168,13 +175,13 @@ onUnmounted(() => {
 
       <!-- 内存和状态信息 -->
       <div class="mb-4 flex gap-4">
-        <Card class="flex-1" title="内存使用情况">
+        <Card class="flex-1" :title="$t('monitor.redis.memoryUsage')">
           <div class="mb-1 flex justify-between text-sm text-gray-500">
-            <span>已用内存</span>
+            <span>{{ $t('monitor.redis.usedMemory') }}</span>
             <span>{{ redisInfo.usedMemory }}</span>
           </div>
           <div class="mb-2 flex justify-between text-sm text-gray-500">
-            <span>最大内存</span>
+            <span>{{ $t('monitor.redis.maxMemory') }}</span>
             <span>{{ redisInfo.maxMemory }}</span>
           </div>
           <Progress
@@ -182,7 +189,7 @@ onUnmounted(() => {
             :stroke-color="getMemoryUsageColor(getMemoryPercent(redisInfo))"
           />
         </Card>
-        <Card class="flex-1" title="缓存命中率">
+        <Card class="flex-1" :title="$t('monitor.redis.cacheHitRate')">
           <div class="flex items-center justify-center">
             <div class="w-full text-center">
               <Progress
@@ -193,30 +200,32 @@ onUnmounted(() => {
             </div>
           </div>
         </Card>
-        <Card class="flex-1" title="RDB 状态">
+        <Card class="flex-1" :title="$t('monitor.redis.rdbStatus')">
           <div class="space-y-3">
             <div>
-              <span class="text-gray-500">保存状态：</span>
+              <div class="text-gray-500">
+                {{ $t('monitor.redis.saveStatus') }}:
+              </div>
               <Tag :color="getStatusColor(redisInfo.rdbLastSaveStatus)">
                 {{ redisInfo.rdbLastSaveStatus }}
               </Tag>
             </div>
             <div class="text-sm text-gray-500">
-              <div>最后保存时间：</div>
+              <div>{{ $t('monitor.redis.lastSaveTime') }}：</div>
               <div class="mt-1">{{ redisInfo.rdbLastSaveTime }}</div>
             </div>
           </div>
         </Card>
-        <Card class="flex-1" title="网络流量统计">
+        <Card class="flex-1" :title="$t('monitor.redis.networkTraffic')">
           <div class="flex items-center space-x-4">
             <Statistic
               :value="redisInfo.totalNetInputBytes"
-              title="网络输入总量"
+              :title="$t('monitor.redis.totalNetInput')"
               :value-style="{ color: '#1890ff' }"
             />
             <Statistic
               :value="redisInfo.totalNetOutputBytes"
-              title="网络输出总量"
+              :title="$t('monitor.redis.totalNetOutput')"
               :value-style="{ color: '#722ed1' }"
             />
           </div>
@@ -230,7 +239,7 @@ onUnmounted(() => {
         <div
           class="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"
         ></div>
-        <div class="text-gray-500">加载中...</div>
+        <div class="text-gray-500">{{ $t('monitor.redis.loading') }}</div>
       </div>
     </div>
   </Page>

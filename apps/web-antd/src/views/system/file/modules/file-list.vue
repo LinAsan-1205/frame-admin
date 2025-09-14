@@ -211,21 +211,10 @@ function handlePageChange(page: number, size: number) {
   pageSize.value = size;
 }
 
-/**
- * 处理上传成功
- * @param _file 上传的文件
- * @param _fileList 文件列表
- */
 function handleUploadSuccess() {
   refetchFiles();
 }
 
-/**
- * 处理上传失败
- * @param error 错误信息
- * @param _file 上传的文件
- * @param _fileList 文件列表
- */
 function handleUploadError(error: Error) {
   console.error('Upload error:', error);
 }

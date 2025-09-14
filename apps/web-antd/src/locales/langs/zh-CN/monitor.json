@@ -1,0 +1,32 @@
+{
+  "redis": {
+    "title": "Redis 缓存监控",
+    "description": "实时监控Redis缓存服务运行状态和性能指标",
+    "version": "Redis 版本",
+    "mode": "运行模式",
+    "port": "端口",
+    "uptime": "运行时间",
+    "connectedClients": "连接客户端",
+    "totalKeys": "Key 总数",
+    "expiredKeys": "过期 Key",
+    "aofPersistence": "AOF 持久化",
+    "aofEnabled": "已开启",
+    "aofDisabled": "未开启",
+    "memoryUsage": "内存使用情况",
+    "usedMemory": "已用内存",
+    "maxMemory": "最大内存",
+    "cacheHitRate": "缓存命中率",
+    "hitRate": "命中率",
+    "rdbStatus": "RDB 状态",
+    "saveStatus": "保存状态",
+    "lastSaveTime": "最后保存时间",
+    "networkTraffic": "网络流量统计",
+    "totalNetInput": "网络输入总量",
+    "totalNetOutput": "网络输出总量",
+    "loading": "加载中...",
+    "unit": {
+      "count": "个",
+      "days": "天"
+    }
+  }
+}

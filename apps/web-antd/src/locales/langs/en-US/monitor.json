@@ -1,0 +1,32 @@
+{
+  "redis": {
+    "title": "Redis Cache Monitor",
+    "description": "Real-time monitoring of Redis cache service status and performance metrics",
+    "version": "Redis Version",
+    "mode": "Mode",
+    "port": "Port",
+    "uptime": "Uptime",
+    "connectedClients": "Connected Clients",
+    "totalKeys": "Total Keys",
+    "expiredKeys": "Expired Keys",
+    "aofPersistence": "AOF Persistence",
+    "aofEnabled": "Enabled",
+    "aofDisabled": "Disabled",
+    "memoryUsage": "Memory Usage",
+    "usedMemory": "Used Memory",
+    "maxMemory": "Max Memory",
+    "cacheHitRate": "Cache Hit Rate",
+    "hitRate": "Hit Rate",
+    "rdbStatus": "RDB Status",
+    "saveStatus": "Save Status",
+    "lastSaveTime": "Last Save Time",
+    "networkTraffic": "Network Traffic",
+    "totalNetInput": "Total Network Input",
+    "totalNetOutput": "Total Network Output",
+    "loading": "Loading...",
+    "unit": {
+      "count": "",
+      "days": "days"
+    }
+  }
+}
