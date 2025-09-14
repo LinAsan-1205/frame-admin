@@ -108,6 +108,13 @@ export function useColumns<T = Session.View>(
       },
     },
     {
+      field: 'os',
+      title: $t('system.session.os'),
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
+    },
+    {
       field: 'status',
       title: $t('system.session.status'),
       cellRender: { name: 'CellTag', options: SessionStatus.toOriginItems() },

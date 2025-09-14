@@ -227,6 +227,7 @@
     "deviceType": "Device Type",
     "user": "User",
     "isMe": "Is Me",
+    "os": "OS",
     "lastActiveAt": "Last Active At",
     "logoutAt": "Logout At",
     "ipAddress": "IP Address",
