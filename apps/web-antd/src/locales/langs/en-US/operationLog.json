@@ -1,0 +1,20 @@
+{
+  "list": "Operation Log List",
+  "id": "ID",
+  "userId": "User ID",
+  "username": "Username",
+  "module": "Module",
+  "operationType": "Operation Type",
+  "description": "Description",
+  "method": "Request Method",
+  "url": "Request URL",
+  "params": "Request Params",
+  "result": "Result",
+  "status": "Status",
+  "errorMsg": "Error Message",
+  "ip": "IP Address",
+  "userAgent": "User Agent",
+  "operationTime": "Operation Time",
+  "costTime": "Cost Time",
+  "usernamePlaceholder": "Please enter username"
+}

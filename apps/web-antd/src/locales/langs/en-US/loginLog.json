@@ -1,0 +1,16 @@
+{
+  "list": "Login Log List",
+  "id": "ID",
+  "username": "Username",
+  "ip": "Login IP",
+  "browser": "Browser",
+  "os": "OS",
+  "status": "Status",
+  "loginTime": "Login Time",
+  "address": "Location",
+  "behavior": "Login Behavior",
+  "errorMsg": "Error Message",
+  "errorMsgHelper": "Error message displayed after login failure",
+  "deleteSuccess": "Delete Success",
+  "deleteConfirm": "Are you sure to delete the selected login logs?"
+}

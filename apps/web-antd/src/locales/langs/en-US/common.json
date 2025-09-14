@@ -1,0 +1,14 @@
+{
+  "all": "All",
+  "success": "Success",
+  "failed": "Failed",
+  "operation": "Operation",
+  "edit": "Edit",
+  "more": "More",
+  "createTime": "Create Time",
+  "upload": "Upload",
+  "download": "Download",
+  "view": "View",
+  "delete": "Delete",
+  "filter": "Filter"
+}

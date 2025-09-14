@@ -3,12 +3,36 @@
     "login": "Login",
     "register": "Register",
     "codeLogin": "Code Login",
-    "qrcodeLogin": "Qr Code Login",
+    "qrcodeLogin": "QR Code Login",
     "forgetPassword": "Forget Password"
   },
   "dashboard": {
     "title": "Dashboard",
     "analytics": "Analytics",
     "workspace": "Workspace"
+  },
+  "system": {
+    "title": "System Management",
+    "dept": "Department Management",
+    "monitor": "System Monitor",
+    "session": "Session Management"
+  },
+  "log": {
+    "title": "Log Management", 
+    "operationLog": "Operation Log",
+    "loginLog": "Login Log"
+  },
+  "user": {
+    "title": "User Management",
+    "profile": "Profile"
+  },
+  "schedule": {
+    "title": "Task Schedule",
+    "task": {
+      "title": "Task Management"
+    },
+    "log": {
+      "title": "Execution Log"
+    }
   }
 }
