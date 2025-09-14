@@ -10,5 +10,7 @@
   "address": "登录地点",
   "behavior": "登录行为",
   "errorMsg": "错误信息",
-  "errorMsgHelper": "登录失败后的错误信息展示"
+  "errorMsgHelper": "登录失败后的错误信息展示",
+  "deleteSuccess": "删除成功",
+  "deleteConfirm": "确定删除所选登录日志吗？"
 }

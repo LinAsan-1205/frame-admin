@@ -30,19 +30,15 @@ function refreshLoginLogGrid() {
  * 批量删除登录日志
  */
 async function deleteLoginLogBatch() {
-  // 拼接所有选中日志的用户名
-  const loginLogUserNames = loginLogSelectedRows.value
-    .map((loginLogRow) => loginLogRow.username)
-    .join(',');
   Modal.confirm({
-    content: $t('ui.actionMessage.deleteConfirm', [loginLogUserNames]),
+    content: $t('loginLog.deleteConfirm'),
     async onOk() {
       const loginLogIds = loginLogSelectedRows.value.map(
         (loginLogRow) => loginLogRow.id,
       );
       await deleteByIds(loginLogIds);
       message.success({
-        content: $t('ui.actionMessage.deleteSuccess', [loginLogUserNames]),
+        content: $t('loginLog.deleteSuccess'),
         key: 'action_process_msg',
       });
       refreshLoginLogGrid();
