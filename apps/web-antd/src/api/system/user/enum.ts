@@ -4,8 +4,8 @@ import { Enum } from 'enum-plus';
  * 用户类型
  */
 export const UserType = Enum({
-  Admin: { value: '02', label: '管理员', color: 'default' },
-  System: { value: '00', label: '系统用户', color: 'processing' },
+  Admin: { value: '02', label: '管理员', color: 'processing' },
+  System: { value: '00', label: '系统用户', color: 'volcano' },
   Simple: { value: '01', label: '普通用户', color: 'success' },
 } as const);
 
