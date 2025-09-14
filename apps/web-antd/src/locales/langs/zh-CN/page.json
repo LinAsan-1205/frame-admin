@@ -26,6 +26,9 @@
     "title": "用户管理",
     "profile": "个人信息"
   },
+  "monitor": {
+    "redisCache": "redis监控"
+  },
   "schedule": {
     "title": "任务调度",
     "task": {
