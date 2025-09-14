@@ -50,7 +50,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
   const HEARTBEAT_INTERVAL = 30_000; // 30秒心跳间隔
 
   const wsUrl = computed(() => {
-    let baseUrl = import.meta.env.VITE_GLOB_API_URL;
+    let baseUrl = import.meta.env.VITE_WEBSOCKET_URL;
 
     // 移除协议前缀
     baseUrl = baseUrl.replace(/^https?:\/\//, '');
