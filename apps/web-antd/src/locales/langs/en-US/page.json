@@ -14,6 +14,10 @@
   "system": {
     "title": "System Management",
     "dept": "Department Management",
+    "dict": "Dictionary Management",
+    "user": "User Management",
+    "role": "Role Management",
+    "menu": "Menu Management",
     "monitor": "System Monitor",
     "session": "Session Management"
   },
