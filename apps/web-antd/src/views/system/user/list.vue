@@ -7,7 +7,7 @@ import type { User } from '#/api/system/user';
 
 import { watch } from 'vue';
 
-import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
+import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { Button, message, Modal } from 'ant-design-vue';
@@ -134,22 +134,20 @@ function onRefresh() {
 watch(() => deptId.value, onRefresh);
 </script>
 <template>
-  <Page auto-content-height>
-    <FormDrawer @success="onRefresh" />
-    <AssignedRoleModal @success="onRefresh" />
-    <Grid :table-title="$t('system.user.list')">
-      <template #userBlock="{ row }">
-        <UserBlock :origin="row" />
-      </template>
-      <template #rolesBlock="{ row }">
-        <RolesBlock :origin="row" />
-      </template>
-      <template #toolbar-tools>
-        <Button type="primary" @click="onCreate">
-          <Plus class="size-5" />
-          {{ $t('ui.actionTitle.create', [$t('system.user.name')]) }}
-        </Button>
-      </template>
-    </Grid>
-  </Page>
+  <FormDrawer @success="onRefresh" />
+  <AssignedRoleModal @success="onRefresh" />
+  <Grid :table-title="$t('system.user.list')">
+    <template #userBlock="{ row }">
+      <UserBlock :origin="row" />
+    </template>
+    <template #rolesBlock="{ row }">
+      <RolesBlock :origin="row" />
+    </template>
+    <template #toolbar-tools>
+      <Button type="primary" @click="onCreate">
+        <Plus class="size-5" />
+        {{ $t('ui.actionTitle.create', [$t('system.user.name')]) }}
+      </Button>
+    </template>
+  </Grid>
 </template>

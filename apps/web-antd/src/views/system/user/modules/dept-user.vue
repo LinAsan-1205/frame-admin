@@ -32,34 +32,30 @@ const onSelect = (selectedKeys: any) => {
 };
 </script>
 <template>
-  <div
-    class="border-border bg-card min-w-[300px] rounded-[var(--radius)] border p-2"
-  >
-    <div class="mb-[8px]">
-      <InputSearch
-        v-model:value="searchValue"
-        :placeholder="$t('system.user.deptSearchPlaceholder')"
-      />
-    </div>
-    <div class="pr-[10px]">
-      <Tree
-        v-if="data?.length"
-        default-expand-all
-        auto-expand-parent
-        block-node
-        @select="onSelect"
-        :field-names="fieldNames"
-        :tree-data="data as any"
-      >
-        <template #title="{ name }">
-          <span v-if="name.includes(searchValue)">
-            {{ name.substring(0, name.indexOf(searchValue)) }}
-            <span style="color: #f50">{{ searchValue }}</span>
-            {{ name.substring(name.indexOf(searchValue) + searchValue.length) }}
-          </span>
-          <span v-else>{{ name }}</span>
-        </template>
-      </Tree>
-    </div>
+  <div class="mb-[8px]">
+    <InputSearch
+      v-model:value="searchValue"
+      :placeholder="$t('system.user.deptSearchPlaceholder')"
+    />
+  </div>
+  <div class="pr-[10px]">
+    <Tree
+      v-if="data?.length"
+      default-expand-all
+      auto-expand-parent
+      block-node
+      @select="onSelect"
+      :field-names="fieldNames"
+      :tree-data="data as any"
+    >
+      <template #title="{ name }">
+        <span v-if="name.includes(searchValue)">
+          {{ name.substring(0, name.indexOf(searchValue)) }}
+          <span style="color: #f50">{{ searchValue }}</span>
+          {{ name.substring(name.indexOf(searchValue) + searchValue.length) }}
+        </span>
+        <span v-else>{{ name }}</span>
+      </template>
+    </Tree>
   </div>
 </template>
