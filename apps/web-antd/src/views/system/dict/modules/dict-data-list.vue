@@ -7,7 +7,7 @@ import type { DictData } from '#/api/system/dict';
 
 import { watch } from 'vue';
 
-import { useVbenDrawer } from '@vben/common-ui';
+import { useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { Button, message, Modal } from 'ant-design-vue';
@@ -25,7 +25,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const [DictDataFormDrawer, dictDataFormDrawerApi] = useVbenDrawer({
+const [DictDataFormModal, dictDataFormModalApi] = useVbenModal({
   connectedComponent: DictDataForm,
   destroyOnClose: true,
 });
@@ -74,7 +74,7 @@ function onActionClick(event: OnActionClickParams<DictData.View>) {
 }
 
 function onEdit(row: DictData.View) {
-  dictDataFormDrawerApi.setData(row).open();
+  dictDataFormModalApi.setData(row).open();
 }
 
 function onCreate() {
@@ -82,7 +82,7 @@ function onCreate() {
     message.warning($t('system.dictData.selectDictFirst'));
     return;
   }
-  dictDataFormDrawerApi.setData({ dictId: props.dictId }).open();
+  dictDataFormModalApi.setData({ dictId: props.dictId }).open();
 }
 
 async function onDelete(row: DictData.View) {
@@ -114,6 +114,7 @@ watch(
 </script>
 
 <template>
+  <DictDataFormModal @success="onFormSuccess" />
   <Grid>
     <template #toolbar-tools>
       <Button type="primary" :disabled="!dictId" @click="onCreate">
@@ -124,6 +125,4 @@ watch(
       </Button>
     </template>
   </Grid>
-
-  <DictDataFormDrawer @success="onFormSuccess" />
 </template>

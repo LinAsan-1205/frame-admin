@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
-import { useVbenDrawer } from '@vben/common-ui';
+import { useVbenModal } from '@vben/common-ui';
 
 import { VbenIcon, VbenIconButton, VbenSpinner } from '@vben-core/shadcn-ui';
 
@@ -29,7 +29,7 @@ import DictForm from './dict-form.vue';
 const searchValue = ref('');
 const categoryListRef = ref<HTMLElement>();
 
-const [DictFormDrawer, dictFormDrawerApi] = useVbenDrawer({
+const [DictFormModal, dictFormModalApi] = useVbenModal({
   connectedComponent: DictForm,
   destroyOnClose: true,
 });
@@ -70,7 +70,7 @@ const onSelect = (dictId: number) => {
  * 新增字典
  */
 const onAdd = () => {
-  dictFormDrawerApi.setData({}).open();
+  dictFormModalApi.setData({}).open();
 };
 
 /**
@@ -103,7 +103,7 @@ const onDelete = (id: number) => {
 const onEdit = (id: number) => {
   const row = data?.value?.find((item) => item.id === id);
   if (row) {
-    dictFormDrawerApi.setData(row).open();
+    dictFormModalApi.setData(row).open();
   } else {
     message.error($t('common.operationFailed'));
   }
@@ -153,7 +153,7 @@ function handleMenuClick(key: string, dictId: number) {
 </script>
 
 <template>
-  <DictFormDrawer @success="onRefresh" />
+  <DictFormModal @success="onRefresh" />
   <div class="space-y-2">
     <div class="mb-3 space-y-3 border-b border-gray-100 pb-3">
       <div class="flex items-center justify-between">

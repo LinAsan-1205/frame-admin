@@ -3,7 +3,7 @@ import type { DictData } from '#/api/system/dict';
 
 import { computed, ref } from 'vue';
 
-import { useVbenDrawer } from '@vben/common-ui';
+import { useVbenModal } from '@vben/common-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { addDictData, setDictDataById } from '#/api/system/dict';
@@ -22,24 +22,24 @@ const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
 });
 
-const [Drawer, drawerApi] = useVbenDrawer({
+const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (!valid) return;
     const values: DictData.Post = await formApi.getValues();
-    drawerApi.lock();
+    modalApi.lock();
     (id.value ? setDictDataById(id.value, values) : addDictData(values))
       .then(() => {
         emits('success');
-        drawerApi.close();
+        modalApi.close();
       })
       .catch(() => {
-        drawerApi.unlock();
+        modalApi.unlock();
       });
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData<DictData.View>();
+      const data = modalApi.getData<DictData.View>();
       formApi.resetForm();
       if (data) {
         formData.value = data;
@@ -49,7 +49,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       } else {
         id.value = undefined;
         // 获取预设的dictId（新增时）
-        const presetData = drawerApi.getData<{ dictId?: number }>();
+        const presetData = modalApi.getData<{ dictId?: number }>();
         if (presetData?.dictId) {
           dictId.value = presetData.dictId;
           formApi.setValues({ dictId: presetData.dictId });
@@ -59,13 +59,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
 });
 
-const getDrawerTitle = computed(() => {
-  return formData.value?.id ? $t('common.edit') : $t('common.add');
+const getModalTitle = computed(() => {
+  return `${formData.value?.id ? $t('common.edit') : $t('common.create')}字典数据`;
 });
 </script>
+
 <template>
-  <Drawer :title="getDrawerTitle">
+  <Modal :title="getModalTitle">
     <Form />
-  </Drawer>
+  </Modal>
 </template>
+
 <style lang="css" scoped></style>

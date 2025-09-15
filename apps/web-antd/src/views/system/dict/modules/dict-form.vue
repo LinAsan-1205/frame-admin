@@ -3,7 +3,7 @@ import type { Dict } from '#/api/system/dict';
 
 import { computed, ref } from 'vue';
 
-import { useVbenDrawer } from '@vben/common-ui';
+import { useVbenModal } from '@vben/common-ui';
 
 import { useVbenForm } from '#/adapter/form';
 import { addDict, setDictById } from '#/api/system/dict';
@@ -21,24 +21,24 @@ const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
 });
 
-const [Drawer, drawerApi] = useVbenDrawer({
+const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (!valid) return;
     const values: Dict.Post = await formApi.getValues();
-    drawerApi.lock();
+    modalApi.lock();
     (id.value ? setDictById(id.value, values) : addDict(values))
       .then(() => {
         emits('success');
-        drawerApi.close();
+        modalApi.close();
       })
       .catch(() => {
-        drawerApi.unlock();
+        modalApi.unlock();
       });
   },
   onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData<Dict.View>();
+      const data = modalApi.getData<Dict.View>();
       formApi.resetForm();
       if (data) {
         formData.value = data;
@@ -51,13 +51,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
 });
 
-const getDrawerTitle = computed(() => {
-  return formData.value?.id ? $t('common.edit') : $t('common.add');
+const getModalTitle = computed(() => {
+  return `${formData.value?.id ? $t('common.edit') : $t('common.create')}${$t('system.dict.name')}`;
 });
 </script>
+
 <template>
-  <Drawer :title="getDrawerTitle">
+  <Modal :title="getModalTitle">
     <Form />
-  </Drawer>
+  </Modal>
 </template>
+
 <style lang="css" scoped></style>

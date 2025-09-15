@@ -16,5 +16,6 @@
   "filter": "筛选",
   "tip": "提示",
   "confirmDelete": "确认删除",
-  "cancel": "取消"
+  "cancel": "取消",
+  "create": "创建"
 }

@@ -289,6 +289,7 @@
   },
   "dict": {
     "title": "字典管理",
+    "name": "字典",
     "description": "管理系统字典类型和数据",
     "list": "字典列表",
     "dictName": "字典名称",
