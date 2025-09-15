@@ -61,7 +61,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   async function doRefreshToken() {
     const accessStore = useAccessStore();
     const resp = await refreshTokenApi(accessStore.refreshToken);
-    const newToken = resp.accessToken;
+    const newToken = resp?.accessToken;
     accessStore.setAccessToken(newToken);
     return newToken;
   }
@@ -106,8 +106,10 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     errorMessageResponseInterceptor((msg: string, error) => {
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
       const responseData = error?.response?.data ?? {};
-      const errorMessage = responseData?.error ?? responseData?.message ?? '';
+      const errorMessage =
+        responseData?.error ?? responseData?.message ?? msg ?? '';
       const errorCode = responseData?.code ?? error.code;
+
       switch (errorCode) {
         case 401:
         case 2001: {
