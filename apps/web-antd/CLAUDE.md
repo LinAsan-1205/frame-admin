@@ -222,25 +222,99 @@ import { Avatar } from 'ant-design-vue';
 
 ### API 开发规范
 
-#### 接口定义
-- 使用 `requestClient` 进行 API 调用
-- 接口函数命名使用 `xxxApi` 后缀
-- 返回类型明确标注
+#### 模块结构
+每个 API 模块按以下结构组织：
+```
+src/api/模块名/
+├── api.ts        # 接口函数定义
+├── types.ts      # 类型定义
+├── enum.ts       # 枚举定义
+└── index.ts      # 统一导出
+```
+
+#### 接口函数定义
+- **函数命名**: 使用动词开头的 camelCase，如 `queryUserPage`、`getMineProfile`
+- **参数顺序**: 路径参数 → 查询参数 → 请求体参数
+- **类型标注**: 明确标注返回类型和参数类型
+- **注释要求**: 使用 JSDoc 注释说明函数功能和参数
 
 ```typescript
-// ✅ 推荐的 API 定义
-export async function getUserInfoApi() {
-  return requestClient.get<User.profile>('/system/user/mine/profile');
+// ✅ 推荐的 API 函数定义
+/**
+ * 查询用户分页列表
+ * @param pageCursor 分页参数
+ * @param condition 查询条件
+ */
+function queryUserPage(
+  pageCursor: Api.PageCursor = {},
+  condition: User.Condition = {},
+) {
+  return requestClient.get<Api.PaginationResult<User.View[]>>(
+    '/system/user/page',
+    {
+      params: {
+        ...pageCursor,
+        ...condition,
+      },
+    },
+  );
 }
 
-export async function loginApi(data: AuthApi.LoginParams) {
-  return requestClient.post<AuthApi.LoginResult>('/auth/account-login', data);
+/**
+ * 更新用户
+ * @param userId 用户ID
+ * @param user 用户信息
+ */
+function setUser(userId: number, user: User.Post) {
+  return requestClient.put<boolean>(`/system/user/${userId}`, user);
 }
 ```
 
+#### 枚举定义
+- 使用 `enum-plus` 库定义枚举
+- 枚举值包含 `value`、`label`、`color` 属性
+- 命名使用 PascalCase
+
+```typescript
+// ✅ 推荐的枚举定义
+export const UserType = Enum({
+  Admin: { value: '02', label: '管理员', color: 'processing' },
+  System: { value: '00', label: '系统用户', color: 'volcano' },
+  Simple: { value: '01', label: '普通用户', color: 'success' },
+} as const);
+
+export const Status = Enum({
+  Normal: { value: '0', label: '启用', color: 'success' },
+  Stop: { value: '1', label: '禁用', color: 'error' },
+} as const);
+```
+
+#### 导出规范
+- `api.ts` 使用具名导出
+- `index.ts` 统一导出所有模块内容
+
+```typescript
+// api.ts - 具名导出
+export {
+  addUser,
+  assignUserRole,
+  delUserById,
+  getBindAccessCodes,
+  getMineProfile,
+  queryUserPage,
+  setUser,
+};
+
+// index.ts - 统一导出
+export * from './api';
+export * from './enum';
+export * from './types';
+```
+
 #### 错误处理
-- 登录失败等操作不强制要求 try-catch
-- 网络请求错误由 requestClient 统一处理
+- 网络请求错误由 `requestClient` 统一处理
+- 业务逻辑错误在组件层面处理
+- 避免在 API 层做过多的错误处理逻辑
 
 ### 状态管理规范
 
