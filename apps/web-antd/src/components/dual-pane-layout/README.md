@@ -35,7 +35,7 @@ const layoutProps = {
     <template #left>
       <DictCategory @select="handleCategorySelect" />
     </template>
-    
+
     <!-- 右侧内容 -->
     <template #right>
       <DictDataList :dict-id="selectedDictId" />
@@ -65,7 +65,7 @@ const handleCategorySelect = (dictId: number) => {
     <template #left>
       <DictCategory @select="handleCategorySelect" />
     </template>
-    
+
     <template #right>
       <DictDataList :dict-id="selectedDictId" />
     </template>
@@ -76,7 +76,7 @@ const handleCategorySelect = (dictId: number) => {
 ## Props 配置
 
 | 属性名 | 类型 | 默认值 | 说明 |
-|-------|------|--------|------|
+| --- | --- | --- | --- |
 | `leftCollapsedWidth` | `number` | `5` | 左侧面板折叠后的宽度百分比 |
 | `leftCollapsible` | `boolean` | `true` | 左侧面板是否可折叠 |
 | `leftMaxWidth` | `number` | `50` | 左侧面板最大宽度百分比 |
@@ -90,9 +90,9 @@ const handleCategorySelect = (dictId: number) => {
 
 ## 插槽
 
-| 插槽名 | 说明 |
-|-------|------|
-| `left` | 左侧面板内容 |
+| 插槽名  | 说明         |
+| ------- | ------------ |
+| `left`  | 左侧面板内容 |
 | `right` | 右侧面板内容 |
 
 ## 迁移指南
@@ -100,6 +100,7 @@ const handleCategorySelect = (dictId: number) => {
 ### 从原始代码迁移
 
 **原始代码：**
+
 ```vue
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
@@ -126,6 +127,7 @@ const props = reactive({
 ```
 
 **迁移后：**
+
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
