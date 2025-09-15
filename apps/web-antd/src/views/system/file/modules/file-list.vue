@@ -3,7 +3,6 @@ import type { File } from '#/api/system/file/types';
 
 import { computed, ref } from 'vue';
 
-import { Search } from '@vben/icons';
 import { downloadFileFromImageUrl } from '@vben/utils';
 
 import { VbenIcon, VbenIconButton } from '@vben-core/shadcn-ui';
@@ -14,7 +13,6 @@ import {
   Button,
   Card,
   Dropdown,
-  Input,
   Menu,
   MenuItem,
   message,
@@ -23,6 +21,7 @@ import {
 } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
+import { useVbenForm } from '#/adapter/form';
 import { delFileById, queryFilePage } from '#/api/system/file';
 import { FileStatus, FileType, StorageType } from '#/api/system/file/enum';
 import { $t } from '#/locales';
@@ -31,34 +30,97 @@ import FileUpload from './file-upload.vue';
 
 const categoryId = defineModel<number | undefined>('categoryId');
 
-const searchKeyword = ref('');
-const selectedCategory = ref<number | undefined>();
 const currentPage = ref(1);
 const pageSize = ref(30);
+
+const [SearchForm, SearchFormApi] = useVbenForm({
+  collapsed: false,
+  commonConfig: {
+    componentProps: {
+      class: 'w-full',
+    },
+  },
+  handleSubmit: onSubmit,
+  handleValuesChange: onSubmit,
+  layout: 'horizontal',
+  schema: [
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: $t('system.storageFiles.fileNamePlaceholder'),
+        allowClear: true,
+      },
+      fieldName: 'name',
+      label: $t('system.storageFiles.fileName'),
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: FileType.toOriginItems(),
+        placeholder: $t('system.storageFiles.fileTypePlaceholder'),
+        showSearch: true,
+        filterOption: true,
+      },
+      fieldName: 'fileType',
+      label: $t('system.storageFiles.fileType'),
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: StorageType.toOriginItems(),
+        placeholder: $t('system.storageFiles.storageTypePlaceholder'),
+        showSearch: true,
+        filterOption: true,
+      },
+      fieldName: 'storageType',
+      label: $t('system.storageFiles.storageType'),
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: FileStatus.toOriginItems(),
+        placeholder: $t('system.storageFiles.statusPlaceholder'),
+        showSearch: true,
+        filterOption: true,
+      },
+      fieldName: 'status',
+      label: $t('system.storageFiles.status'),
+    },
+  ],
+  submitButtonOptions: {
+    content: $t('common.search'),
+  },
+  resetButtonOptions: {
+    content: $t('common.reset'),
+  },
+  wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
+  handleReset: () => {
+    SearchFormApi.resetForm();
+    searchParams.value = {};
+    currentPage.value = 1;
+    refetchFiles();
+  },
+  submitOnChange: true,
+});
+
+const searchParams = ref<Record<string, any>>({});
 
 const {
   data: filePageData,
   refetch: refetchFiles,
   isLoading,
 } = useQuery({
-  queryKey: [
-    'fileList',
-    currentPage,
-    pageSize,
-    searchKeyword,
-    selectedCategory,
-    categoryId,
-  ],
+  queryKey: ['fileList', currentPage, pageSize, searchParams, categoryId],
   queryFn: () =>
     queryFilePage(
       {
         page: currentPage.value,
         pageSize: pageSize.value,
       },
-      {
-        name: searchKeyword.value || undefined,
-        type: selectedCategory.value?.toString(),
-      },
+      searchParams.value,
     ),
   placeholderData: keepPreviousData,
 });
@@ -67,6 +129,12 @@ const fileList = computed(
   () => (filePageData.value?.items || []) as unknown as File.View[],
 );
 const total = computed(() => filePageData.value?.meta?.totalItems || 0);
+
+function onSubmit(values: Record<string, any>) {
+  searchParams.value = { ...values };
+  currentPage.value = 1;
+  refetchFiles();
+}
 
 /**
  * 根据文件类型获取图标
@@ -149,14 +217,6 @@ function isFileStatusNormal(status: string) {
 }
 
 /**
- * 处理搜索
- */
-function handleSearch() {
-  currentPage.value = 1;
-  refetchFiles();
-}
-
-/**
  * 处理文件操作
  * @param action 操作类型
  * @param file 文件信息
@@ -222,39 +282,22 @@ function handleUploadError(error: Error) {
 
 <template>
   <div class="flex h-full flex-col space-y-4">
-    <!-- 搜索和操作栏 -->
+    <!-- 搜索表单 -->
     <Card>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-          <Input
-            v-model:value="searchKeyword"
-            :placeholder="$t('system.storageFiles.searchPlaceholder')"
-            class="w-64"
-            @press-enter="handleSearch"
-          >
-            <template #prefix>
-              <Search class="size-4 text-gray-400" />
-            </template>
-          </Input>
-          <Button @click="handleSearch">
-            {{ $t('system.storageFiles.search') }}
-          </Button>
-          <Button>
-            <VbenIcon icon="ri:filter-line" class="size-4" />
-            {{ $t('system.storageFiles.filter') }}
-          </Button>
-        </div>
-        <div class="flex items-center space-x-2">
-          <FileUpload
-            :multiple="true"
-            :max-size="50"
-            :max-count="10"
-            :button-text="$t('system.storageFiles.upload')"
-            button-icon="ri:upload-line"
-            @success="handleUploadSuccess"
-            @error="handleUploadError"
-          />
-        </div>
+      <SearchForm />
+    </Card>
+
+    <Card>
+      <div class="flex justify-end">
+        <FileUpload
+          :multiple="true"
+          :max-size="50"
+          :max-count="10"
+          :button-text="$t('system.storageFiles.upload')"
+          button-icon="ri:upload-line"
+          @success="handleUploadSuccess"
+          @error="handleUploadError"
+        />
       </div>
     </Card>
 

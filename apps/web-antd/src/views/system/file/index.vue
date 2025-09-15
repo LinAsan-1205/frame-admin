@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import { Page } from '@vben/common-ui';
+import { DualPaneLayout } from '#/components/dual-pane-layout';
 
 import FileCategory from './modules/file-category.vue';
 import FileList from './modules/file-list.vue';
@@ -10,14 +10,15 @@ const categoryId = ref<number | undefined>();
 </script>
 
 <template>
-  <Page auto-content-height>
-    <div class="flex h-full w-full space-x-2">
-      <div class="min-w-64 flex-shrink-0">
+  <DualPaneLayout>
+    <template #left>
+      <div
+        class="border-border bg-card mr-2 h-full rounded-[var(--radius)] border p-4"
+      >
         <FileCategory v-model="categoryId" />
       </div>
-      <div class="min-w-0 flex-1">
-        <FileList v-model:category-id="categoryId" />
-      </div>
-    </div>
-  </Page>
+    </template>
+
+    <FileList v-model:category-id="categoryId" />
+  </DualPaneLayout>
 </template>

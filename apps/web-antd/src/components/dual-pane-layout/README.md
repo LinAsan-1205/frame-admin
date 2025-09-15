@@ -36,10 +36,8 @@ const layoutProps = {
       <DictCategory @select="handleCategorySelect" />
     </template>
 
-    <!-- 右侧内容 -->
-    <template #right>
-      <DictDataList :dict-id="selectedDictId" />
-    </template>
+    <!-- 右侧内容（默认插槽） -->
+    <DictDataList :dict-id="selectedDictId" />
   </DualPaneLayout>
 </template>
 ```
@@ -66,9 +64,8 @@ const handleCategorySelect = (dictId: number) => {
       <DictCategory @select="handleCategorySelect" />
     </template>
 
-    <template #right>
-      <DictDataList :dict-id="selectedDictId" />
-    </template>
+    <!-- 右侧内容（默认插槽） -->
+    <DictDataList :dict-id="selectedDictId" />
   </DualPaneLayout>
 </template>
 ```
@@ -93,7 +90,7 @@ const handleCategorySelect = (dictId: number) => {
 | 插槽名  | 说明         |
 | ------- | ------------ |
 | `left`  | 左侧面板内容 |
-| `right` | 右侧面板内容 |
+| 默认插槽 | 右侧面板内容 |
 
 ## 迁移指南
 
@@ -143,9 +140,8 @@ const dictId = ref<number | undefined>();
     <template #left>
       <DictCategory />
     </template>
-    <template #right>
-      <DictDataList :dict-id="dictId" />
-    </template>
+    <!-- 右侧内容（默认插槽） -->
+    <DictDataList :dict-id="dictId" />
   </DualPaneLayout>
 </template>
 ```

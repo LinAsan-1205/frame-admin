@@ -184,46 +184,42 @@ onUnmounted(() => {
 </script>
 <template>
   <FileCategoryFormModal @success="onRefresh" />
-  <div class="min-w-[320px] space-y-2">
-    <!-- 标题、搜索和操作栏 -->
-    <Card class="p-3" :body-style="{ padding: 0 }">
-      <div class="space-y-2">
-        <!-- 标题和操作按钮 -->
-        <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold">
-            {{ $t('system.fileCategory.title') }}
-          </h3>
-          <div class="flex items-center space-x-2">
-            <VbenIconButton
-              @click="onRefresh"
-              :tooltip="$t('system.fileCategory.refresh')"
-              :loading="isLoading"
-            >
-              <VbenIcon icon="ri:refresh-line" />
-            </VbenIconButton>
-            <VbenIconButton
-              @click="onAdd"
-              :tooltip="$t('system.fileCategory.add')"
-            >
-              <VbenIcon icon="ri:add-line" />
-            </VbenIconButton>
-          </div>
+  <div class="space-y-2">
+    <div class="space-y-2">
+      <!-- 标题和操作按钮 -->
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold">
+          {{ $t('system.fileCategory.title') }}
+        </h3>
+        <div class="flex items-center space-x-2">
+          <VbenIconButton
+            @click="onRefresh"
+            :tooltip="$t('system.fileCategory.refresh')"
+            :loading="isLoading"
+          >
+            <VbenIcon icon="ri:refresh-line" />
+          </VbenIconButton>
+          <VbenIconButton
+            @click="onAdd"
+            :tooltip="$t('system.fileCategory.add')"
+          >
+            <VbenIcon icon="ri:add-line" />
+          </VbenIconButton>
         </div>
-
-        <!-- 搜索栏 -->
-        <Input
-          v-model:value="searchValue"
-          :placeholder="$t('system.fileCategory.searchPlaceholder')"
-          class="w-full"
-        >
-          <template #prefix>
-            <VbenIcon icon="ri:search-line" class="text-gray-400" />
-          </template>
-        </Input>
       </div>
-    </Card>
 
-    <!-- 分类列表 -->
+      <!-- 搜索栏 -->
+      <Input
+        v-model:value="searchValue"
+        :placeholder="$t('system.fileCategory.searchPlaceholder')"
+        class="w-full"
+      >
+        <template #prefix>
+          <VbenIcon icon="ri:search-line" class="text-gray-400" />
+        </template>
+      </Input>
+    </div>
+
     <div ref="categoryListRef" class="space-y-2">
       <!-- 加载状态 -->
       <div v-if="isLoading" class="py-8 text-center">
