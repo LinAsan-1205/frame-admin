@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
@@ -150,172 +150,135 @@ function handleMenuClick(key: string, dictId: number) {
     }
   }
 }
-
-function handleClickOutside(event: MouseEvent) {
-  if (
-    categoryListRef.value &&
-    !categoryListRef.value.contains(event.target as Node)
-  ) {
-    modelValue.value = undefined;
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
 </script>
 
 <template>
   <DictFormDrawer @success="onRefresh" />
-  <div class="min-w-[320px] space-y-2">
-    <!-- 整体卡片容器 -->
-    <Card class="min-h-[500px]" :body-style="{ padding: '16px' }">
-      <!-- 标题、搜索和操作栏 -->
-      <div class="mb-3 space-y-3 border-b border-gray-100 pb-3">
-        <!-- 标题和操作按钮 -->
-        <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold">
-            {{ $t('system.dict.title') }}
-          </h3>
-          <div class="flex items-center space-x-2">
-            <VbenIconButton
-              @click="onRefresh"
-              :tooltip="$t('common.refresh')"
-              :loading="isLoading || isFetching"
-            >
-              <VbenIcon icon="ri:refresh-line" />
-            </VbenIconButton>
-            <VbenIconButton @click="onAdd" :tooltip="$t('common.add')">
-              <VbenIcon icon="ri:add-line" />
-            </VbenIconButton>
-          </div>
+  <div class="space-y-2">
+    <div class="mb-3 space-y-3 border-b border-gray-100 pb-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold">
+          {{ $t('system.dict.title') }}
+        </h3>
+        <div class="flex items-center space-x-2">
+          <VbenIconButton
+            @click="onRefresh"
+            :tooltip="$t('common.refresh')"
+            :loading="isLoading || isFetching"
+          >
+            <VbenIcon icon="ri:refresh-line" />
+          </VbenIconButton>
+          <VbenIconButton @click="onAdd" :tooltip="$t('common.add')">
+            <VbenIcon icon="ri:add-line" />
+          </VbenIconButton>
         </div>
-
-        <!-- 搜索栏 -->
-        <Input
-          v-model:value="searchValue"
-          :placeholder="$t('system.dict.dictNamePlaceholder')"
-          class="w-full"
-        >
-          <template #prefix>
-            <VbenIcon icon="ri:search-line" class="text-gray-400" />
-          </template>
-        </Input>
       </div>
 
-      <!-- 字典列表 -->
-      <div ref="categoryListRef" class="space-y-2">
-        <!-- 加载状态 -->
-        <VbenSpinner
-          v-if="isLoading && !data"
-          :spinning="true"
-          class="min-h-[200px]"
+      <Input
+        v-model:value="searchValue"
+        :placeholder="$t('system.dict.dictNamePlaceholder')"
+        class="w-full"
+      >
+        <template #prefix>
+          <VbenIcon icon="ri:search-line" class="text-gray-400" />
+        </template>
+      </Input>
+    </div>
+
+    <div ref="categoryListRef" class="space-y-2">
+      <VbenSpinner
+        v-if="isLoading && !data"
+        :spinning="true"
+        class="min-h-[200px]"
+      />
+
+      <!-- 空状态 -->
+      <div v-else-if="filteredDicts.length === 0" class="py-8 text-center">
+        <VbenIcon
+          icon="ri:book-line"
+          class="mx-auto mb-2 size-8 text-gray-300"
         />
+        <p class="text-sm text-gray-500">
+          {{ $t('common.noData') }}
+        </p>
+      </div>
 
-        <!-- 空状态 -->
-        <div v-else-if="filteredDicts.length === 0" class="py-8 text-center">
-          <VbenIcon
-            icon="ri:book-line"
-            class="mx-auto mb-2 size-8 text-gray-300"
-          />
-          <p class="text-sm text-gray-500">
-            {{ $t('common.noData') }}
-          </p>
-        </div>
-
-        <!-- 字典卡片列表 -->
-        <div v-else class="space-y-1">
-          <Card
-            :body-style="{ padding: 0 }"
-            v-for="dict in filteredDicts"
-            :key="dict.id"
-            class="cursor-pointer p-3 transition-all duration-200 hover:shadow-md"
-            :class="[
-              isSelected(dict.id)
-                ? 'border-primary bg-primary/5 shadow-sm'
-                : 'hover:border-gray-300',
-            ]"
-            @click="onSelect(dict.id)"
-          >
-            <div class="flex items-center justify-between">
-              <div class="flex min-w-0 flex-1 items-center space-x-3">
-                <!-- 字典图标 -->
-                <div class="flex-shrink-0">
-                  <VbenIcon icon="ri:book-2-line" class="text-primary size-5" />
-                </div>
-
-                <!-- 字典信息 -->
-                <div class="min-w-0 flex-1">
-                  <div class="flex items-center space-x-2">
-                    <h4
-                      class="truncate text-sm font-medium"
-                      :title="dict.dictName"
-                    >
-                      {{ dict.dictName }}
-                    </h4>
-                    <Badge
-                      :status="
-                        dict.status === Status.Normal ? 'success' : 'error'
-                      "
-                      :text="getStatusLabel(dict.status)"
-                      size="small"
-                    />
-                  </div>
-                  <div class="mt-1 flex items-center space-x-2">
-                    <span class="text-xs text-gray-500">{{
-                      dict.dictType
-                    }}</span>
-                    <div v-if="dict.remark" class="text-xs text-gray-400">
-                      •
-                    </div>
-                    <span
-                      v-if="dict.remark"
-                      class="flex-1 truncate text-xs text-gray-400"
-                      :title="dict.remark"
-                    >
-                      {{ dict.remark }}
-                    </span>
-                  </div>
-                </div>
+      <div v-else class="space-y-1">
+        <Card
+          :body-style="{ padding: 0 }"
+          v-for="dict in filteredDicts"
+          :key="dict.id"
+          class="cursor-pointer p-3 transition-all duration-200 hover:shadow-md"
+          :class="[
+            isSelected(dict.id)
+              ? 'border-primary bg-primary/5 shadow-sm'
+              : 'hover:border-gray-300',
+          ]"
+          @click="onSelect(dict.id)"
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex min-w-0 flex-1 items-center space-x-3">
+              <div class="flex-shrink-0">
+                <VbenIcon icon="ri:book-2-line" class="text-primary size-5" />
               </div>
 
-              <!-- 操作按钮 -->
-              <Dropdown :trigger="['click']" @click.stop>
-                <VbenIconButton>
-                  <VbenIcon icon="ri:more-2-line" />
-                </VbenIconButton>
-                <template #overlay>
-                  <Menu
-                    @click="
-                      ({ key }) => handleMenuClick(key as string, dict.id)
-                    "
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center space-x-2">
+                  <h4
+                    class="truncate text-sm font-medium"
+                    :title="dict.dictName"
                   >
-                    <MenuItem key="edit">
-                      <span class="flex items-center">
-                        <VbenIcon icon="ri:edit-line" class="mr-1 size-4" />
-                        {{ $t('common.edit') }}
-                      </span>
-                    </MenuItem>
-                    <MenuItem key="delete" class="text-red-500">
-                      <span class="flex items-center">
-                        <VbenIcon
-                          icon="ri:delete-bin-line"
-                          class="mr-1 size-4"
-                        />
-                        {{ $t('common.delete') }}
-                      </span>
-                    </MenuItem>
-                  </Menu>
-                </template>
-              </Dropdown>
+                    {{ dict.dictName }}
+                  </h4>
+                  <Badge
+                    :status="
+                      dict.status === Status.Normal ? 'success' : 'error'
+                    "
+                    :text="getStatusLabel(dict.status)"
+                    size="small"
+                  />
+                </div>
+                <div class="mt-1 flex items-center space-x-2">
+                  <span class="text-xs text-gray-500">{{ dict.dictType }}</span>
+                  <div v-if="dict.remark" class="text-xs text-gray-400">•</div>
+                  <span
+                    v-if="dict.remark"
+                    class="flex-1 truncate text-xs text-gray-400"
+                    :title="dict.remark"
+                  >
+                    {{ dict.remark }}
+                  </span>
+                </div>
+              </div>
             </div>
-          </Card>
-        </div>
+
+            <!-- 操作按钮 -->
+            <Dropdown :trigger="['click']" @click.stop>
+              <VbenIconButton>
+                <VbenIcon icon="ri:more-2-line" />
+              </VbenIconButton>
+              <template #overlay>
+                <Menu
+                  @click="({ key }) => handleMenuClick(key as string, dict.id)"
+                >
+                  <MenuItem key="edit">
+                    <span class="flex items-center">
+                      <VbenIcon icon="ri:edit-line" class="mr-1 size-4" />
+                      {{ $t('common.edit') }}
+                    </span>
+                  </MenuItem>
+                  <MenuItem key="delete" class="text-red-500">
+                    <span class="flex items-center">
+                      <VbenIcon icon="ri:delete-bin-line" class="mr-1 size-4" />
+                      {{ $t('common.delete') }}
+                    </span>
+                  </MenuItem>
+                </Menu>
+              </template>
+            </Dropdown>
+          </div>
+        </Card>
       </div>
-    </Card>
+    </div>
   </div>
 </template>

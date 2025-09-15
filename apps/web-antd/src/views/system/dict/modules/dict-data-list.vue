@@ -7,7 +7,7 @@ import type { DictData } from '#/api/system/dict';
 
 import { watch } from 'vue';
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { useVbenDrawer } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { Button, message, Modal } from 'ant-design-vue';
@@ -114,18 +114,16 @@ watch(
 </script>
 
 <template>
-  <Page auto-content-height>
-    <Grid>
-      <template #toolbar-tools>
-        <Button type="primary" :disabled="!dictId" @click="onCreate">
-          <template #icon>
-            <Plus class="size-4" />
-          </template>
-          {{ $t('common.add') }}
-        </Button>
-      </template>
-    </Grid>
+  <Grid>
+    <template #toolbar-tools>
+      <Button type="primary" :disabled="!dictId" @click="onCreate">
+        <template #icon>
+          <Plus class="size-4" />
+        </template>
+        {{ $t('common.add') }}
+      </Button>
+    </template>
+  </Grid>
 
-    <DictDataFormDrawer @success="onFormSuccess" />
-  </Page>
+  <DictDataFormDrawer @success="onFormSuccess" />
 </template>
