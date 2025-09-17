@@ -67,12 +67,12 @@ const handleSuccess = () => {
       </div>
     </div>
 
-    <div v-else class="flex w-1/2 space-x-4">
+    <div v-else class="flex flex-1 space-x-4">
       <div class="flex-1">
         <ConfigItemEditForm ref="editFormRef" :group-id="groupId" />
       </div>
 
-      <div class="w-96">
+      <div class="w-[500px]">
         <ConfigItemAddForm :group-id="groupId" @success="handleSuccess" />
       </div>
     </div>
