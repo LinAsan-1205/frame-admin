@@ -48,7 +48,8 @@ const filteredGroups = computed(() => {
   if (!searchValue.value) return data.value;
 
   return data.value.filter((group) =>
-    group.groupName.toLowerCase().includes(searchValue.value.toLowerCase()),
+    group.groupName.toLowerCase().includes(searchValue.value.toLowerCase()) ||
+    group.configKey.toLowerCase().includes(searchValue.value.toLowerCase()),
   );
 });
 
@@ -230,6 +231,11 @@ function handleMenuClick(key: string, groupId: number) {
                   />
                 </div>
                 <div class="mt-1 flex items-center space-x-2">
+                  <span class="text-xs text-gray-500">
+                    {{ $t('system.config.configGroup.configKey') }}:
+                    {{ group.configKey }}
+                  </span>
+                  <div class="text-xs text-gray-400">•</div>
                   <span class="text-xs text-gray-500">
                     {{ $t('system.config.configGroup.configItemCount') }}:
                     {{ group.configItemCount || 0 }}

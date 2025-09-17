@@ -34,6 +34,19 @@ const [Form, formApi] = useVbenForm({
         .max(50, '组名称不能超过50个字符'),
     },
     {
+      component: 'Input',
+      componentProps: {
+        placeholder: $t('system.config.configGroup.configKeyPlaceholder'),
+        maxlength: 50,
+      },
+      fieldName: 'configKey',
+      label: $t('system.config.configGroup.configKey'),
+      rules: z
+        .string()
+        .min(1, $t('system.config.configGroup.configKeyPlaceholder'))
+        .max(50, '配置组标识不能超过50个字符'),
+    },
+    {
       component: 'Textarea',
       componentProps: {
         placeholder: $t('system.config.configGroup.remarkPlaceholder'),
@@ -100,6 +113,7 @@ const [Modal, modalApi] = useVbenModal({
         id.value = data.id;
         formApi.setValues({
           groupName: data.groupName,
+          configKey: data.configKey,
           remark: data.remark,
           status: data.status,
           sortOrder: data.sortOrder,

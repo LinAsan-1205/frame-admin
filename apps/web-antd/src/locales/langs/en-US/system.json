@@ -333,6 +333,8 @@
       "list": "Configuration Group List",
       "groupName": "Group Name",
       "groupNamePlaceholder": "Please enter group name",
+      "configKey": "Configuration Group Key",
+      "configKeyPlaceholder": "Please enter configuration group key",
       "remark": "Remark",
       "remarkPlaceholder": "Please enter remark",
       "status": "Status",

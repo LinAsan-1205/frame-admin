@@ -6,6 +6,7 @@ export declare namespace ConfigGroup {
   export interface View {
     id: number;
     groupName: string;
+    configKey: string;
     remark?: string;
     status: Status;
     sortOrder: number;
@@ -16,6 +17,7 @@ export declare namespace ConfigGroup {
 
   export interface Condition {
     groupName?: string;
+    configKey?: string;
     status?: Status;
     createFromDate?: string;
     createToDate?: string;
@@ -23,6 +25,7 @@ export declare namespace ConfigGroup {
 
   export interface Post {
     groupName: string;
+    configKey: string;
     remark?: string;
     status?: Status;
     sortOrder: number;

@@ -334,6 +334,8 @@
       "list": "配置组列表",
       "groupName": "组名称",
       "groupNamePlaceholder": "请输入组名称",
+      "configKey": "配置组标识",
+      "configKeyPlaceholder": "请输入配置组标识",
       "remark": "备注",
       "remarkPlaceholder": "请输入备注",
       "status": "状态",
