@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-import { VbenIcon } from '@vben-core/shadcn-ui';
-
 import { getConfigGroupById } from '#/api/system/config';
+import { EmptyState } from '#/components/empty-state';
 import { $t } from '#/locales';
 
 import ConfigItemAddForm from './config-item-add-form.vue';
@@ -53,7 +52,11 @@ const handleSuccess = () => {
     </div>
 
     <div v-if="!groupId" class="flex h-[400px] items-center justify-center">
-      <div class="text-center">
+      <EmptyState
+        :title="$t('system.config.configGroup.title')"
+        :description="$t('system.config.configItem.selectGroupFirst')"
+      />
+      <!-- <div class="text-center">
         <VbenIcon
           icon="ri:settings-3-line"
           class="mx-auto mb-4 size-16 text-gray-300"
@@ -64,7 +67,7 @@ const handleSuccess = () => {
         <p class="mt-2 text-sm text-gray-400">
           {{ $t('system.config.configGroup.title') }}
         </p>
-      </div>
+      </div> -->
     </div>
 
     <div v-else class="flex flex-1 space-x-4">
@@ -78,7 +81,3 @@ const handleSuccess = () => {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* 自定义样式 */
-</style>
