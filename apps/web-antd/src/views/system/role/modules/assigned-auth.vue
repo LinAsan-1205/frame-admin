@@ -7,7 +7,7 @@ import type { Role } from '#/api/system/role';
 
 import { computed, nextTick, ref } from 'vue';
 
-import { useVbenModal, VbenTree } from '@vben/common-ui';
+import { Tree, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
 import { message, Spin } from 'ant-design-vue';
@@ -133,7 +133,7 @@ const [AssignedAuthModal, assignedAuthModalApi] = useVbenModal({
     <AssignedAuthForm class="mx-4">
       <template #permissions="slotProps">
         <Spin :spinning="isMenuLoading" wrapper-class-name="w-full">
-          <VbenTree
+          <Tree
             :tree-data="menuTreeData"
             multiple
             bordered
@@ -148,7 +148,7 @@ const [AssignedAuthModal, assignedAuthModalApi] = useVbenModal({
               <IconifyIcon v-if="value.meta.icon" :icon="value.meta.icon" />
               {{ $t(value.meta.title) }}
             </template>
-          </VbenTree>
+          </Tree>
         </Spin>
       </template>
     </AssignedAuthForm>
