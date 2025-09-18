@@ -1,4 +1,4 @@
-import type { ConfigGroup, ConfigItem, ConfigTree } from '#/api/system/config';
+import type { ConfigGroup, ConfigItem } from '#/api/system/config';
 import type { Api } from '#/api/types';
 
 import { requestClient } from '#/api/request';
@@ -112,13 +112,6 @@ function queryConfigItemPage(
       },
     },
   );
-}
-
-/**
- * 获取配置树形列表
- */
-function queryConfigTreeList() {
-  return requestClient.get<ConfigTree.View[]>('/system/config-item/tree');
 }
 
 /**
@@ -239,7 +232,6 @@ export {
   queryConfigGroupPage,
   queryConfigItemByGroupId,
   queryConfigItemPage,
-  queryConfigTreeList,
   setConfigGroupById,
   setConfigGroupStatus,
   setConfigItemById,
