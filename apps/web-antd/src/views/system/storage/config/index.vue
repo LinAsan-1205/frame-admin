@@ -20,10 +20,10 @@ import {
 import { $t } from '#/locales';
 
 import { useColumns, userSearchFormOptions } from './data';
-import Form from './modules/form.vue';
+import StorageConfigForm from './modules/storage-config-form.vue';
 
 const [storageConfigFormModal, storageConfigFormModalApi] = useVbenModal({
-  connectedComponent: Form,
+  connectedComponent: StorageConfigForm,
   destroyOnClose: true,
 });
 
