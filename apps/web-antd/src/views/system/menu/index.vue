@@ -16,10 +16,10 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteMenu, getMenuList, Menu } from '#/api/system/menu';
 
 import { useColumns, userSearchFormOptions } from './data';
-import Form from './modules/form.vue';
+import MenuForm from './modules/menu-form.vue';
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
-  connectedComponent: Form,
+  connectedComponent: MenuForm,
   destroyOnClose: true,
 });
 
