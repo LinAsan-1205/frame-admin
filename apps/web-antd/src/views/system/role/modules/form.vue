@@ -24,6 +24,9 @@ const emits = defineEmits(['success']);
 const formData = ref<Role.View>();
 
 const [Form, formApi] = useVbenForm({
+  commonConfig: {
+    controlClass: 'w-full',
+  },
   schema: useFormSchema(),
   showDefaultActions: false,
 });
