@@ -15,10 +15,10 @@ import { deleteDeptById, getDeptList } from '#/api/system/dept';
 import { $t } from '#/locales';
 
 import { useColumns, userSearchFormOptions } from './data';
-import Form from './modules/form.vue';
+import DeptForm from './modules/dept-form.vue';
 
 const [formDeptModal, formDeptModalApi] = useVbenModal({
-  connectedComponent: Form,
+  connectedComponent: DeptForm,
   destroyOnClose: true,
 });
 
