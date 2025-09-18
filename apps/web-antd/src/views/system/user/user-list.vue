@@ -22,19 +22,19 @@ import UserBlock from '#/components/model/system/user/user-block.vue';
 import { $t } from '#/locales';
 
 import { useColumns, useSearchFormOptions } from './data';
-import AssignedRole from './modules/assigned-role.vue';
-import Form from './modules/form.vue';
-import RolesBlock from './modules/roles-block.vue';
+import RoleAssign from './modules/role-assign.vue';
+import UserForm from './modules/user-form.vue';
+import UserRolesDisplay from './modules/user-roles-display.vue';
 
 const deptId = defineModel<number | undefined>('deptId');
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
-  connectedComponent: Form,
+  connectedComponent: UserForm,
   destroyOnClose: true,
 });
 
 const [AssignedRoleModal, assignedRoleModalApi] = useVbenModal({
-  connectedComponent: AssignedRole,
+  connectedComponent: RoleAssign,
   destroyOnClose: true,
 });
 
@@ -141,7 +141,7 @@ watch(() => deptId.value, onRefresh);
       <UserBlock :origin="row" />
     </template>
     <template #rolesBlock="{ row }">
-      <RolesBlock :origin="row" />
+      <UserRolesDisplay :origin="row" />
     </template>
     <template #toolbar-tools>
       <Button type="primary" @click="onCreate">

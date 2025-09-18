@@ -3,8 +3,8 @@ import { ref } from 'vue';
 
 import { DualPaneLayout } from '#/components/dual-pane-layout';
 
-import UserList from './list.vue';
-import DeptUser from './modules/dept-user.vue';
+import DeptTree from './modules/dept-tree.vue';
+import UserList from './user-list.vue';
 
 const deptId = ref<number | undefined>();
 </script>
@@ -15,7 +15,7 @@ const deptId = ref<number | undefined>();
       <div
         class="border-border bg-card mr-2 h-full rounded-[var(--radius)] border p-4"
       >
-        <DeptUser v-model="deptId" />
+        <DeptTree v-model="deptId" />
       </div>
     </template>
 
