@@ -7,7 +7,7 @@ import type {
 } from '#/adapter/vxe-table';
 import type { Role } from '#/api/system/role';
 
-import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { Button, message, Modal } from 'ant-design-vue';
@@ -24,7 +24,7 @@ import { useColumns, useSearchFormOptions } from './data';
 import AssignedAuth from './modules/assigned-auth.vue';
 import Form from './modules/form.vue';
 
-const [FormDrawer, formDrawerApi] = useVbenDrawer({
+const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
   destroyOnClose: true,
 });
@@ -119,7 +119,7 @@ async function onStatusChange(newStatus: string, roleView: Role.View) {
 }
 
 function onEditRole(roleView: Role.View) {
-  formDrawerApi.setData(roleView).open();
+  formModalApi.setData(roleView).open();
 }
 
 /**
@@ -153,12 +153,12 @@ function onRefreshRoleList() {
 }
 
 function onCreateRole() {
-  formDrawerApi.setData({}).open();
+  formModalApi.setData({}).open();
 }
 </script>
 <template>
   <Page auto-content-height>
-    <FormDrawer @success="onRefreshRoleList" />
+    <FormModal @success="onRefreshRoleList" />
     <AssignedAuthModal @success="onRefreshRoleList" />
     <RoleGrid :table-title="$t('system.role.list')">
       <template #toolbar-tools>

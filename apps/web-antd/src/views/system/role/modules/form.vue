@@ -7,7 +7,7 @@ import type { Role } from '#/api/system/role';
 
 import { computed, nextTick, ref } from 'vue';
 
-import { Tree, useVbenDrawer } from '@vben/common-ui';
+import { Tree, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
 import { Spin } from 'ant-design-vue';
@@ -35,25 +35,25 @@ const permissions = ref<DataNode[]>([]);
 const loadingPermissions = ref(false);
 
 const id = ref();
-const [Drawer, drawerApi] = useVbenDrawer({
+const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (!valid) return;
     const values: Role.Post = await formApi.getValues();
-    drawerApi.lock();
+    modalApi.lock();
     (id.value ? setRoleById(id.value, values) : addRole(values))
       .then(() => {
         emits('success');
-        drawerApi.close();
+        modalApi.close();
       })
       .catch(() => {
-        drawerApi.unlock();
+        modalApi.unlock();
       });
   },
 
   async onOpenChange(isOpen) {
     if (isOpen) {
-      const data = drawerApi.getData<Role.View>();
+      const data = modalApi.getData<Role.View>();
       formApi.resetForm();
 
       if (data) {
@@ -85,7 +85,7 @@ async function loadPermissions() {
   }
 }
 
-const getDrawerTitle = computed(() => {
+const getModalTitle = computed(() => {
   return formData.value?.id
     ? $t('common.edit', $t('system.role.name'))
     : $t('common.create', $t('system.role.name'));
@@ -101,7 +101,7 @@ function getNodeClass(node: Recordable<any>) {
 }
 </script>
 <template>
-  <Drawer :title="getDrawerTitle">
+  <Modal :title="getModalTitle">
     <Form>
       <template #permissions="slotProps">
         <Spin :spinning="loadingPermissions" wrapper-class-name="w-full">
@@ -124,7 +124,7 @@ function getNodeClass(node: Recordable<any>) {
         </Spin>
       </template>
     </Form>
-  </Drawer>
+  </Modal>
 </template>
 <style lang="css" scoped>
 :deep(.ant-tree-title) {
