@@ -21,11 +21,11 @@ import {
 import { $t } from '#/locales';
 
 import { useColumns, useSearchFormOptions } from './data';
-import AssignedAuth from './modules/assigned-auth.vue';
-import Form from './modules/form.vue';
+import PermissionAssign from './modules/permission-assign.vue';
+import RoleForm from './modules/role-form.vue';
 
 const [FormModal, formModalApi] = useVbenModal({
-  connectedComponent: Form,
+  connectedComponent: RoleForm,
   destroyOnClose: true,
 });
 
@@ -57,7 +57,7 @@ const [RoleGrid, roleGridApi] = useVbenVxeGrid({
 });
 
 const [AssignedAuthModal, assignedAuthModalApi] = useVbenModal({
-  connectedComponent: AssignedAuth,
+  connectedComponent: PermissionAssign,
   destroyOnClose: true,
 });
 
