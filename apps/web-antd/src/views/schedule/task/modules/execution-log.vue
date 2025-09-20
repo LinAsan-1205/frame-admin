@@ -11,7 +11,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { queryLogPage } from '#/api/schedule/log';
 import { $t } from '#/locales';
 
-import { useColumns, useSearchFormOptions } from './execution-log-data';
+import { useExecutionLogColumns, useExecutionLogSearchFormOptions } from '../config/execution-log-config';
 
 const taskId = ref<number>();
 
@@ -31,12 +31,12 @@ const [Modal, modalApi] = useVbenModal({
   },
 });
 
-const searchFormOptions = useSearchFormOptions();
+const searchFormOptions = useExecutionLogSearchFormOptions();
 const [TaskLogGrid, taskLogGridApi] = useVbenVxeGrid({
   separator: false,
   formOptions: searchFormOptions,
   gridOptions: {
-    columns: useColumns(),
+    columns: useExecutionLogColumns(),
     keepSource: true,
     toolbarConfig: {
       zoom: false,

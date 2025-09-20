@@ -21,7 +21,8 @@ import {
 } from '#/api/schedule/task';
 import { $t } from '#/locales';
 
-import { useColumns, useSearchFormOptions } from './data';
+import { useColumns } from './config/table-columns';
+import { useSearchFormOptions } from './config/search-config';
 import ExecutionLog from './modules/execution-log.vue';
 import Form from './modules/form.vue';
 

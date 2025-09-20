@@ -1,39 +1,15 @@
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
-
-import type { VbenFormProps } from '#/adapter/form';
 import type { OnActionClickFn } from '#/adapter/vxe-table';
 import type { Operation } from '#/api/log/operation';
 
 import { OperationStatus, OperationType } from '#/api/log/operation';
 import { $t } from '#/locales';
 
-export function userSearchFormOptions(): VbenFormProps {
-  return {
-    collapsed: false,
-    schema: [
-      {
-        component: 'Input',
-        componentProps: {
-          allowClear: true,
-          placeholder: $t('operationLog.usernamePlaceholder'),
-        },
-        fieldName: 'username',
-        label: $t('operationLog.username'),
-      },
-      {
-        component: 'Select',
-        componentProps: {
-          allowClear: true,
-          options: OperationStatus.toSelect(),
-        },
-        fieldName: 'status',
-        label: $t('operationLog.status'),
-      },
-    ],
-    submitOnChange: true,
-  };
-}
-
+/**
+ * 操作日志表格列配置
+ * @param onActionClick 操作按钮点击回调
+ * @returns 表格列配置数组
+ */
 export function useColumns(
   onActionClick?: OnActionClickFn<Operation.View>,
 ): VxeTableGridOptions<Operation.View>['columns'] {

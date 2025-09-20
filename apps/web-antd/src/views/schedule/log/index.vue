@@ -8,7 +8,8 @@ import { Page } from '@vben/common-ui';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { queryLogPage } from '#/api/schedule/log';
 
-import { useColumns, useSearchFormOptions } from './data';
+import { useColumns } from './config/table-columns';
+import { useSearchFormOptions } from './config/search-config';
 
 const searchFormOptions = useSearchFormOptions();
 

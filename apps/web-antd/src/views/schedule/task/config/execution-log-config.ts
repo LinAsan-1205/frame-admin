@@ -3,7 +3,11 @@ import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 
 import { $t } from '#/locales';
 
-export function useSearchFormOptions(): VbenFormProps {
+/**
+ * 执行日志搜索表单配置
+ * @returns 搜索表单配置对象
+ */
+export function useExecutionLogSearchFormOptions(): VbenFormProps {
   return {
     fieldMappingTime: [['createTime', ['createFormDate', 'createToDate']]],
     submitOnChange: true,
@@ -20,7 +24,11 @@ export function useSearchFormOptions(): VbenFormProps {
   };
 }
 
-export function useColumns(): VxeTableGridOptions['columns'] {
+/**
+ * 执行日志表格列配置
+ * @returns 表格列配置数组
+ */
+export function useExecutionLogColumns(): VxeTableGridOptions['columns'] {
   return [
     { title: '#', type: 'seq', width: 50 },
     {

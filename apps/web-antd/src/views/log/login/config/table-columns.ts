@@ -1,56 +1,13 @@
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
-
-import type { VbenFormProps } from '#/adapter/form';
 import type { LoginLog } from '#/api/log/login';
 
 import { LoginStatus } from '#/api/log/login';
 import { $t } from '#/locales';
 
-export function userSearchFormOptions(): VbenFormProps {
-  return {
-    collapsed: false,
-    fieldMappingTime: [['loginTime', ['createFormDate', 'createToDate']]],
-    schema: [
-      {
-        component: 'Input',
-        fieldName: 'username',
-        label: $t('loginLog.username'),
-        componentProps: {
-          allowClear: true,
-        },
-      },
-      {
-        component: 'Input',
-        fieldName: 'behavior',
-        label: $t('loginLog.behavior'),
-        componentProps: {
-          allowClear: true,
-        },
-      },
-      {
-        component: 'Input',
-        fieldName: 'ip',
-        label: $t('loginLog.ip'),
-      },
-      {
-        component: 'Select',
-        componentProps: {
-          allowClear: true,
-          options: LoginStatus.toSelect(),
-        },
-        fieldName: 'status',
-        label: $t('loginLog.status'),
-      },
-      {
-        component: 'RangePicker',
-        fieldName: 'loginTime',
-        label: $t('loginLog.loginTime'),
-      },
-    ],
-    submitOnChange: true,
-  };
-}
-
+/**
+ * 登录日志表格列配置
+ * @returns 表格列配置数组
+ */
 export function useColumns(): VxeTableGridOptions<LoginLog.View>['columns'] {
   return [
     { align: 'center', type: 'checkbox', width: 100 },

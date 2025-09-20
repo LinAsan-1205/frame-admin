@@ -19,7 +19,8 @@ import {
 } from '#/api/log/operation';
 import { $t } from '#/locales';
 
-import { useColumns, userSearchFormOptions } from './data';
+import { useColumns } from './config/table-columns';
+import { useSearchFormOptions } from './config/search-config';
 
 const operationLogSelectedRows = ref<Operation.View[]>([]);
 
@@ -86,7 +87,7 @@ function handleOperationLogActionClick({
   }
 }
 
-const operationLogFormOptions = userSearchFormOptions();
+const operationLogFormOptions = useSearchFormOptions();
 
 const [OperationLogGrid, operationLogGridApi] = useVbenVxeGrid({
   formOptions: operationLogFormOptions,

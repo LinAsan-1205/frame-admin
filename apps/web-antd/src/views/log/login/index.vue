@@ -12,9 +12,10 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteByIds, queryLoginLogPage } from '#/api/log/login';
 import { $t } from '#/locales';
 
-import { useColumns, userSearchFormOptions } from './data';
+import { useColumns } from './config/table-columns';
+import { useSearchFormOptions } from './config/search-config';
 
-const loginLogFormOptions = userSearchFormOptions();
+const loginLogFormOptions = useSearchFormOptions();
 
 const loginLogSelectedRows = ref<LoginLog.View[]>([]);
 
