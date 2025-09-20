@@ -1,79 +1,15 @@
-import type { VbenFormProps } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { Session } from '#/api/system/session';
 
 import { useUserStore } from '@vben/stores';
 
-import {
-  ActiveStatus,
-  DeviceType,
-  PlatformType,
-  SessionStatus,
-} from '#/api/system/session';
+import { DeviceType, SessionStatus } from '#/api/system/session';
 import { $t } from '#/locales';
 
 /**
- * 搜索表单配置
- */
-export function useSearchFormOptions(): VbenFormProps {
-  return {
-    fieldMappingTime: [['loginTime', ['startTime', 'endTime']]],
-    submitOnChange: true,
-    schema: [
-      {
-        component: 'InputNumber',
-        fieldName: 'userId',
-        label: $t('system.session.userId'),
-        componentProps: {
-          allowClear: true,
-        },
-      },
-      {
-        component: 'Input',
-        fieldName: 'deviceId',
-        label: $t('system.session.deviceId'),
-        componentProps: {
-          allowClear: true,
-        },
-      },
-      {
-        component: 'Select',
-        componentProps: {
-          allowClear: true,
-          options: PlatformType.toSelect(),
-        },
-        fieldName: 'platform',
-        label: $t('system.session.platform'),
-      },
-      {
-        component: 'Select',
-        componentProps: {
-          allowClear: true,
-          options: DeviceType.toSelect(),
-        },
-        fieldName: 'deviceType',
-        label: $t('system.session.deviceType'),
-      },
-      {
-        component: 'Select',
-        componentProps: {
-          allowClear: true,
-          options: ActiveStatus.toSelect(),
-        },
-        fieldName: 'isActive',
-        label: $t('system.session.status'),
-      },
-      {
-        component: 'RangePicker',
-        fieldName: 'loginTime',
-        label: $t('system.session.loginTime'),
-      },
-    ],
-  };
-}
-
-/**
- * 表格列配置
+ * 会话表格列配置
+ * @param onActionClick 操作按钮点击回调
+ * @returns 表格列配置数组
  */
 export function useColumns<T = Session.View>(
   onActionClick: OnActionClickFn<T>,

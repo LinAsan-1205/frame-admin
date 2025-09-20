@@ -22,7 +22,8 @@ import {
 import { $t } from '#/locales';
 import { useWebSocketStore } from '#/store/websocket';
 
-import { useColumns, useSearchFormOptions } from './data';
+import { useSearchFormOptions } from './config/search-config';
+import { useColumns } from './config/table-columns';
 import Detail from './modules/detail.vue';
 
 const searchFormOptions = useSearchFormOptions();
