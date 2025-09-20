@@ -47,9 +47,10 @@ const filteredGroups = computed(() => {
   if (!data.value) return [];
   if (!searchValue.value) return data.value;
 
-  return data.value.filter((group) =>
-    group.groupName.toLowerCase().includes(searchValue.value.toLowerCase()) ||
-    group.configKey.toLowerCase().includes(searchValue.value.toLowerCase()),
+  return data.value.filter(
+    (group) =>
+      group.groupName.toLowerCase().includes(searchValue.value.toLowerCase()) ||
+      group.configKey.toLowerCase().includes(searchValue.value.toLowerCase()),
   );
 });
 

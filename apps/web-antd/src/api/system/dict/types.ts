@@ -11,6 +11,7 @@ export declare namespace Dict {
     remark?: string;
     createTime: string;
     updateTime: string;
+    // eslint-disable-next-line no-use-before-define
     dictData?: DictData.View[];
   }
 

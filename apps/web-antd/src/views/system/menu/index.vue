@@ -15,8 +15,8 @@ import { Button, message } from 'ant-design-vue';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteMenu, getMenuList, Menu } from '#/api/system/menu';
 
-import { useColumns } from './config/table-columns';
 import { useSearchFormOptions } from './config/search-config';
+import { useColumns } from './config/table-columns';
 import MenuForm from './modules/menu-form.vue';
 
 const [FormDrawer, formDrawerApi] = useVbenDrawer({

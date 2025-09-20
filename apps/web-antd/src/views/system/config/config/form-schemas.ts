@@ -1,7 +1,10 @@
 import type { VbenFormSchema } from '#/adapter/form';
 
 import { z } from '#/adapter/form';
-import { ConfigGroupStatus, InputComponentType } from '#/api/system/config/enum';
+import {
+  ConfigGroupStatus,
+  InputComponentType,
+} from '#/api/system/config/enum';
 import { $t } from '#/locales';
 
 /**

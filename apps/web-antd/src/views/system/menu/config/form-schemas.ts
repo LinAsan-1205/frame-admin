@@ -1,8 +1,10 @@
 import type { ChangeEvent } from 'ant-design-vue/es/_util/EventInterface';
+
 import type { Recordable } from '@vben/types';
+
 import type { VbenFormSchema } from '#/adapter/form';
 
-import { computed, h, ref } from 'vue';
+import { h, ref } from 'vue';
 
 import { IconifyIcon } from '@vben/icons';
 import { $te } from '@vben/locales';
@@ -32,7 +34,9 @@ export function getMenuTypeOptions() {
  * @param titleSuffix 标题后缀的响应式引用
  * @returns 表单schema配置数组
  */
-export function useFormSchema(titleSuffix: ReturnType<typeof ref<string | undefined>>): VbenFormSchema[] {
+export function useFormSchema(
+  titleSuffix: ReturnType<typeof ref<string | undefined>>,
+): VbenFormSchema[] {
   return [
     {
       component: 'RadioGroup',
@@ -53,7 +57,10 @@ export function useFormSchema(titleSuffix: ReturnType<typeof ref<string | undefi
       rules: z
         .string()
         .min(2, $t('ui.formRules.minLength', [$t('system.menu.menuName'), 2]))
-        .max(30, $t('ui.formRules.maxLength', [$t('system.menu.menuName'), 30])),
+        .max(
+          30,
+          $t('ui.formRules.maxLength', [$t('system.menu.menuName'), 30]),
+        ),
     },
     {
       component: 'ApiTreeSelect',
@@ -233,7 +240,9 @@ export function useFormSchema(titleSuffix: ReturnType<typeof ref<string | undefi
           return values.type === MenuType.Button ? 'required' : null;
         },
         show: (values) => {
-          return ['button', 'catalog', 'embedded', 'menu'].includes(values.type);
+          return ['button', 'catalog', 'embedded', 'menu'].includes(
+            values.type,
+          );
         },
         triggerFields: ['type'],
       },

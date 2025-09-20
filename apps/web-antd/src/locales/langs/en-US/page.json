@@ -22,7 +22,7 @@
     "session": "Session Management"
   },
   "log": {
-    "title": "Log Management", 
+    "title": "Log Management",
     "operationLog": "Operation Log",
     "loginLog": "Login Log"
   },

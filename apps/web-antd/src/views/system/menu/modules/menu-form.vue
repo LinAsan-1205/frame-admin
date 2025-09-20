@@ -2,16 +2,11 @@
 import { computed, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
-import { $te } from '@vben/locales';
 
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
 import { useVbenForm } from '#/adapter/form';
-import {
-  createMenu,
-  Menu,
-  updateMenu,
-} from '#/api/system/menu';
+import { createMenu, Menu, updateMenu } from '#/api/system/menu';
 import { $t } from '#/locales';
 
 import { useFormSchema } from '../config/form-schemas';

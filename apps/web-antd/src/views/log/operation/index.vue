@@ -19,8 +19,8 @@ import {
 } from '#/api/log/operation';
 import { $t } from '#/locales';
 
-import { useColumns } from './config/table-columns';
 import { useSearchFormOptions } from './config/search-config';
+import { useColumns } from './config/table-columns';
 
 const operationLogSelectedRows = ref<Operation.View[]>([]);
 

@@ -11,7 +11,10 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { queryLogPage } from '#/api/schedule/log';
 import { $t } from '#/locales';
 
-import { useExecutionLogColumns, useExecutionLogSearchFormOptions } from '../config/execution-log-config';
+import {
+  useExecutionLogColumns,
+  useExecutionLogSearchFormOptions,
+} from '../config/execution-log-config';
 
 const taskId = ref<number>();
 
