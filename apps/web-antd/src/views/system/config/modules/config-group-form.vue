@@ -5,10 +5,12 @@ import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import { useVbenForm, z } from '#/adapter/form';
+import { useVbenForm } from '#/adapter/form';
 import { addConfigGroup, setConfigGroupById } from '#/api/system/config';
 import { ConfigGroupStatus } from '#/api/system/config/enum';
 import { $t } from '#/locales';
+
+import { useConfigGroupFormSchema } from '../config/form-schemas';
 
 const emits = defineEmits(['success']);
 
@@ -19,72 +21,7 @@ const [Form, formApi] = useVbenForm({
   commonConfig: {
     controlClass: 'w-full',
   },
-  schema: [
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: $t('system.config.configGroup.groupNamePlaceholder'),
-        maxlength: 50,
-      },
-      fieldName: 'groupName',
-      label: $t('system.config.configGroup.groupName'),
-      rules: z
-        .string()
-        .min(1, $t('system.config.configGroup.groupNamePlaceholder'))
-        .max(50, '组名称不能超过50个字符'),
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: $t('system.config.configGroup.configKeyPlaceholder'),
-        maxlength: 50,
-      },
-      fieldName: 'configKey',
-      label: $t('system.config.configGroup.configKey'),
-      rules: z
-        .string()
-        .min(1, $t('system.config.configGroup.configKeyPlaceholder'))
-        .max(50, '配置组标识不能超过50个字符'),
-    },
-    {
-      component: 'Textarea',
-      componentProps: {
-        placeholder: $t('system.config.configGroup.remarkPlaceholder'),
-        rows: 3,
-        maxlength: 200,
-      },
-      fieldName: 'remark',
-      label: $t('system.config.configGroup.remark'),
-      rules: z.string().max(200, '备注不能超过200个字符').optional(),
-    },
-    {
-      component: 'RadioGroup',
-      componentProps: {
-        placeholder: $t('system.config.configGroup.statusPlaceholder'),
-        options: ConfigGroupStatus.toOriginItems(),
-      },
-      fieldName: 'status',
-      label: $t('system.config.configGroup.status'),
-      defaultValue: ConfigGroupStatus.Normal,
-      rules: z
-        .string()
-        .min(1, $t('system.config.configGroup.statusPlaceholder')),
-    },
-    {
-      component: 'InputNumber',
-      componentProps: {
-        placeholder: $t('system.config.configGroup.sortOrderPlaceholder'),
-        min: 0,
-        max: 9999,
-      },
-      fieldName: 'sortOrder',
-      label: $t('system.config.configGroup.sortOrder'),
-      rules: z
-        .number()
-        .min(0, '排序值必须在0-9999之间')
-        .max(9999, '排序值必须在0-9999之间'),
-    },
-  ],
+  schema: useConfigGroupFormSchema(),
   showDefaultActions: false,
 });
 

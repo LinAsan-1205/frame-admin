@@ -1,56 +1,14 @@
-import type { VbenFormProps } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { Menu } from '#/api/system/menu';
 
 import { MenuType, Status } from '#/api/system/menu';
 import { $t } from '#/locales';
 
-export function getMenuTypeOptions() {
-  return [...MenuType.items];
-}
-
-export function userSearchFormOptions(): VbenFormProps {
-  return {
-    collapsed: false,
-    schema: [
-      {
-        component: 'Input',
-        fieldName: 'title',
-        label: $t('system.menu.menuTitle'),
-        componentProps: {
-          allowClear: true,
-        },
-      },
-      {
-        component: 'Input',
-        fieldName: 'path',
-        label: $t('system.menu.path'),
-        componentProps: {
-          allowClear: true,
-        },
-      },
-      {
-        component: 'Input',
-        fieldName: 'component',
-        label: $t('system.menu.component'),
-        componentProps: {
-          allowClear: true,
-        },
-      },
-      {
-        component: 'Select',
-        componentProps: {
-          allowClear: true,
-          options: Status.toSelect(),
-        },
-        fieldName: 'status',
-        label: $t('system.menu.status'),
-      },
-    ],
-    submitOnChange: true,
-  };
-}
-
+/**
+ * 菜单表格列配置
+ * @param onActionClick 操作按钮点击回调
+ * @returns 表格列配置数组
+ */
 export function useColumns(
   onActionClick: OnActionClickFn<Menu.View>,
 ): VxeTableGridOptions<Menu.View>['columns'] {
