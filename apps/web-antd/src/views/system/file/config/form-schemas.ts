@@ -4,6 +4,10 @@ import { $t } from '@vben/locales';
 
 import { FileCategoryStatusEnum } from '#/api/system/file/category';
 
+/**
+ * 文件分类表单配置
+ * @returns 文件分类表单字段配置数组
+ */
 export function useCategoryFormSchema(): VbenFormSchema[] {
   return [
     {

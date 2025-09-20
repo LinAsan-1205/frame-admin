@@ -20,7 +20,8 @@ import {
 } from '#/api/system/role';
 import { $t } from '#/locales';
 
-import { useColumns, useSearchFormOptions } from './data';
+import { useSearchFormOptions } from './config/search-config';
+import { useColumns } from './config/table-columns';
 import PermissionAssign from './modules/permission-assign.vue';
 import RoleForm from './modules/role-form.vue';
 

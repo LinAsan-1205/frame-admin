@@ -8,9 +8,10 @@ import { useVbenModal } from '@vben/common-ui';
 import { message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { findAllEnabledRoles } from '#/api/system/role';
 import { assignUserRole } from '#/api/system/user';
 import { $t } from '#/locales';
+
+import { useRoleAssignFormSchema } from '../config/form-schemas';
 
 const emit = defineEmits(['success']);
 
@@ -22,34 +23,7 @@ const assignedRoleTitle = computed(() => {
 
 const [AssignedRoleForm, assignedRoleFormApi] = useVbenForm({
   layout: 'horizontal',
-  schema: [
-    {
-      component: 'Input',
-      componentProps: {
-        disabled: true,
-      },
-      fieldName: 'userName',
-      label: $t('system.user.userName'),
-    },
-    {
-      component: 'ApiSelect',
-      componentProps: {
-        api: async () => {
-          // 查询所有启用的角色
-          const enabledRoleList = await findAllEnabledRoles();
-          return enabledRoleList.map((roleItem) => ({
-            label: roleItem.name,
-            value: roleItem.id,
-          }));
-        },
-        mode: 'multiple',
-        class: 'w-full',
-        allowClear: true,
-      },
-      fieldName: 'roleIdList',
-      label: $t('system.role.name'),
-    },
-  ],
+  schema: useRoleAssignFormSchema(),
   showDefaultActions: false,
 });
 

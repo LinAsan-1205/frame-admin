@@ -16,7 +16,8 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { delDictDataById, queryDictDataPage } from '#/api/system/dict';
 import { $t } from '#/locales';
 
-import { useDictDataColumns, useDictDataSearchFormOptions } from '../data';
+import { useDictDataSearchFormOptions } from '../config/search-config';
+import { useDictDataColumns } from '../config/table-columns';
 import DictDataForm from './dict-data-form.vue';
 
 interface Props {

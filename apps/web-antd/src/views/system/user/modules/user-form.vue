@@ -9,7 +9,7 @@ import { useVbenForm } from '#/adapter/form';
 import { addUser, setUser } from '#/api/system/user';
 import { $t } from '#/locales';
 
-import { useFormSchema } from '../data';
+import { useFormSchema } from '../config/form-schemas';
 
 const emits = defineEmits(['success']);
 

@@ -9,7 +9,7 @@ import { useVbenForm } from '#/adapter/form';
 import { addDict, setDictById } from '#/api/system/dict';
 import { $t } from '#/locales';
 
-import { useDictFormSchema } from '../data';
+import { useDictFormSchema } from '../config/form-schemas';
 
 const emits = defineEmits(['success']);
 
@@ -17,7 +17,7 @@ const formData = ref<Dict.View>();
 const id = ref();
 
 const [Form, formApi] = useVbenForm({
-  schema: useDictFormSchema(id),
+  schema: useDictFormSchema(),
   showDefaultActions: false,
 });
 

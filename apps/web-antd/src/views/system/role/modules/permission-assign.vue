@@ -17,6 +17,8 @@ import { getMenuTreeList } from '#/api/system/menu';
 import { assignRoleMenu } from '#/api/system/role';
 import { $t } from '#/locales';
 
+import { usePermissionAssignFormSchema } from '../config/form-schemas';
+
 const emit = defineEmits(['success']);
 
 const currentRoleData = ref<Role.View>();
@@ -29,31 +31,7 @@ const assignedAuthTitle = computed(() => $t('system.role.assignedAuth'));
 
 const [AssignedAuthForm, assignedAuthFormApi] = useVbenForm({
   layout: 'horizontal',
-  schema: [
-    {
-      component: 'Input',
-      componentProps: {
-        disabled: true,
-      },
-      fieldName: 'name',
-      label: $t('system.role.roleName'),
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        disabled: true,
-      },
-      fieldName: 'code',
-      label: $t('system.role.code'),
-    },
-    {
-      component: 'Input',
-      fieldName: 'permissions',
-      formItemClass: 'items-start',
-      label: $t('system.role.assignedAuth'),
-      modelPropName: 'modelValue',
-    },
-  ],
+  schema: usePermissionAssignFormSchema(),
   showDefaultActions: false,
 });
 

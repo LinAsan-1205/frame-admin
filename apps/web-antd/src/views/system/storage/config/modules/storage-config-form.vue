@@ -12,7 +12,7 @@ import {
 } from '#/api/system/storage/config';
 import { $t } from '#/locales';
 
-import { useSchema } from '../data';
+import { useFormSchema } from '../config/form-schemas';
 
 const emit = defineEmits(['success']);
 const formData = ref<StorageConfig.View>();
@@ -24,7 +24,7 @@ const getTitle = computed(() => {
 
 const [Form, formApi] = useVbenForm({
   layout: 'horizontal',
-  schema: useSchema(formData),
+  schema: useFormSchema(formData),
   showDefaultActions: false,
 });
 

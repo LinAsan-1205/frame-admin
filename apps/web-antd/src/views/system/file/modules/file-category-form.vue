@@ -9,7 +9,7 @@ import { useVbenForm } from '#/adapter/form';
 import { addFileCategory, setFileCategory } from '#/api/system/file/category';
 import { $t } from '#/locales';
 
-import { useCategoryFormSchema } from '../data';
+import { useCategoryFormSchema } from '../config/form-schemas';
 
 const emits = defineEmits(['success']);
 

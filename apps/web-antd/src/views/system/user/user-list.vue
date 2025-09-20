@@ -21,7 +21,8 @@ import {
 import UserBlock from '#/components/model/system/user/user-block.vue';
 import { $t } from '#/locales';
 
-import { useColumns, useSearchFormOptions } from './data';
+import { useSearchFormOptions } from './config/search-config';
+import { useColumns } from './config/table-columns';
 import RoleAssign from './modules/role-assign.vue';
 import UserForm from './modules/user-form.vue';
 import UserRolesDisplay from './modules/user-roles-display.vue';

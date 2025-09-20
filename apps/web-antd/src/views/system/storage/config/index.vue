@@ -19,7 +19,8 @@ import {
 } from '#/api/system/storage/config';
 import { $t } from '#/locales';
 
-import { useColumns, userSearchFormOptions } from './data';
+import { useSearchFormOptions } from './config/search-config';
+import { useColumns } from './config/table-columns';
 import StorageConfigForm from './modules/storage-config-form.vue';
 
 const [storageConfigFormModal, storageConfigFormModalApi] = useVbenModal({
@@ -133,7 +134,7 @@ function handleStorageConfigActionClick({
   }
 }
 
-const storageConfigFormOptions = userSearchFormOptions();
+const storageConfigFormOptions = useSearchFormOptions();
 
 function refreshStorageConfigGrid() {
   storageConfigGridApi.query();

@@ -17,7 +17,7 @@ import { getMenuList } from '#/api/system/menu';
 import { addRole, setRoleById } from '#/api/system/role';
 import { $t } from '#/locales';
 
-import { useFormSchema } from '../data';
+import { useFormSchema } from '../config/form-schemas';
 
 const emits = defineEmits(['success']);
 

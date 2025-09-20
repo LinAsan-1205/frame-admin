@@ -14,7 +14,8 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteDeptById, getDeptList } from '#/api/system/dept';
 import { $t } from '#/locales';
 
-import { useColumns, userSearchFormOptions } from './data';
+import { useSearchFormOptions } from './config/search-config';
+import { useColumns } from './config/table-columns';
 import DeptForm from './modules/dept-form.vue';
 
 const [formDeptModal, formDeptModalApi] = useVbenModal({
@@ -88,7 +89,7 @@ function onDeptActionClick({ code, row }: OnActionClickParams<Dept.View>) {
   }
 }
 
-const deptFormOptions = userSearchFormOptions();
+const deptFormOptions = useSearchFormOptions();
 
 const [DeptGrid, deptGridApi] = useVbenVxeGrid({
   formOptions: deptFormOptions,
