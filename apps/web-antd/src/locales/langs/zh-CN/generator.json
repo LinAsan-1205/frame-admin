@@ -1,0 +1,129 @@
+{
+  "title": "代码生成器",
+  "tableList": {
+    "title": "数据库表列表",
+    "refresh": "刷新",
+    "select": "选择",
+    "loading": "加载表列表失败",
+    "refreshSuccess": "刷新成功",
+    "selectSuccess": "已选择表: {tableName}",
+    "columns": {
+      "tableName": "表名",
+      "tableComment": "表注释",
+      "createTime": "创建时间",
+      "action": "操作"
+    }
+  },
+  "config": {
+    "title": "配置表: {tableName}",
+    "selectPrompt": "请选择要生成代码的数据表",
+    "tabs": {
+      "basic": "基本信息",
+      "fields": "字段配置",
+      "options": "生成选项"
+    },
+    "basic": {
+      "tableName": "表名",
+      "tableComment": "表注释",
+      "moduleName": "模块名称",
+      "moduleNamePlaceholder": "如: user",
+      "businessName": "业务名称",
+      "businessNamePlaceholder": "如: 用户管理",
+      "modulePath": "模块路径",
+      "modulePathPlaceholder": "如: system/user",
+      "permissionPrefix": "权限前缀",
+      "permissionPrefixPlaceholder": "如: system:user"
+    },
+    "fields": {
+      "columns": {
+        "columnName": "字段名",
+        "columnComment": "字段描述",
+        "dataType": "数据类型",
+        "isRequired": "必填",
+        "isInsert": "新增",
+        "isEdit": "编辑",
+        "isList": "列表",
+        "isQuery": "查询",
+        "formType": "表单类型",
+        "queryType": "查询方式"
+      },
+      "formTypes": {
+        "Input": "文本框",
+        "Textarea": "文本域",
+        "InputNumber": "数字框",
+        "Select": "下拉框",
+        "RadioGroup": "单选框",
+        "CheckboxGroup": "复选框",
+        "DatePicker": "日期选择",
+        "DateRangePicker": "日期范围",
+        "TimePicker": "时间选择",
+        "Switch": "开关",
+        "Upload": "文件上传",
+        "ApiSelect": "远程下拉",
+        "ApiTreeSelect": "树形选择",
+        "ApiCascader": "级联选择",
+        "IconPicker": "图标选择"
+      },
+      "queryTypes": {
+        "EQ": "等于",
+        "NE": "不等于",
+        "GT": "大于",
+        "GTE": "大于等于",
+        "LT": "小于",
+        "LTE": "小于等于",
+        "LIKE": "模糊",
+        "NOT_LIKE": "不包含",
+        "IN": "包含",
+        "NOT_IN": "不包含",
+        "BETWEEN": "范围",
+        "IS_NULL": "为空",
+        "IS_NOT_NULL": "不为空"
+      }
+    },
+    "options": {
+      "backend": {
+        "title": "后端生成",
+        "entity": "Entity 实体",
+        "dto": "DTO 数据传输对象",
+        "service": "Service 服务层",
+        "controller": "Controller 控制层",
+        "module": "Module 模块"
+      },
+      "frontend": {
+        "title": "前端生成",
+        "api": "API 接口",
+        "types": "Types 类型定义",
+        "enum": "Enum 枚举",
+        "list": "列表页面",
+        "form": "表单组件",
+        "detail": "详情组件",
+        "tableColumns": "表格列配置",
+        "formSchemas": "表单配置",
+        "searchConfig": "搜索配置"
+      },
+      "features": {
+        "title": "功能选项",
+        "add": "新增",
+        "edit": "编辑",
+        "delete": "删除",
+        "batchDelete": "批量删除",
+        "export": "导出",
+        "import": "导入",
+        "print": "打印",
+        "detail": "详情",
+        "status": "状态切换",
+        "sort": "排序"
+      }
+    },
+    "actions": {
+      "save": "保存配置",
+      "preview": "预览代码",
+      "generate": "生成代码",
+      "saveSuccess": "配置保存成功",
+      "generateSuccess": "代码生成成功"
+    }
+  },
+  "preview": {
+    "title": "代码预览"
+  }
+}

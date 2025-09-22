@@ -1,0 +1,131 @@
+{
+  "generator": {
+    "title": "Code Generator",
+    "tableList": {
+      "title": "Database Table List",
+      "refresh": "Refresh",
+      "select": "Select",
+      "loading": "Failed to load table list",
+      "refreshSuccess": "Refresh successful",
+      "selectSuccess": "Selected table: {tableName}",
+      "columns": {
+        "tableName": "Table Name",
+        "tableComment": "Table Comment",
+        "createTime": "Create Time",
+        "action": "Action"
+      }
+    },
+    "config": {
+      "title": "Configure Table: {tableName}",
+      "selectPrompt": "Please select a database table to generate code",
+      "tabs": {
+        "basic": "Basic Info",
+        "fields": "Field Config",
+        "options": "Generation Options"
+      },
+      "basic": {
+        "tableName": "Table Name",
+        "tableComment": "Table Comment",
+        "moduleName": "Module Name",
+        "moduleNamePlaceholder": "e.g: user",
+        "businessName": "Business Name",
+        "businessNamePlaceholder": "e.g: User Management",
+        "modulePath": "Module Path",
+        "modulePathPlaceholder": "e.g: system/user",
+        "permissionPrefix": "Permission Prefix",
+        "permissionPrefixPlaceholder": "e.g: system:user"
+      },
+      "fields": {
+        "columns": {
+          "columnName": "Column Name",
+          "columnComment": "Column Comment",
+          "dataType": "Data Type",
+          "isRequired": "Required",
+          "isInsert": "Insert",
+          "isEdit": "Edit",
+          "isList": "List",
+          "isQuery": "Query",
+          "formType": "Form Type",
+          "queryType": "Query Type"
+        },
+        "formTypes": {
+          "Input": "Input",
+          "Textarea": "Textarea",
+          "InputNumber": "Input Number",
+          "Select": "Select",
+          "RadioGroup": "Radio Group",
+          "CheckboxGroup": "Checkbox Group",
+          "DatePicker": "Date Picker",
+          "DateRangePicker": "Date Range Picker",
+          "TimePicker": "Time Picker",
+          "Switch": "Switch",
+          "Upload": "Upload",
+          "ApiSelect": "API Select",
+          "ApiTreeSelect": "Tree Select",
+          "ApiCascader": "Cascader",
+          "IconPicker": "Icon Picker"
+        },
+        "queryTypes": {
+          "EQ": "Equal",
+          "NE": "Not Equal",
+          "GT": "Greater Than",
+          "GTE": "Greater Than Equal",
+          "LT": "Less Than",
+          "LTE": "Less Than Equal",
+          "LIKE": "Like",
+          "NOT_LIKE": "Not Like",
+          "IN": "In",
+          "NOT_IN": "Not In",
+          "BETWEEN": "Between",
+          "IS_NULL": "Is Null",
+          "IS_NOT_NULL": "Is Not Null"
+        }
+      },
+      "options": {
+        "backend": {
+          "title": "Backend Generation",
+          "entity": "Entity",
+          "dto": "DTO",
+          "service": "Service",
+          "controller": "Controller",
+          "module": "Module"
+        },
+        "frontend": {
+          "title": "Frontend Generation",
+          "api": "API",
+          "types": "Types",
+          "enum": "Enum",
+          "list": "List Page",
+          "form": "Form Component",
+          "detail": "Detail Component",
+          "tableColumns": "Table Columns",
+          "formSchemas": "Form Schemas",
+          "searchConfig": "Search Config"
+        },
+        "features": {
+          "title": "Feature Options",
+          "add": "Add",
+          "edit": "Edit",
+          "delete": "Delete",
+          "batchDelete": "Batch Delete",
+          "export": "Export",
+          "import": "Import",
+          "print": "Print",
+          "detail": "Detail",
+          "status": "Status Toggle",
+          "sort": "Sort"
+        }
+      },
+      "actions": {
+        "save": "Save Config",
+        "preview": "Preview Code",
+        "generate": "Generate Code",
+        "saveSuccess": "Configuration saved successfully",
+        "generateSuccess": "Code generated successfully"
+      }
+    },
+    "preview": {
+      "title": "Code Preview"
+    }
+  }
+}
