@@ -1,30 +1,24 @@
 <script lang="ts" setup>
-import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-
 import { ref, watch } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { Button, Card, message, Step, Steps } from 'ant-design-vue';
+import { Button, Card, Step, Steps } from 'ant-design-vue';
 
-import { useVbenForm, z } from '#/adapter/form';
+import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  generateCode,
-  getTableColumns,
-  previewCode,
-  saveGeneratorConfig,
-} from '#/api/generator';
-import {
-  BackendOption,
-  FeatureOption,
-  FormType,
-  FrontendOption,
-  QueryType,
-} from '#/api/generator/enum';
 import { $t } from '#/locales';
 
 import CodePreview from './code-preview.vue';
+// 导入 composables
+import { useGeneratorConfig } from './composables/useGeneratorConfig';
+import { useStepNavigation } from './composables/useStepNavigation';
+// 导入配置文件
+import { createFieldColumns } from './config/field-columns';
+import {
+  createBasicFormSchema,
+  createOptionsFormSchema,
+} from './config/form-schemas';
 
 interface TableInfo {
   tableName: string;
@@ -39,29 +33,21 @@ const emit = defineEmits<{
   success: [];
 }>();
 
-const currentStep = ref(0);
-const loading = ref(false);
-const columns = ref<any[]>([]);
+// 使用 composables
+const {
+  currentStep,
+  onBasicFormSubmit,
+  onFieldStepNext,
+  onFieldStepPrev,
+  onOptionsFormSubmit,
+  onOptionsStepReset,
+} = useStepNavigation();
+const { loading, loadTableConfig, handleSave, handlePreview, handleGenerate } =
+  useGeneratorConfig();
+
 const needMerge = ref(true);
 
-function onBasicFormSubmit(_values: Record<string, any>) {
-  currentStep.value = 1;
-}
-
-function onFieldStepNext() {
-  currentStep.value = 2;
-}
-
-function onFieldStepPrev() {
-  currentStep.value = 0;
-}
-
-function onOptionsFormSubmit(_values: Record<string, any>) {}
-
-function onOptionsStepReset() {
-  currentStep.value = 1;
-}
-
+// 创建表单
 const [BasicForm, basicFormApi] = useVbenForm({
   commonConfig: {
     componentProps: {
@@ -73,76 +59,7 @@ const [BasicForm, basicFormApi] = useVbenForm({
   resetButtonOptions: {
     show: false,
   },
-  schema: [
-    {
-      component: 'Input',
-      componentProps: {
-        disabled: true,
-      },
-      fieldName: 'tableName',
-      label: $t('generator.config.basic.tableName'),
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        disabled: true,
-      },
-      fieldName: 'tableComment',
-      label: $t('generator.config.basic.tableComment'),
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: $t('generator.config.basic.moduleNamePlaceholder'),
-      },
-      fieldName: 'moduleName',
-      label: $t('generator.config.basic.moduleName'),
-      rules: z
-        .string()
-        .min(2, '模块名称长度至少2个字符')
-        .max(50, '模块名称长度不超过50个字符')
-        .regex(
-          /^[a-z]\w*$/i,
-          '模块名称只能包含字母、数字和下划线，且以字母开头',
-        ),
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: $t('generator.config.basic.businessNamePlaceholder'),
-      },
-      fieldName: 'businessName',
-      label: $t('generator.config.basic.businessName'),
-      rules: z
-        .string()
-        .min(2, '业务名称长度至少2个字符')
-        .max(50, '业务名称长度不超过50个字符'),
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: $t('generator.config.basic.modulePathPlaceholder'),
-      },
-      fieldName: 'modulePath',
-      label: $t('generator.config.basic.modulePath'),
-      rules: z
-        .string()
-        .min(1, '请输入模块路径')
-        .regex(/^[\w/]+$/, '模块路径只能包含字母、数字、下划线和斜杠'),
-    },
-    {
-      component: 'Input',
-      componentProps: {
-        placeholder: $t('generator.config.basic.permissionPrefixPlaceholder'),
-      },
-      fieldName: 'permissionPrefix',
-      label: $t('generator.config.basic.permissionPrefix'),
-      rules: z
-        .string()
-        .min(1, '请输入权限前缀')
-        .regex(/^[\w:]+$/, '权限前缀只能包含字母、数字、下划线和冒号'),
-    },
-  ],
+  schema: createBasicFormSchema(),
   submitButtonOptions: {
     content: '下一步',
   },
@@ -161,140 +78,25 @@ const [OptionsForm, optionsFormApi] = useVbenForm({
   resetButtonOptions: {
     content: '上一步',
   },
-  schema: [
-    {
-      component: 'CheckboxGroup',
-      componentProps: {
-        options: BackendOption.toSelect(),
-      },
-      fieldName: 'backendOptions',
-      label: $t('generator.config.options.backend.title'),
-      rules: z.array(z.string()).min(1, '请至少选择一个后端选项'),
-    },
-    {
-      component: 'CheckboxGroup',
-      componentProps: {
-        options: FrontendOption.toSelect(),
-      },
-      fieldName: 'frontendOptions',
-      label: $t('generator.config.options.frontend.title'),
-      rules: z.array(z.string()).min(1, '请至少选择一个前端选项'),
-    },
-    {
-      component: 'CheckboxGroup',
-      componentProps: {
-        options: FeatureOption.toSelect(),
-      },
-      fieldName: 'features',
-      label: $t('generator.config.options.features.title'),
-      rules: z.array(z.string()).min(1, '请至少选择一个功能特性'),
-    },
-  ],
+  schema: createOptionsFormSchema(),
   submitButtonOptions: {
     show: false,
   },
   wrapperClass: 'grid-cols-1',
 });
 
+// 预览抽屉
 const [PreviewDrawer, previewDrawerApi] = useVbenDrawer({
   connectedComponent: CodePreview,
   destroyOnClose: true,
   title: $t('generator.preview.title'),
 });
 
-const fieldColumns: VxeTableGridOptions['columns'] = [
-  {
-    field: 'columnName',
-    title: $t('generator.config.fields.columns.columnName'),
-    width: 120,
-  },
-  {
-    field: 'columnComment',
-    title: $t('generator.config.fields.columns.columnComment'),
-    width: 150,
-    editRender: { name: 'input' },
-  },
-  {
-    field: 'dataType',
-    title: $t('generator.config.fields.columns.dataType'),
-  },
-  {
-    field: 'isRequired',
-    title: $t('generator.config.fields.columns.isRequired'),
-    editRender: {
-      name: 'VxeSelect',
-      options: [
-        { label: '是', value: true },
-        { label: '否', value: false },
-      ],
-    },
-  },
-  {
-    field: 'isInsert',
-    title: $t('generator.config.fields.columns.isInsert'),
-    editRender: {
-      name: 'VxeSelect',
-      options: [
-        { label: '是', value: true },
-        { label: '否', value: false },
-      ],
-    },
-  },
-  {
-    field: 'isEdit',
-    title: $t('generator.config.fields.columns.isEdit'),
-    editRender: {
-      name: 'VxeSelect',
-      options: [
-        { label: '是', value: true },
-        { label: '否', value: false },
-      ],
-    },
-  },
-  {
-    field: 'isList',
-    title: $t('generator.config.fields.columns.isList'),
-    editRender: {
-      name: 'VxeSelect',
-      options: [
-        { label: '是', value: true },
-        { label: '否', value: false },
-      ],
-    },
-  },
-  {
-    field: 'isQuery',
-    title: $t('generator.config.fields.columns.isQuery'),
-    editRender: {
-      name: 'VxeSelect',
-      options: [
-        { label: '是', value: true },
-        { label: '否', value: false },
-      ],
-    },
-  },
-  {
-    field: 'formType',
-    title: $t('generator.config.fields.columns.formType'),
-    editRender: {
-      name: 'VxeSelect',
-      options: FormType.toOriginItems(),
-    },
-  },
-  {
-    field: 'queryType',
-    title: $t('generator.config.fields.columns.queryType'),
-    editRender: {
-      name: 'VxeSelect',
-      options: QueryType.toOriginItems(),
-    },
-  },
-];
-
+// 字段表格
 const [FieldGrid, fieldGridApi] = useVbenVxeGrid({
   showSearchForm: false,
   gridOptions: {
-    columns: fieldColumns,
+    columns: createFieldColumns(),
     data: [],
     height: 600,
     editConfig: {
@@ -310,37 +112,21 @@ const [FieldGrid, fieldGridApi] = useVbenVxeGrid({
   },
 });
 
+// 监听表信息变化
 watch(
   () => props.tableInfo,
   async (newVal) => {
     if (newVal) {
-      const basicData = {
-        tableName: newVal.tableName,
-        tableComment: newVal.tableComment || '',
-        moduleName: extractModuleName(newVal.tableName),
-        businessName: newVal.tableComment?.replace(/表$/, '') || '',
-        modulePath: generateModulePath(newVal.tableName),
-        permissionPrefix: generatePermissionPrefix(newVal.tableName),
-      };
+      const { basicData, optionsData, columns } = await loadTableConfig(newVal);
 
-      const optionsData = {
-        backendOptions: [...BackendOption.toValue()],
-        frontendOptions: [...FrontendOption.toValue()],
-        features: [
-          FeatureOption.Add,
-          FeatureOption.Edit,
-          FeatureOption.Delete,
-          FeatureOption.BatchDelete,
-        ],
-      };
-
+      // 设置表单数据
       basicFormApi.setValues(basicData);
       optionsFormApi.setValues(optionsData);
 
-      columns.value = await getTableColumns(newVal.tableName);
+      // 设置字段表格数据
       fieldGridApi.setState({
         gridOptions: {
-          data: columns.value,
+          data: columns,
         },
       });
     }
@@ -348,89 +134,25 @@ watch(
   { immediate: true },
 );
 
-async function handleMergeSubmit() {
-  try {
-    loading.value = true;
-
-    const mergedValues = await basicFormApi
-      .merge(optionsFormApi)
-      .submitAllForm(needMerge.value);
-
-    const config = {
-      ...mergedValues,
-      fields: fieldGridApi?.grid?.getData?.() || columns.value,
-    };
-
-    const result = await generateCode(config);
-    if (result.success) {
-      message.success('代码生成成功！');
-      emit('success');
-    }
-  } catch {
-    message.error('代码生成失败，请检查配置');
-  } finally {
-    loading.value = false;
-  }
-}
-
-// 保存配置
-async function handleSave() {
-  try {
-    loading.value = true;
-
-    const mergedValues = await basicFormApi
-      .merge(optionsFormApi)
-      .submitAllForm(needMerge.value);
-
-    const config = {
-      ...mergedValues,
-      fields: fieldGridApi?.grid?.getData() || columns.value,
-    };
-
-    await saveGeneratorConfig(config);
-    message.success($t('generator.config.actions.saveSuccess'));
-  } catch {
-    message.error('保存失败');
-  } finally {
-    loading.value = false;
-  }
-}
-
-async function handlePreview() {
-  try {
-    loading.value = true;
-
-    const mergedValues = await basicFormApi
-      .merge(optionsFormApi)
-      .submitAllForm(needMerge.value);
-
-    const config = {
-      ...mergedValues,
-      fields: fieldGridApi?.grid?.getData?.(),
-    };
-
-    const result = await previewCode(config);
-    previewDrawerApi.setData(result).open();
-  } catch {
-    message.error('预览失败');
-  } finally {
-    loading.value = false;
-  }
-}
-
-function extractModuleName(tableName: string): string {
-  return tableName.replace(/^[a-z]+_/, '');
-}
-
-function generateModulePath(tableName: string): string {
-  const parts = tableName.split('_');
-  return parts.join('/');
-}
-
-function generatePermissionPrefix(tableName: string): string {
-  const parts = tableName.split('_');
-  return parts.join(':');
-}
+// 事件处理函数
+const onSave = () =>
+  handleSave(basicFormApi, optionsFormApi, fieldGridApi, needMerge.value);
+const onPreview = () =>
+  handlePreview(
+    basicFormApi,
+    optionsFormApi,
+    fieldGridApi,
+    needMerge.value,
+    previewDrawerApi,
+  );
+const onGenerate = () =>
+  handleGenerate(
+    basicFormApi,
+    optionsFormApi,
+    fieldGridApi,
+    needMerge.value,
+    emit,
+  );
 </script>
 
 <template>
@@ -438,13 +160,13 @@ function generatePermissionPrefix(tableName: string): string {
   <Card title="代码生成配置" class="h-full">
     <template #extra>
       <div class="flex items-center space-x-4">
-        <Button @click="handleSave" :loading="loading">
+        <Button @click="onSave" :loading="loading">
           {{ $t('generator.config.actions.save') }}
         </Button>
-        <Button @click="handlePreview" :loading="loading">
+        <Button @click="onPreview" :loading="loading">
           {{ $t('generator.config.actions.preview') }}
         </Button>
-        <Button type="primary" @click="handleMergeSubmit" :loading="loading">
+        <Button type="primary" @click="onGenerate" :loading="loading">
           {{ $t('generator.config.actions.generate') }}
         </Button>
       </div>
