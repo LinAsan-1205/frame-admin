@@ -66,9 +66,11 @@ const extensions = computed(() => {
 <style lang="scss" scoped>
 .code-preview {
   height: 100%;
+
   :deep(.ant-tabs-content) {
     height: 100%;
   }
+
   .code-container {
     height: 100%;
     overflow: auto;

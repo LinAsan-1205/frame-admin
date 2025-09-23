@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { Generator } from '#/api/generator';
+
 import { computed, onMounted, ref } from 'vue';
 
 import { VbenIcon, VbenIconButton, VbenSpinner } from '@vben-core/shadcn-ui';
@@ -26,7 +28,7 @@ const emit = defineEmits<{
 }>();
 
 const searchValue = ref('');
-const tableList = ref<any[]>([]);
+const tableList = ref<Generator.TableInfo[]>([]);
 const loading = ref(false);
 const selectedTableName = ref<string | undefined>();
 
@@ -196,7 +198,7 @@ onMounted(() => {
                     </h4>
                     <Badge
                       status="processing"
-                      :text="table.engine || 'InnoDB'"
+                      :text="table.engine"
                       size="small"
                     />
                   </div>

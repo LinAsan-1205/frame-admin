@@ -11,6 +11,9 @@ export namespace Generator {
     createTime?: string;
     engine?: string;
     tableCollation?: string;
+    collation?: string;
+    updateTime?: string;
+    dataSizeMB?: string;
   }
 
   /**
