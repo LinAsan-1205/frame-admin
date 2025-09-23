@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { Generator } from '#/api/generator';
+
 import { ref, watch } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
@@ -10,10 +13,8 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { $t } from '#/locales';
 
 import CodePreview from './code-preview.vue';
-// 导入 composables
 import { useGeneratorConfig } from './composables/useGeneratorConfig';
 import { useStepNavigation } from './composables/useStepNavigation';
-// 导入配置文件
 import { createFieldColumns } from './config/field-columns';
 import {
   createBasicFormSchema,
@@ -98,18 +99,34 @@ const [FieldGrid, fieldGridApi] = useVbenVxeGrid({
   gridOptions: {
     columns: createFieldColumns(),
     data: [],
-    height: 600,
     editConfig: {
-      trigger: 'click',
+      trigger: 'dblclick',
       mode: 'cell',
+      showStatus: true,
+      beforeEditMethod: ({ row }) => {
+        if (row.isAutoIncrement) {
+          return false;
+        }
+        return true;
+      },
     },
     pagerConfig: {
       enabled: false,
     },
+    keepSource: true,
     rowConfig: {
       keyField: 'columnName',
     },
-  },
+    mouseConfig: {
+      selected: true,
+    },
+    keyboardConfig: {
+      isEdit: true,
+      isEnter: true,
+      isTab: true,
+      isLastEnterAppendRow: true,
+    },
+  } as VxeTableGridOptions<Generator.ColumnInfo>,
 });
 
 // 监听表信息变化
@@ -172,7 +189,7 @@ const onGenerate = () =>
       </div>
     </template>
 
-    <div class="mx-auto max-w-4xl">
+    <div class="mx-auto max-w-5xl">
       <Steps :current="currentStep" class="steps mb-8">
         <Step title="基础配置" description="配置模块基础信息" />
         <Step title="字段配置" description="配置表字段属性" />

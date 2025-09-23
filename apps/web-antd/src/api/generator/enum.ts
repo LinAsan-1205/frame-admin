@@ -81,3 +81,57 @@ export const FeatureOption = Enum({
   Status: { value: 'status', label: '状态切换' },
   Sort: { value: 'sort', label: '排序' },
 } as const);
+
+/**
+ * MySQL数据类型枚举
+ */
+export const DataType = Enum({
+  // 整数类型
+  TINYINT: { value: 'tinyint', label: 'tinyint' },
+  SMALLINT: { value: 'smallint', label: 'smallint' },
+  MEDIUMINT: { value: 'mediumint', label: 'mediumint' },
+  INT: { value: 'int', label: 'int' },
+  INTEGER: { value: 'integer', label: 'integer' },
+  BIGINT: { value: 'bigint', label: 'bigint' },
+
+  // 浮点数类型
+  FLOAT: { value: 'float', label: 'float' },
+  DOUBLE: { value: 'double', label: 'double' },
+  DECIMAL: { value: 'decimal', label: 'decimal' },
+  NUMERIC: { value: 'numeric', label: 'numeric' },
+
+  // 字符串类型
+  CHAR: { value: 'char', label: 'char' },
+  VARCHAR: { value: 'varchar', label: 'varchar' },
+  TINYTEXT: { value: 'tinytext', label: 'tinytext' },
+  TEXT: { value: 'text', label: 'text' },
+  MEDIUMTEXT: { value: 'mediumtext', label: 'mediumtext' },
+  LONGTEXT: { value: 'longtext', label: 'longtext' },
+
+  // 日期时间类型
+  DATE: { value: 'date', label: 'date' },
+  TIME: { value: 'time', label: 'time' },
+  DATETIME: { value: 'datetime', label: 'datetime' },
+  TIMESTAMP: { value: 'timestamp', label: 'timestamp' },
+  YEAR: { value: 'year', label: 'year' },
+
+  // 二进制类型
+  BINARY: { value: 'binary', label: 'binary' },
+  VARBINARY: { value: 'varbinary', label: 'varbinary' },
+  TINYBLOB: { value: 'tinyblob', label: 'tinyblob' },
+  BLOB: { value: 'blob', label: 'blob' },
+  MEDIUMBLOB: { value: 'mediumblob', label: 'mediumblob' },
+  LONGBLOB: { value: 'longblob', label: 'longblob' },
+
+  // JSON类型
+  JSON: { value: 'json', label: 'json' },
+
+  // 几何类型
+  GEOMETRY: { value: 'geometry', label: 'geometry' },
+  POINT: { value: 'point', label: 'point' },
+  LINESTRING: { value: 'linestring', label: 'linestring' },
+  POLYGON: { value: 'polygon', label: 'polygon' },
+
+  // 位值类型
+  BIT: { value: 'bit', label: 'bit' },
+} as const);

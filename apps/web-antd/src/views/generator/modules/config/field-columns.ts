@@ -1,26 +1,26 @@
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 
-import { FormType, QueryType } from '#/api/generator/enum';
+import { DataType, FormType, QueryType } from '#/api/generator/enum';
 import { $t } from '#/locales';
 
 /**
  * 字段配置表格列定义
  */
 export const createFieldColumns = (): VxeTableGridOptions['columns'] => [
+  { title: '#', type: 'seq', width: 50 },
   {
     field: 'columnName',
     title: $t('generator.config.fields.columns.columnName'),
-    width: 120,
   },
   {
     field: 'columnComment',
     title: $t('generator.config.fields.columns.columnComment'),
-    width: 150,
     editRender: { name: 'input' },
   },
   {
     field: 'dataType',
     title: $t('generator.config.fields.columns.dataType'),
+    editRender: { name: 'VxeSelect', options: DataType.toOriginItems() },
   },
   {
     field: 'isRequired',

@@ -29,7 +29,7 @@ interface TableInfo {
  */
 export function useGeneratorConfig() {
   const loading = ref(false);
-  const columns = ref<any[]>([]);
+  const columns = ref<Generator.ColumnInfo[]>([]);
 
   /**
    * 生成默认的选项数据
