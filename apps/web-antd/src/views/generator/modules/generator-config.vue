@@ -24,6 +24,13 @@ import {
   previewCode,
   saveGeneratorConfig,
 } from '#/api/generator';
+import {
+  BackendOption,
+  FeatureOption,
+  FormType,
+  FrontendOption,
+  QueryType,
+} from '#/api/generator/enum';
 import { $t } from '#/locales';
 
 import CodePreview from './code-preview.vue';
@@ -87,41 +94,26 @@ const fieldColumns: VxeTableGridOptions['columns'] = [
     field: 'isRequired',
     title: $t('generator.config.fields.columns.isRequired'),
     width: 70,
-    cellRender: {
-      name: 'VxeSwitch',
-    },
   },
   {
     field: 'isInsert',
     title: $t('generator.config.fields.columns.isInsert'),
     width: 70,
-    cellRender: {
-      name: 'VxeSwitch',
-    },
   },
   {
     field: 'isEdit',
     title: $t('generator.config.fields.columns.isEdit'),
     width: 70,
-    cellRender: {
-      name: 'VxeSwitch',
-    },
   },
   {
     field: 'isList',
     title: $t('generator.config.fields.columns.isList'),
     width: 70,
-    cellRender: {
-      name: 'VxeSwitch',
-    },
   },
   {
     field: 'isQuery',
     title: $t('generator.config.fields.columns.isQuery'),
     width: 70,
-    cellRender: {
-      name: 'VxeSwitch',
-    },
   },
   {
     field: 'formType',
@@ -129,48 +121,7 @@ const fieldColumns: VxeTableGridOptions['columns'] = [
     width: 120,
     editRender: {
       name: 'VxeSelect',
-      options: [
-        {
-          value: 'Input',
-          label: $t('generator.config.fields.formTypes.Input'),
-        },
-        {
-          value: 'Textarea',
-          label: $t('generator.config.fields.formTypes.Textarea'),
-        },
-        {
-          value: 'InputNumber',
-          label: $t('generator.config.fields.formTypes.InputNumber'),
-        },
-        {
-          value: 'Select',
-          label: $t('generator.config.fields.formTypes.Select'),
-        },
-        {
-          value: 'RadioGroup',
-          label: $t('generator.config.fields.formTypes.RadioGroup'),
-        },
-        {
-          value: 'CheckboxGroup',
-          label: $t('generator.config.fields.formTypes.CheckboxGroup'),
-        },
-        {
-          value: 'DatePicker',
-          label: $t('generator.config.fields.formTypes.DatePicker'),
-        },
-        {
-          value: 'Switch',
-          label: $t('generator.config.fields.formTypes.Switch'),
-        },
-        {
-          value: 'Upload',
-          label: $t('generator.config.fields.formTypes.Upload'),
-        },
-        {
-          value: 'ApiTreeSelect',
-          label: $t('generator.config.fields.formTypes.ApiTreeSelect'),
-        },
-      ],
+      options: FormType.toOriginItems(),
     },
   },
   {
@@ -179,22 +130,15 @@ const fieldColumns: VxeTableGridOptions['columns'] = [
     width: 100,
     editRender: {
       name: 'VxeSelect',
-      options: [
-        { value: 'EQ', label: $t('generator.config.fields.queryTypes.EQ') },
-        { value: 'LIKE', label: $t('generator.config.fields.queryTypes.LIKE') },
-        {
-          value: 'BETWEEN',
-          label: $t('generator.config.fields.queryTypes.BETWEEN'),
-        },
-      ],
+      options: QueryType.toOriginItems(),
     },
   },
 ];
 
-const [FieldGrid] = useVbenVxeGrid({
+const [FieldGrid, fieldGridApi] = useVbenVxeGrid({
   gridOptions: {
     columns: fieldColumns,
-    data: columns.value,
+    data: [],
     height: 400,
     editConfig: {
       trigger: 'click',
@@ -218,22 +162,21 @@ watch(
         businessName: newVal.tableComment?.replace(/表$/, '') || '',
         modulePath: generateModulePath(newVal.tableName),
         permissionPrefix: generatePermissionPrefix(newVal.tableName),
-        backendOptions: ['entity', 'dto', 'service', 'controller', 'module'],
-        frontendOptions: [
-          'api',
-          'types',
-          'enum',
-          'list',
-          'form',
-          'table-columns',
-          'form-schemas',
-          'search-config',
+        backendOptions: [...BackendOption.toValue()],
+        frontendOptions: [...FrontendOption.toValue()],
+        features: [
+          FeatureOption.Add,
+          FeatureOption.Edit,
+          FeatureOption.Delete,
+          FeatureOption.BatchDelete,
         ],
-        features: ['add', 'edit', 'delete', 'batchDelete'],
       };
-
-      // 加载字段列表
       columns.value = await getTableColumns(newVal.tableName);
+      fieldGridApi.setState({
+        gridOptions: {
+          data: columns.value,
+        },
+      });
     }
   },
   { immediate: true },
@@ -359,20 +302,12 @@ function generatePermissionPrefix(tableName: string): string {
           <div class="option-group">
             <h4>{{ $t('generator.config.options.backend.title') }}</h4>
             <Checkbox.Group v-model:value="formData.backendOptions">
-              <Checkbox value="entity">
-                {{ $t('generator.config.options.backend.entity') }}
-              </Checkbox>
-              <Checkbox value="dto">
-                {{ $t('generator.config.options.backend.dto') }}
-              </Checkbox>
-              <Checkbox value="service">
-                {{ $t('generator.config.options.backend.service') }}
-              </Checkbox>
-              <Checkbox value="controller">
-                {{ $t('generator.config.options.backend.controller') }}
-              </Checkbox>
-              <Checkbox value="module">
-                {{ $t('generator.config.options.backend.module') }}
+              <Checkbox
+                v-for="option in BackendOption.toSelect()"
+                :key="option.value"
+                :value="option.value"
+              >
+                {{ option.label }}
               </Checkbox>
             </Checkbox.Group>
           </div>
@@ -380,29 +315,12 @@ function generatePermissionPrefix(tableName: string): string {
           <div class="option-group">
             <h4>{{ $t('generator.config.options.frontend.title') }}</h4>
             <Checkbox.Group v-model:value="formData.frontendOptions">
-              <Checkbox value="api">
-                {{ $t('generator.config.options.frontend.api') }}
-              </Checkbox>
-              <Checkbox value="types">
-                {{ $t('generator.config.options.frontend.types') }}
-              </Checkbox>
-              <Checkbox value="enum">
-                {{ $t('generator.config.options.frontend.enum') }}
-              </Checkbox>
-              <Checkbox value="list">
-                {{ $t('generator.config.options.frontend.list') }}
-              </Checkbox>
-              <Checkbox value="form">
-                {{ $t('generator.config.options.frontend.form') }}
-              </Checkbox>
-              <Checkbox value="table-columns">
-                {{ $t('generator.config.options.frontend.tableColumns') }}
-              </Checkbox>
-              <Checkbox value="form-schemas">
-                {{ $t('generator.config.options.frontend.formSchemas') }}
-              </Checkbox>
-              <Checkbox value="search-config">
-                {{ $t('generator.config.options.frontend.searchConfig') }}
+              <Checkbox
+                v-for="option in FrontendOption.toSelect()"
+                :key="option.value"
+                :value="option.value"
+              >
+                {{ option.label }}
               </Checkbox>
             </Checkbox.Group>
           </div>
@@ -410,23 +328,12 @@ function generatePermissionPrefix(tableName: string): string {
           <div class="option-group">
             <h4>{{ $t('generator.config.options.features.title') }}</h4>
             <Checkbox.Group v-model:value="formData.features">
-              <Checkbox value="add">
-                {{ $t('generator.config.options.features.add') }}
-              </Checkbox>
-              <Checkbox value="edit">
-                {{ $t('generator.config.options.features.edit') }}
-              </Checkbox>
-              <Checkbox value="delete">
-                {{ $t('generator.config.options.features.delete') }}
-              </Checkbox>
-              <Checkbox value="batchDelete">
-                {{ $t('generator.config.options.features.batchDelete') }}
-              </Checkbox>
-              <Checkbox value="export">
-                {{ $t('generator.config.options.features.export') }}
-              </Checkbox>
-              <Checkbox value="import">
-                {{ $t('generator.config.options.features.import') }}
+              <Checkbox
+                v-for="option in FeatureOption.toSelect()"
+                :key="option.value"
+                :value="option.value"
+              >
+                {{ option.label }}
               </Checkbox>
             </Checkbox.Group>
           </div>

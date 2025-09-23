@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { Generator } from '#/api/generator';
 
 import { h, onMounted, ref } from 'vue';
 
@@ -57,13 +58,13 @@ const columns: VxeTableGridOptions['columns'] = [
 const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions: {
     columns,
-    data: tableList.value,
+    data: [],
     height: 'auto',
     rowConfig: {
       keyField: 'tableName',
       isHover: true,
     },
-  },
+  } as VxeTableGridOptions<Generator.TableInfo>,
 });
 
 async function loadTables() {

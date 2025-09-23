@@ -27,6 +27,9 @@ async function initApplication() {
       const items = this.items.map((item) => item.raw);
       return [...items];
     },
+    toValue(this: ReturnType<typeof Enum>) {
+      return this.items.map((item) => item.value);
+    },
   });
 
   // 启动应用并挂载
