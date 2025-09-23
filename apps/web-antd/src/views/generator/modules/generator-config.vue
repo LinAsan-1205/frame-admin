@@ -301,6 +301,9 @@ const [FieldGrid, fieldGridApi] = useVbenVxeGrid({
       trigger: 'click',
       mode: 'cell',
     },
+    pagerConfig: {
+      enabled: false,
+    },
     rowConfig: {
       keyField: 'columnName',
     },
