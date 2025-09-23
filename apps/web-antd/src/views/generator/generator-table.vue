@@ -306,7 +306,7 @@ onMounted(() => {
 
                 <!-- 更多操作 -->
                 <Dropdown :trigger="['click']" @click.stop>
-                  <VbenIconButton size="small" :disabled="disabled">
+                  <VbenIconButton :disabled="disabled">
                     <VbenIcon icon="ri:more-2-line" />
                   </VbenIconButton>
                   <template #overlay>
