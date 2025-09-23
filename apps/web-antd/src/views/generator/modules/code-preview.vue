@@ -13,6 +13,9 @@ const activeKey = ref('0');
 const data = ref<any>(null);
 
 const [Drawer, drawerApi] = useVbenDrawer({
+  class: 'w-1/2',
+  showConfirmButton: false,
+  showCancelButton: false,
   onCancel() {
     drawerApi.close();
   },
@@ -36,33 +39,21 @@ const extensions = computed(() => {
 <template>
   <Drawer>
     <div class="code-preview">
-      <!-- 调试信息 -->
-      <div v-if="!data" class="debug-info">
-        <p>❌ 未接收到数据 (data is {{ data }})</p>
-      </div>
-      <div v-else-if="!data.previews" class="debug-info">
-        <p>❌ 数据中没有 previews 字段</p>
-        <p>数据内容: {{ JSON.stringify(data, null, 2) }}</p>
-      </div>
-      <div v-else-if="data.previews.length === 0" class="debug-info">
-        <p>❌ previews 数组为空</p>
-      </div>
-
-      <!-- 正常显示 -->
-      <Tabs v-else v-model:active-key="activeKey">
+      <Tabs v-model:active-key="activeKey" class="h-full">
         <TabPane
           v-for="(file, index) in data.previews"
           :key="String(index)"
           :tab="file.fileName"
+          class="h-full"
         >
           <div class="code-container">
             <Codemirror
               v-model="file.content"
               :extensions="extensions"
-              :style="{ height: '600px' }"
+              :style="{ height: '100%' }"
               :autofocus="false"
               :indent-with-tab="true"
-              :tab-size="2"
+              :tab-size="4"
               disabled
             />
           </div>
@@ -75,31 +66,11 @@ const extensions = computed(() => {
 <style lang="scss" scoped>
 .code-preview {
   height: 100%;
-
-  .debug-info {
-    padding: 20px;
-    margin: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-
-    p {
-      margin: 10px 0;
-      font-size: 14px;
-    }
+  :deep(.ant-tabs-content) {
+    height: 100%;
   }
-
-  .no-data {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    font-size: 14px;
-    color: #999;
-  }
-
   .code-container {
-    height: 600px;
+    height: 100%;
     overflow: auto;
   }
 }

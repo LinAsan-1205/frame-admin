@@ -5,18 +5,9 @@ import { ref, watch } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-import {
-  Button,
-  Card,
-  Checkbox,
-  Form,
-  Input,
-  message,
-  Space,
-  TabPane,
-  Tabs,
-} from 'ant-design-vue';
+import { Button, Card, message, Step, Steps } from 'ant-design-vue';
 
+import { useVbenForm, z } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   generateCode,
@@ -35,36 +26,174 @@ import { $t } from '#/locales';
 
 import CodePreview from './code-preview.vue';
 
+interface TableInfo {
+  tableName: string;
+  tableComment?: string;
+}
+
 const props = defineProps<{
-  tableInfo: any;
+  tableInfo: TableInfo;
 }>();
 
 const emit = defineEmits<{
   success: [];
 }>();
 
-const activeTab = ref('basic');
+const currentStep = ref(0);
 const loading = ref(false);
 const columns = ref<any[]>([]);
-const formData = ref({
-  tableName: '',
-  tableComment: '',
-  moduleName: '',
-  businessName: '',
-  modulePath: '',
-  permissionPrefix: '',
-  backendOptions: ['entity', 'dto', 'service', 'controller', 'module'],
-  frontendOptions: [
-    'api',
-    'types',
-    'enum',
-    'list',
-    'form',
-    'table-columns',
-    'form-schemas',
-    'search-config',
+const needMerge = ref(true);
+
+function onBasicFormSubmit(_values: Record<string, any>) {
+  currentStep.value = 1;
+}
+
+function onFieldStepNext() {
+  currentStep.value = 2;
+}
+
+function onFieldStepPrev() {
+  currentStep.value = 0;
+}
+
+function onOptionsFormSubmit(_values: Record<string, any>) {}
+
+function onOptionsStepReset() {
+  currentStep.value = 1;
+}
+
+const [BasicForm, basicFormApi] = useVbenForm({
+  commonConfig: {
+    componentProps: {
+      class: 'w-full',
+    },
+  },
+  handleSubmit: onBasicFormSubmit,
+  layout: 'vertical',
+  resetButtonOptions: {
+    show: false,
+  },
+  schema: [
+    {
+      component: 'Input',
+      componentProps: {
+        disabled: true,
+      },
+      fieldName: 'tableName',
+      label: $t('generator.config.basic.tableName'),
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        disabled: true,
+      },
+      fieldName: 'tableComment',
+      label: $t('generator.config.basic.tableComment'),
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: $t('generator.config.basic.moduleNamePlaceholder'),
+      },
+      fieldName: 'moduleName',
+      label: $t('generator.config.basic.moduleName'),
+      rules: z
+        .string()
+        .min(2, '模块名称长度至少2个字符')
+        .max(50, '模块名称长度不超过50个字符')
+        .regex(
+          /^[a-z]\w*$/i,
+          '模块名称只能包含字母、数字和下划线，且以字母开头',
+        ),
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: $t('generator.config.basic.businessNamePlaceholder'),
+      },
+      fieldName: 'businessName',
+      label: $t('generator.config.basic.businessName'),
+      rules: z
+        .string()
+        .min(2, '业务名称长度至少2个字符')
+        .max(50, '业务名称长度不超过50个字符'),
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: $t('generator.config.basic.modulePathPlaceholder'),
+      },
+      fieldName: 'modulePath',
+      label: $t('generator.config.basic.modulePath'),
+      rules: z
+        .string()
+        .min(1, '请输入模块路径')
+        .regex(/^[\w/]+$/, '模块路径只能包含字母、数字、下划线和斜杠'),
+    },
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: $t('generator.config.basic.permissionPrefixPlaceholder'),
+      },
+      fieldName: 'permissionPrefix',
+      label: $t('generator.config.basic.permissionPrefix'),
+      rules: z
+        .string()
+        .min(1, '请输入权限前缀')
+        .regex(/^[\w:]+$/, '权限前缀只能包含字母、数字、下划线和冒号'),
+    },
   ],
-  features: ['add', 'edit', 'delete', 'batchDelete'],
+  submitButtonOptions: {
+    content: '下一步',
+  },
+  wrapperClass: 'grid-cols-1',
+});
+
+const [OptionsForm, optionsFormApi] = useVbenForm({
+  commonConfig: {
+    componentProps: {
+      class: 'w-full',
+    },
+  },
+  handleReset: onOptionsStepReset,
+  handleSubmit: onOptionsFormSubmit,
+  layout: 'vertical',
+  resetButtonOptions: {
+    content: '上一步',
+  },
+  schema: [
+    {
+      component: 'CheckboxGroup',
+      componentProps: {
+        options: BackendOption.toSelect(),
+      },
+      fieldName: 'backendOptions',
+      label: $t('generator.config.options.backend.title'),
+      rules: z.array(z.string()).min(1, '请至少选择一个后端选项'),
+    },
+    {
+      component: 'CheckboxGroup',
+      componentProps: {
+        options: FrontendOption.toSelect(),
+      },
+      fieldName: 'frontendOptions',
+      label: $t('generator.config.options.frontend.title'),
+      rules: z.array(z.string()).min(1, '请至少选择一个前端选项'),
+    },
+    {
+      component: 'CheckboxGroup',
+      componentProps: {
+        options: FeatureOption.toSelect(),
+      },
+      fieldName: 'features',
+      label: $t('generator.config.options.features.title'),
+      rules: z.array(z.string()).min(1, '请至少选择一个功能特性'),
+    },
+  ],
+  submitButtonOptions: {
+    show: false,
+  },
+  wrapperClass: 'grid-cols-1',
 });
 
 const [PreviewDrawer, previewDrawerApi] = useVbenDrawer({
@@ -182,14 +311,16 @@ watch(
   () => props.tableInfo,
   async (newVal) => {
     if (newVal) {
-      // 自动推断配置
-      formData.value = {
+      const basicData = {
         tableName: newVal.tableName,
         tableComment: newVal.tableComment || '',
         moduleName: extractModuleName(newVal.tableName),
         businessName: newVal.tableComment?.replace(/表$/, '') || '',
         modulePath: generateModulePath(newVal.tableName),
         permissionPrefix: generatePermissionPrefix(newVal.tableName),
+      };
+
+      const optionsData = {
         backendOptions: [...BackendOption.toValue()],
         frontendOptions: [...FrontendOption.toValue()],
         features: [
@@ -199,6 +330,10 @@ watch(
           FeatureOption.BatchDelete,
         ],
       };
+
+      basicFormApi.setValues(basicData);
+      optionsFormApi.setValues(optionsData);
+
       columns.value = await getTableColumns(newVal.tableName);
       fieldGridApi.setState({
         gridOptions: {
@@ -210,52 +345,76 @@ watch(
   { immediate: true },
 );
 
-async function handleSave() {
-  loading.value = true;
+async function handleMergeSubmit() {
   try {
+    loading.value = true;
+
+    const mergedValues = await basicFormApi
+      .merge(optionsFormApi)
+      .submitAllForm(needMerge.value);
+
     const config = {
-      ...formData.value,
+      ...mergedValues,
+      fields: fieldGridApi?.grid?.getData?.() || columns.value,
+    };
+
+    const result = await generateCode(config);
+    if (result.success) {
+      message.success('代码生成成功！');
+      emit('success');
+    }
+  } catch {
+    message.error('代码生成失败，请检查配置');
+  } finally {
+    loading.value = false;
+  }
+}
+
+// 保存配置
+async function handleSave() {
+  try {
+    loading.value = true;
+
+    const mergedValues = await basicFormApi
+      .merge(optionsFormApi)
+      .submitAllForm(needMerge.value);
+
+    const config = {
+      ...mergedValues,
       fields: fieldGridApi?.grid?.getData() || columns.value,
     };
+
     await saveGeneratorConfig(config);
     message.success($t('generator.config.actions.saveSuccess'));
+  } catch {
+    message.error('保存失败');
   } finally {
     loading.value = false;
   }
 }
 
 async function handlePreview() {
-  loading.value = true;
   try {
+    loading.value = true;
+
+    const mergedValues = await basicFormApi
+      .merge(optionsFormApi)
+      .submitAllForm(needMerge.value);
+
     const config = {
-      ...formData.value,
-      fields: fieldGridApi?.grid?.getData?.() || columns.value,
+      ...mergedValues,
+      fields: fieldGridApi?.grid?.getData?.(),
     };
+
     const result = await previewCode(config);
     previewDrawerApi.setData(result).open();
+  } catch {
+    message.error('预览失败');
   } finally {
     loading.value = false;
   }
 }
 
-async function handleGenerate() {
-  loading.value = true;
-  try {
-    const config = {
-      ...formData.value,
-      fields: fieldGridApi?.grid?.getData?.() || columns.value,
-    };
-    const result = await generateCode(config);
-    if (result.success) {
-      message.success($t('generator.config.actions.generateSuccess'));
-      emit('success');
-    }
-  } finally {
-    loading.value = false;
-  }
-}
-
-// 工具函数
 function extractModuleName(tableName: string): string {
   return tableName.replace(/^[a-z]+_/, '');
 }
@@ -273,127 +432,69 @@ function generatePermissionPrefix(tableName: string): string {
 
 <template>
   <PreviewDrawer />
-  <Card
-    :title="$t('generator.config.title', { tableName: formData.tableName })"
-    class="h-full"
-  >
-    <Tabs v-model:active-key="activeTab">
-      <TabPane key="basic" :tab="$t('generator.config.tabs.basic')">
-        <Form
-          :model="formData"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 18 }"
-        >
-          <Form.Item :label="$t('generator.config.basic.tableName')">
-            <Input v-model:value="formData.tableName" disabled />
-          </Form.Item>
-          <Form.Item :label="$t('generator.config.basic.tableComment')">
-            <Input v-model:value="formData.tableComment" disabled />
-          </Form.Item>
-          <Form.Item :label="$t('generator.config.basic.moduleName')">
-            <Input
-              v-model:value="formData.moduleName"
-              :placeholder="$t('generator.config.basic.moduleNamePlaceholder')"
-            />
-          </Form.Item>
-          <Form.Item :label="$t('generator.config.basic.businessName')">
-            <Input
-              v-model:value="formData.businessName"
-              :placeholder="
-                $t('generator.config.basic.businessNamePlaceholder')
-              "
-            />
-          </Form.Item>
-          <Form.Item :label="$t('generator.config.basic.modulePath')">
-            <Input
-              v-model:value="formData.modulePath"
-              :placeholder="$t('generator.config.basic.modulePathPlaceholder')"
-            />
-          </Form.Item>
-          <Form.Item :label="$t('generator.config.basic.permissionPrefix')">
-            <Input
-              v-model:value="formData.permissionPrefix"
-              :placeholder="
-                $t('generator.config.basic.permissionPrefixPlaceholder')
-              "
-            />
-          </Form.Item>
-        </Form>
-      </TabPane>
-
-      <TabPane key="fields" :tab="$t('generator.config.tabs.fields')">
-        <FieldGrid />
-      </TabPane>
-
-      <TabPane key="options" :tab="$t('generator.config.tabs.options')">
-        <div class="generation-options">
-          <div class="option-group">
-            <h4>{{ $t('generator.config.options.backend.title') }}</h4>
-            <Checkbox.Group v-model:value="formData.backendOptions">
-              <Checkbox
-                v-for="option in BackendOption.toSelect()"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </Checkbox>
-            </Checkbox.Group>
-          </div>
-
-          <div class="option-group">
-            <h4>{{ $t('generator.config.options.frontend.title') }}</h4>
-            <Checkbox.Group v-model:value="formData.frontendOptions">
-              <Checkbox
-                v-for="option in FrontendOption.toSelect()"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </Checkbox>
-            </Checkbox.Group>
-          </div>
-
-          <div class="option-group">
-            <h4>{{ $t('generator.config.options.features.title') }}</h4>
-            <Checkbox.Group v-model:value="formData.features">
-              <Checkbox
-                v-for="option in FeatureOption.toSelect()"
-                :key="option.value"
-                :value="option.value"
-              >
-                {{ option.label }}
-              </Checkbox>
-            </Checkbox.Group>
-          </div>
-        </div>
-      </TabPane>
-    </Tabs>
-
+  <Card title="代码生成配置">
     <template #extra>
-      <Space>
+      <div class="flex items-center space-x-4">
         <Button @click="handleSave" :loading="loading">
           {{ $t('generator.config.actions.save') }}
         </Button>
         <Button @click="handlePreview" :loading="loading">
           {{ $t('generator.config.actions.preview') }}
         </Button>
-        <Button type="primary" @click="handleGenerate" :loading="loading">
+        <Button type="primary" @click="handleMergeSubmit" :loading="loading">
           {{ $t('generator.config.actions.generate') }}
         </Button>
-      </Space>
+      </div>
     </template>
+
+    <div class="mx-auto max-w-4xl">
+      <Steps :current="currentStep" class="steps mb-8">
+        <Step title="基础配置" description="配置模块基础信息" />
+        <Step title="字段配置" description="配置表字段属性" />
+        <Step title="生成选项" description="选择生成内容和功能" />
+      </Steps>
+
+      <div class="p-6">
+        <!-- 第一步：基础配置 -->
+        <div v-show="currentStep === 0">
+          <div class="max-w-2xl">
+            <BasicForm />
+          </div>
+        </div>
+
+        <!-- 第二步：字段配置 -->
+        <div v-show="currentStep === 1">
+          <div class="mb-4">
+            <h3 class="mb-2 text-lg font-medium">字段配置</h3>
+            <p class="mb-4 text-gray-600">配置表字段的生成属性和验证规则</p>
+          </div>
+          <FieldGrid />
+          <div class="mt-6 flex justify-between">
+            <Button @click="onFieldStepPrev">上一步</Button>
+            <Button type="primary" @click="onFieldStepNext">下一步</Button>
+          </div>
+        </div>
+
+        <!-- 第三步：生成选项 -->
+        <div v-show="currentStep === 2">
+          <div class="max-w-2xl">
+            <OptionsForm />
+          </div>
+        </div>
+      </div>
+    </div>
   </Card>
 </template>
 
 <style lang="scss" scoped>
-.generation-options {
-  .option-group {
-    margin-bottom: 20px;
+.steps {
+  :deep(.ant-steps-item-title) {
+    font-size: 16px;
+    font-weight: 500;
+  }
 
-    h4 {
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
+  :deep(.ant-steps-item-description) {
+    color: #666;
   }
 }
 </style>

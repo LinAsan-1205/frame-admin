@@ -14,6 +14,7 @@ import {
 } from 'ant-design-vue';
 
 import { getDatabaseTables } from '#/api/generator';
+import { EmptyState } from '#/components/empty-state';
 import { $t } from '#/locales';
 
 const props = defineProps<{
@@ -45,27 +46,18 @@ const filteredTables = computed(() => {
   );
 });
 
-/**
- * 加载数据库表列表
- */
 async function loadTables() {
   loading.value = true;
-  try {
-    const data = await getDatabaseTables();
-    tableList.value = data;
-  } catch {
-    message.error($t('generator.tableList.loading'));
-  } finally {
+  const data = await getDatabaseTables().finally(() => {
     loading.value = false;
-  }
+  });
+  tableList.value = data;
 }
 
-/**
- * 选择表
- */
 function handleSelect(table: any) {
-  if (props.disabled) return;
-
+  if (props.disabled) {
+    return;
+  }
   selectedTableName.value = table.tableName;
   emit('select', table);
   message.success(
@@ -73,9 +65,6 @@ function handleSelect(table: any) {
   );
 }
 
-/**
- * 刷新数据
- */
 async function handleRefresh() {
   if (props.disabled) return;
 
@@ -92,31 +81,6 @@ function isSelected(tableName: string) {
 }
 
 /**
- * 获取表类型图标
- */
-function getTableIcon(tableName: string) {
-  if (tableName.includes('_log') || tableName.includes('log_')) {
-    return 'ri:file-list-3-line';
-  }
-  if (tableName.includes('_config') || tableName.includes('config_')) {
-    return 'ri:settings-3-line';
-  }
-  if (tableName.includes('_user') || tableName.includes('user_')) {
-    return 'ri:user-line';
-  }
-  if (tableName.includes('_role') || tableName.includes('role_')) {
-    return 'ri:shield-user-line';
-  }
-  if (tableName.includes('_menu') || tableName.includes('menu_')) {
-    return 'ri:menu-line';
-  }
-  if (tableName.includes('_dict') || tableName.includes('dict_')) {
-    return 'ri:book-line';
-  }
-  return 'ri:database-2-line';
-}
-
-/**
  * 格式化创建时间
  */
 function formatDate(dateStr: string) {
@@ -130,7 +94,6 @@ function formatDate(dateStr: string) {
 function handleMenuClick(key: string, table: any) {
   switch (key) {
     case 'info': {
-      // 可以添加查看表结构的功能
       message.info(`表 ${table.tableName} 的详细信息`);
       break;
     }
@@ -148,9 +111,8 @@ onMounted(() => {
 
 <template>
   <div class="generator-table" :class="{ disabled }">
-    <!-- 头部区域 -->
     <div class="space-y-2">
-      <div class="mb-3 space-y-3 border-b border-gray-100 pb-3">
+      <div class="space-y-3 border-b border-gray-100">
         <div class="flex items-center justify-between">
           <div class="flex items-center text-lg font-semibold">
             <VbenIcon icon="ri:database-2-line" class="mr-2" />
@@ -181,14 +143,13 @@ onMounted(() => {
         </Input>
       </div>
 
-      <!-- 统计信息 -->
-      <div class="mb-3 flex items-center justify-between text-sm text-gray-500">
+      <div class="flex items-center justify-between py-3">
         <span>
           {{
             $t('generator.tableList.total', { count: filteredTables.length })
           }}
         </span>
-        <span v-if="selectedTableName">
+        <span v-if="selectedTableName" class="text-primary">
           {{
             $t('generator.tableList.selected', { tableName: selectedTableName })
           }}
@@ -196,28 +157,18 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- 表格列表 -->
     <div class="table-list">
-      <!-- 加载状态 -->
       <VbenSpinner
         v-if="loading && tableList.length === 0"
         :spinning="true"
         class="min-h-[200px]"
       />
 
-      <!-- 空状态 -->
-      <div v-else-if="filteredTables.length === 0" class="py-8 text-center">
-        <VbenIcon
-          icon="ri:database-2-line"
-          class="mx-auto mb-2 size-8 text-gray-300"
+      <div v-else-if="filteredTables.length === 0" class="py-8">
+        <EmptyState
+          :title="$t('generator.tableList.empty')"
+          :description="$t('generator.tableList.noSearchResult')"
         />
-        <p class="text-sm text-gray-500">
-          {{
-            searchValue
-              ? $t('generator.tableList.noSearchResult')
-              : $t('generator.tableList.empty')
-          }}
-        </p>
       </div>
 
       <!-- 表格卡片列表 -->
@@ -237,21 +188,10 @@ onMounted(() => {
         >
           <div class="p-4">
             <div class="flex items-center justify-between">
-              <!-- 表信息 -->
               <div class="flex min-w-0 flex-1 items-center space-x-3">
-                <div class="flex-shrink-0">
-                  <VbenIcon
-                    :icon="getTableIcon(table.tableName)"
-                    class="text-primary size-5"
-                  />
-                </div>
-
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center space-x-2">
-                    <h4
-                      class="truncate font-mono text-sm font-medium"
-                      :title="table.tableName"
-                    >
+                    <h4 class="truncate font-mono" :title="table.tableName">
                       {{ table.tableName }}
                     </h4>
                     <Badge
@@ -262,7 +202,6 @@ onMounted(() => {
                   </div>
 
                   <div class="mt-1 space-y-1">
-                    <!-- 表注释 -->
                     <div v-if="table.tableComment" class="flex items-center">
                       <span
                         class="text-sm text-gray-700"
@@ -272,7 +211,6 @@ onMounted(() => {
                       </span>
                     </div>
 
-                    <!-- 表详细信息 -->
                     <div
                       class="flex items-center space-x-2 text-xs text-gray-500"
                     >
@@ -294,9 +232,7 @@ onMounted(() => {
                 </div>
               </div>
 
-              <!-- 操作按钮 -->
               <div class="flex items-center space-x-2">
-                <!-- 选中状态指示 -->
                 <div
                   v-if="isSelected(table.tableName)"
                   class="flex items-center"
@@ -304,7 +240,6 @@ onMounted(() => {
                   <VbenIcon icon="ri:check-line" class="text-primary size-4" />
                 </div>
 
-                <!-- 更多操作 -->
                 <Dropdown :trigger="['click']" @click.stop>
                   <VbenIconButton :disabled="disabled">
                     <VbenIcon icon="ri:more-2-line" />

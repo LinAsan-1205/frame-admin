@@ -56,18 +56,6 @@ const handleSuccess = () => {
         :title="$t('system.config.configGroup.title')"
         :description="$t('system.config.configItem.selectGroupFirst')"
       />
-      <!-- <div class="text-center">
-        <VbenIcon
-          icon="ri:settings-3-line"
-          class="mx-auto mb-4 size-16 text-gray-300"
-        />
-        <p class="text-lg font-medium text-gray-500">
-          {{ $t('system.config.configItem.selectGroupFirst') }}
-        </p>
-        <p class="mt-2 text-sm text-gray-400">
-          {{ $t('system.config.configGroup.title') }}
-        </p>
-      </div> -->
     </div>
 
     <div v-else class="flex flex-1 space-x-4">

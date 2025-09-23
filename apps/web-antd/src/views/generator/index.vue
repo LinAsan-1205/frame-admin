@@ -14,7 +14,6 @@ function handleTableSelect(table: any) {
 }
 
 function handleGenerate() {
-  // 重新加载表列表
   selectedTable.value = null;
 }
 </script>
