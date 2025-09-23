@@ -1,0 +1,7 @@
+{
+  "formRules": {
+    "required": "{0} is required",
+    "selectRequired": "Please select {0}",
+    "maxLength": "{0} cannot exceed {1} characters"
+  }
+}

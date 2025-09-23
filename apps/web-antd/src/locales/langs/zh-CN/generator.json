@@ -1,12 +1,19 @@
 {
   "title": "代码生成器",
   "tableList": {
-    "title": "数据库表列表",
+    "title": "数据库表",
     "refresh": "刷新",
     "select": "选择",
     "loading": "加载表列表失败",
     "refreshSuccess": "刷新成功",
     "selectSuccess": "已选择表: {tableName}",
+    "searchPlaceholder": "搜索表名或表注释",
+    "total": "共 {count} 个表",
+    "selected": "已选择: {tableName}",
+    "empty": "暂无数据表",
+    "noSearchResult": "没有找到匹配的表",
+    "createTime": "创建时间",
+    "viewInfo": "查看详情",
     "columns": {
       "tableName": "表名",
       "tableComment": "表注释",

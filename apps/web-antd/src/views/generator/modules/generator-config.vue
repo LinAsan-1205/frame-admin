@@ -88,37 +88,65 @@ const fieldColumns: VxeTableGridOptions['columns'] = [
   {
     field: 'dataType',
     title: $t('generator.config.fields.columns.dataType'),
-    width: 100,
   },
   {
     field: 'isRequired',
     title: $t('generator.config.fields.columns.isRequired'),
-    width: 70,
+    editRender: {
+      name: 'VxeSelect',
+      options: [
+        { label: '是', value: true },
+        { label: '否', value: false },
+      ],
+    },
   },
   {
     field: 'isInsert',
     title: $t('generator.config.fields.columns.isInsert'),
-    width: 70,
+    editRender: {
+      name: 'VxeSelect',
+      options: [
+        { label: '是', value: true },
+        { label: '否', value: false },
+      ],
+    },
   },
   {
     field: 'isEdit',
     title: $t('generator.config.fields.columns.isEdit'),
-    width: 70,
+    editRender: {
+      name: 'VxeSelect',
+      options: [
+        { label: '是', value: true },
+        { label: '否', value: false },
+      ],
+    },
   },
   {
     field: 'isList',
     title: $t('generator.config.fields.columns.isList'),
-    width: 70,
+    editRender: {
+      name: 'VxeSelect',
+      options: [
+        { label: '是', value: true },
+        { label: '否', value: false },
+      ],
+    },
   },
   {
     field: 'isQuery',
     title: $t('generator.config.fields.columns.isQuery'),
-    width: 70,
+    editRender: {
+      name: 'VxeSelect',
+      options: [
+        { label: '是', value: true },
+        { label: '否', value: false },
+      ],
+    },
   },
   {
     field: 'formType',
     title: $t('generator.config.fields.columns.formType'),
-    width: 120,
     editRender: {
       name: 'VxeSelect',
       options: FormType.toOriginItems(),
@@ -127,7 +155,6 @@ const fieldColumns: VxeTableGridOptions['columns'] = [
   {
     field: 'queryType',
     title: $t('generator.config.fields.columns.queryType'),
-    width: 100,
     editRender: {
       name: 'VxeSelect',
       options: QueryType.toOriginItems(),
@@ -136,10 +163,11 @@ const fieldColumns: VxeTableGridOptions['columns'] = [
 ];
 
 const [FieldGrid, fieldGridApi] = useVbenVxeGrid({
+  showSearchForm: false,
   gridOptions: {
     columns: fieldColumns,
     data: [],
-    height: 400,
+    height: 600,
     editConfig: {
       trigger: 'click',
       mode: 'cell',

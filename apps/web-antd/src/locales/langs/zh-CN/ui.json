@@ -1,0 +1,7 @@
+{
+  "formRules": {
+    "required": "{0}不能为空",
+    "selectRequired": "请选择{0}",
+    "maxLength": "{0}长度不能超过{1}个字符"
+  }
+}
