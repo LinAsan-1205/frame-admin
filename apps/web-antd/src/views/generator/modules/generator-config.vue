@@ -215,7 +215,7 @@ async function handleSave() {
   try {
     const config = {
       ...formData.value,
-      fields: fieldGridApi.grid.getData(),
+      fields: fieldGridApi?.grid?.getData() || columns.value,
     };
     await saveGeneratorConfig(config);
     message.success($t('generator.config.actions.saveSuccess'));
@@ -229,7 +229,7 @@ async function handlePreview() {
   try {
     const config = {
       ...formData.value,
-      fields: fieldGridApi.grid.getData(),
+      fields: fieldGridApi?.grid?.getData?.() || columns.value,
     };
     const result = await previewCode(config);
     previewDrawerApi.setData(result).open();
@@ -243,7 +243,7 @@ async function handleGenerate() {
   try {
     const config = {
       ...formData.value,
-      fields: columns.value,
+      fields: fieldGridApi?.grid?.getData?.() || columns.value,
     };
     const result = await generateCode(config);
     if (result.success) {
