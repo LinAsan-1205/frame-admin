@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 
 import { DualPaneLayout } from '#/components/dual-pane-layout';
+import { EmptyState } from '#/components/empty-state';
 import { $t } from '#/locales';
 
 import GeneratorTable from './generator-table.vue';
@@ -34,8 +35,9 @@ function handleGenerate() {
         :table-info="selectedTable"
         @success="handleGenerate"
       />
-      <div v-else class="flex h-full items-center justify-center text-gray-500">
-        {{ $t('generator.config.selectPrompt') }}
+
+      <div v-else class="flex h-full items-center justify-center">
+        <EmptyState :title="$t('generator.config.selectPrompt')" />
       </div>
     </div>
   </DualPaneLayout>

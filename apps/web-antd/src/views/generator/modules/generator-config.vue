@@ -432,7 +432,7 @@ function generatePermissionPrefix(tableName: string): string {
 
 <template>
   <PreviewDrawer />
-  <Card title="代码生成配置">
+  <Card title="代码生成配置" class="h-full">
     <template #extra>
       <div class="flex items-center space-x-4">
         <Button @click="handleSave" :loading="loading">
