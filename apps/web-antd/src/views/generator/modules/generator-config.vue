@@ -260,9 +260,7 @@ async function handlePreview() {
       ...formData.value,
       fields: columns.value,
     };
-    console.log('Preview config:', config);
     const result = await previewCode(config);
-    console.log('Preview result:', result);
     previewDrawerApi.setData(result).open();
   } finally {
     loading.value = false;
