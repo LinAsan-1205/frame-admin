@@ -1,25 +1,19 @@
 <script setup lang="ts">
 import type { Session } from '#/api/system/session';
 
+import { ref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
 
 import { Descriptions, DescriptionsItem, Tag } from 'ant-design-vue';
 
 import { $t } from '#/locales';
 
-interface Props {
-  sessionData?: null | Session.View;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  sessionData: null,
-});
+const sessionData = ref<null | Session.View>(null);
 
 const [SessionDetailModal, modalApi] = useVbenModal({
   onOpenChange: (isOpen: boolean) => {
-    if (!isOpen) {
-      modalApi.setData(null);
-    }
+    sessionData.value = isOpen ? modalApi.getData<Session.View>() : null;
   },
 });
 
@@ -77,79 +71,79 @@ defineExpose({
 
 <template>
   <SessionDetailModal :title="$t('system.session.sessionDetail')" width="800">
-    <div v-if="props.sessionData" class="session-detail">
+    <div v-if="sessionData" class="session-detail">
       <Descriptions :column="2" bordered>
         <DescriptionsItem :label="$t('system.session.sessionId')">
-          {{ props.sessionData.id }}
+          {{ sessionData.id }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.userId')">
-          {{ props.sessionData.userId }}
+          {{ sessionData.userId }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.deviceId')">
-          {{ props.sessionData.deviceId }}
+          {{ sessionData.deviceId }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.deviceName')">
-          {{ props.sessionData.deviceName || '-' }}
+          {{ sessionData.deviceName || '-' }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.platform')">
-          <Tag :color="getPlatformColor(props.sessionData.platform)">
-            {{ getPlatformText(props.sessionData.platform) }}
+          <Tag :color="getPlatformColor(sessionData.platform)">
+            {{ getPlatformText(sessionData.platform) }}
           </Tag>
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.deviceType')">
-          <Tag :color="getDeviceTypeColor(props.sessionData.deviceType)">
-            {{ getDeviceTypeText(props.sessionData.deviceType) }}
+          <Tag :color="getDeviceTypeColor(sessionData.deviceType)">
+            {{ getDeviceTypeText(sessionData.deviceType) }}
           </Tag>
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.ipAddress')">
-          {{ props.sessionData.ipAddress || '-' }}
+          {{ sessionData.ipAddress || '-' }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.loginLocation')">
-          {{ props.sessionData.loginLocation || '-' }}
+          {{ sessionData.loginLocation || '-' }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.status')">
-          <Tag :color="props.sessionData.isActive ? 'success' : 'default'">
+          <Tag :color="sessionData.isActive ? 'success' : 'default'">
             {{
-              props.sessionData.isActive
+              sessionData.isActive
                 ? $t('system.session.online')
                 : $t('system.session.offline')
             }}
           </Tag>
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.sessionStatus')">
-          {{ props.sessionData.status }}
+          {{ sessionData.status }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.loginTime')">
-          {{ formatDateTime(props.sessionData.loginAt) }}
+          {{ formatDateTime(sessionData.loginAt) }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('system.session.lastActiveTime')">
-          {{ formatDateTime(props.sessionData.lastActiveAt) }}
+          {{ formatDateTime(sessionData.lastActiveAt) }}
         </DescriptionsItem>
         <DescriptionsItem
           :label="$t('system.session.refreshTokenExpiresAt')"
-          v-if="props.sessionData.refreshTokenExpiresAt"
+          v-if="sessionData.refreshTokenExpiresAt"
         >
-          {{ formatDateTime(props.sessionData.refreshTokenExpiresAt) }}
+          {{ formatDateTime(sessionData.refreshTokenExpiresAt) }}
         </DescriptionsItem>
         <DescriptionsItem
           :label="$t('system.session.logoutTime')"
-          v-if="props.sessionData.logoutAt"
+          v-if="sessionData.logoutAt"
         >
-          {{ formatDateTime(props.sessionData.logoutAt) }}
+          {{ formatDateTime(sessionData.logoutAt) }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('ui.common.createTime')">
-          {{ formatDateTime(props.sessionData.createdAt) }}
+          {{ formatDateTime(sessionData.createdAt) }}
         </DescriptionsItem>
         <DescriptionsItem :label="$t('ui.common.updateTime')">
-          {{ formatDateTime(props.sessionData.updatedAt) }}
+          {{ formatDateTime(sessionData.updatedAt) }}
         </DescriptionsItem>
         <DescriptionsItem
           :label="$t('system.session.userAgent')"
           :span="2"
-          v-if="props.sessionData.userAgent"
+          v-if="sessionData.userAgent"
         >
           <div class="break-all text-sm">
-            {{ props.sessionData.userAgent }}
+            {{ sessionData.userAgent }}
           </div>
         </DescriptionsItem>
       </Descriptions>
