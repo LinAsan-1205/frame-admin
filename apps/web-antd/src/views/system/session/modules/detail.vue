@@ -8,7 +8,7 @@ import { Descriptions, DescriptionsItem, Tag } from 'ant-design-vue';
 import { $t } from '#/locales';
 
 interface Props {
-  sessionData?: null | Session.SessionInfo;
+  sessionData?: null | Session.View;
 }
 
 const props = withDefaults(defineProps<Props>(), {
