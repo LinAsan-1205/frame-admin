@@ -25,6 +25,12 @@ function queryUserPage(
   );
 }
 /**
+ * 获取用户列表
+ */
+function queryUserList() {
+  return requestClient.get<User.View[]>('/system/user/list', {});
+}
+/**
  * 获取用户信息
  */
 function getMineProfile() {
@@ -108,6 +114,7 @@ export {
   getBindAccessCodes,
   getBindMenus,
   getMineProfile,
+  queryUserList,
   queryUserPage,
   setFoundation,
   setInitializePassword,

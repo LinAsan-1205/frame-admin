@@ -1,6 +1,7 @@
 import type { VbenFormProps } from '#/adapter/form';
 
 import { ActiveStatus, DeviceType, PlatformType } from '#/api/system/session';
+import { queryUserList } from '#/api/system/user';
 import { $t } from '#/locales';
 
 /**
@@ -13,19 +14,14 @@ export function useSearchFormOptions(): VbenFormProps {
     submitOnChange: true,
     schema: [
       {
-        component: 'InputNumber',
+        component: 'ApiSelect',
         fieldName: 'userId',
-        label: $t('system.session.userId'),
+        label: $t('system.session.user'),
         componentProps: {
           allowClear: true,
-        },
-      },
-      {
-        component: 'Input',
-        fieldName: 'deviceId',
-        label: $t('system.session.deviceId'),
-        componentProps: {
-          allowClear: true,
+          api: queryUserList,
+          labelField: 'nickName',
+          valueField: 'id',
         },
       },
       {
