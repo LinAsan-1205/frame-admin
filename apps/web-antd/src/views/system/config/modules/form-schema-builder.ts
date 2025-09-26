@@ -9,7 +9,7 @@ import { InputComponentType } from '#/api/system/config/enum';
  */
 export function buildFormSchemaFromConfigItem(item: ConfigItem.View) {
   const baseSchema = {
-    fieldName: `config_${item.id}`,
+    fieldName: item.configKey,
     label: item.title,
     helpMessage: item.description,
     defaultValue: item.configValue || '',

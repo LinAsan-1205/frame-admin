@@ -37,7 +37,7 @@ const handleSaveValues = async (values: Record<string, any>) => {
       configs: configItems.value?.map((item) => ({
         id: item.id,
         configKey: item.configKey,
-        configValue: String(values[`config_${item.id}`] || ''),
+        configValue: values[item.configKey] || '',
       })),
     });
     message.success($t('ui.actionMessage.operationSuccess'));
@@ -54,6 +54,16 @@ const [EditForm, editFormApi] = useVbenForm({
   layout: 'horizontal',
   schema: [],
   handleSubmit: handleSaveValues,
+  handleReset: () => {
+    const values = configItems.value?.reduce(
+      (acc, item) => {
+        acc[item.configKey] = item.configValue;
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
+    editFormApi.setValues(values || {});
+  },
   wrapperClass: 'grid-cols-1',
 });
 
