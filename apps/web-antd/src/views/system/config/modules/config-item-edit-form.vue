@@ -15,76 +15,105 @@ import { $t } from '#/locales';
 
 import { buildFormSchemasFromConfigItems } from './form-schema-builder';
 
-interface Props {
+interface ConfigItemEditFormProps {
   groupId: number;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<ConfigItemEditFormProps>();
 
+/**
+ * 查询配置项数据
+ */
 const {
-  data: configItems,
-  refetch,
-  isLoading,
+  data: configItemList,
+  refetch: refetchConfigItems,
+  isLoading: isConfigItemsLoading,
 } = useQuery({
   queryKey: ['configItems', () => props.groupId],
   queryFn: () => queryConfigItemByGroupId(props.groupId),
-  staleTime: 1000 * 60 * 5,
+  staleTime: 1000 * 60 * 5, // 缓存5分钟
 });
 
-const handleSaveValues = async (values: Record<string, any>) => {
+/**
+ * 处理表单提交 - 批量保存配置值
+ * @param formValues 表单提交的值
+ */
+const handleSubmitConfigValues = async (formValues: Record<string, any>) => {
   try {
+    const configUpdateList = configItemList.value?.map((configItem) => ({
+      id: configItem.id,
+      configKey: configItem.configKey,
+      configValue: formValues[configItem.configKey] || '',
+    }));
+
     await batchUpdateConfigValues({
-      configs: configItems.value?.map((item) => ({
-        id: item.id,
-        configKey: item.configKey,
-        configValue: values[item.configKey] || '',
-      })),
+      configs: configUpdateList,
     });
+
     message.success($t('ui.actionMessage.operationSuccess'));
-    refetch();
+    refetchConfigItems();
   } catch {
     message.error($t('ui.actionMessage.operationFailed'));
   }
 };
 
-const [EditForm, editFormApi] = useVbenForm({
+/**
+ * 处理表单重置 - 重置为原始配置值
+ */
+const handleResetFormToOriginalValues = () => {
+  const originalFormValues = configItemList.value?.reduce(
+    (formValueAccumulator, currentConfigItem) => {
+      formValueAccumulator[currentConfigItem.configKey] =
+        currentConfigItem.configValue;
+      return formValueAccumulator;
+    },
+    {} as Record<string, any>,
+  );
+
+  configEditFormApi.setValues(originalFormValues || {});
+};
+
+/**
+ * 配置编辑表单实例
+ */
+const [ConfigEditForm, configEditFormApi] = useVbenForm({
   commonConfig: {
     controlClass: 'w-full',
   },
   layout: 'horizontal',
   schema: [],
-  handleSubmit: handleSaveValues,
-  handleReset: () => {
-    const values = configItems.value?.reduce(
-      (acc, item) => {
-        acc[item.configKey] = item.configValue;
-        return acc;
-      },
-      {} as Record<string, any>,
-    );
-    editFormApi.setValues(values || {});
-  },
+  handleSubmit: handleSubmitConfigValues,
+  handleReset: handleResetFormToOriginalValues,
   wrapperClass: 'grid-cols-1',
 });
 
-const valueFormSchema = computed(() => {
-  if (!configItems.value || configItems.value.length === 0) {
+/**
+ * 动态构建表单Schema
+ */
+const configFormSchema = computed(() => {
+  if (!configItemList.value || configItemList.value.length === 0) {
     return [];
   }
 
-  return buildFormSchemasFromConfigItems(configItems.value);
+  return buildFormSchemasFromConfigItems(configItemList.value);
 });
 
+/**
+ * 监听表单Schema变化，动态更新表单结构
+ */
 watch(
-  valueFormSchema,
-  (newSchema) => {
-    editFormApi.setState({ schema: newSchema });
+  configFormSchema,
+  (updatedFormSchema) => {
+    configEditFormApi.setState({ schema: updatedFormSchema });
   },
   { deep: true },
 );
 
+/**
+ * 暴露给父组件的方法
+ */
 defineExpose({
-  refetch,
+  refetchConfigItems,
 });
 </script>
 
@@ -97,16 +126,16 @@ defineExpose({
     </div>
 
     <VbenSpinner
-      v-if="isLoading && !configItems"
+      v-if="isConfigItemsLoading && !configItemList"
       :spinning="true"
       class="min-h-[400px]"
     />
 
     <div
-      v-else-if="configItems && configItems.length > 0"
+      v-else-if="configItemList && configItemList.length > 0"
       class="rounded-lg border border-gray-200 bg-white p-4"
     >
-      <EditForm />
+      <ConfigEditForm />
     </div>
 
     <div

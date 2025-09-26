@@ -31,7 +31,7 @@ watch(
 );
 
 const handleSuccess = () => {
-  editFormRef.value?.refetch();
+  editFormRef.value?.refetchConfigItems();
 };
 </script>
 
