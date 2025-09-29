@@ -1,0 +1,76 @@
+{
+  "title": "租户管理",
+  "name": "租户",
+  "list": "租户列表",
+  "management": "租户管理",
+  "deleteConfirm": "确定要删除选中的租户吗？",
+  "deleteSuccess": "删除成功",
+  "form": {
+    "tenantName": "租户名称",
+    "tenantNamePlaceholder": "请输入租户名称",
+    "tenantNameRequired": "租户名称不能为空",
+    "domain": "域名",
+    "domainPlaceholder": "请输入域名",
+    "phone": "手机号",
+    "phonePlaceholder": "请输入手机号",
+    "phoneRequired": "请输入11位手机号",
+    "email": "邮箱",
+    "emailPlaceholder": "请输入邮箱",
+    "emailInvalid": "邮箱格式不正确",
+    "password": "密码",
+    "passwordPlaceholder": "请输入密码",
+    "passwordRequired": "密码长度不能少于6位",
+    "subscriptionType": "订阅类型",
+    "subscriptionTypePlaceholder": "请选择订阅类型",
+    "subscriptionTypeRequired": "请选择订阅类型",
+    "fixedPeriodDays": "固定周期天数",
+    "fixedPeriodDaysPlaceholder": "请输入固定周期天数",
+    "expireTime": "到期时间",
+    "expireTimePlaceholder": "请选择到期时间",
+    "package": "套餐",
+    "packagePlaceholder": "请选择套餐",
+    "status": "状态",
+    "remarkPlaceholder": "请输入备注"
+  },
+  "status": {
+    "normal": "正常",
+    "disabled": "停用",
+    "expired": "已过期"
+  },
+  "subscription": {
+    "oneYear": "一年",
+    "fixedPeriod": "固定时长",
+    "permanent": "永久"
+  },
+  "package": {
+    "title": "套餐管理",
+    "name": "套餐",
+    "list": "套餐列表",
+    "management": "套餐管理",
+    "deleteConfirm": "确定要删除选中的套餐吗？",
+    "deleteSuccess": "删除成功",
+    "tenantCount": "租户数量",
+    "form": {
+      "packageName": "套餐名称",
+      "packageNamePlaceholder": "请输入套餐名称",
+      "packageNameRequired": "套餐名称不能为空",
+      "price": "套餐价格",
+      "pricePlaceholder": "请输入套餐价格",
+      "priceRequired": "请输入套餐价格",
+      "originalPrice": "套餐原价",
+      "originalPricePlaceholder": "请输入套餐原价",
+      "originalPriceRequired": "请输入套餐原价",
+      "description": "套餐描述",
+      "descriptionPlaceholder": "请输入套餐描述",
+      "menuIds": "授权菜单",
+      "menuIdsPlaceholder": "请选择授权菜单",
+      "menuIdsRequired": "请选择授权菜单",
+      "status": "状态",
+      "remarkPlaceholder": "请输入备注"
+    },
+    "status": {
+      "normal": "正常",
+      "disabled": "停用"
+    }
+  }
+}

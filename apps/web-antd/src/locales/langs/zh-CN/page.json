@@ -42,5 +42,13 @@
     "log": {
       "title": "执行日志"
     }
+  },
+  "tenant": {
+    "title": "租户管理",
+    "list": "租户列表"
+  },
+  "package": {
+    "title": "套餐管理",
+    "list": "套餐列表"
   }
 }

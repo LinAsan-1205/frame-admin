@@ -1,0 +1,76 @@
+{
+  "title": "Tenant Management",
+  "name": "Tenant",
+  "list": "Tenant List",
+  "management": "Tenant Management",
+  "deleteConfirm": "Are you sure to delete selected tenants?",
+  "deleteSuccess": "Delete successfully",
+  "form": {
+    "tenantName": "Tenant Name",
+    "tenantNamePlaceholder": "Please enter tenant name",
+    "tenantNameRequired": "Tenant name is required",
+    "domain": "Domain",
+    "domainPlaceholder": "Please enter domain",
+    "phone": "Phone",
+    "phonePlaceholder": "Please enter phone number",
+    "phoneRequired": "Please enter 11-digit phone number",
+    "email": "Email",
+    "emailPlaceholder": "Please enter email",
+    "emailInvalid": "Invalid email format",
+    "password": "Password",
+    "passwordPlaceholder": "Please enter password",
+    "passwordRequired": "Password must be at least 6 characters",
+    "subscriptionType": "Subscription Type",
+    "subscriptionTypePlaceholder": "Please select subscription type",
+    "subscriptionTypeRequired": "Please select subscription type",
+    "fixedPeriodDays": "Fixed Period Days",
+    "fixedPeriodDaysPlaceholder": "Please enter fixed period days",
+    "expireTime": "Expire Time",
+    "expireTimePlaceholder": "Please select expire time",
+    "package": "Package",
+    "packagePlaceholder": "Please select package",
+    "status": "Status",
+    "remarkPlaceholder": "Please enter remark"
+  },
+  "status": {
+    "normal": "Normal",
+    "disabled": "Disabled",
+    "expired": "Expired"
+  },
+  "subscription": {
+    "oneYear": "One Year",
+    "fixedPeriod": "Fixed Period",
+    "permanent": "Permanent"
+  },
+  "package": {
+    "title": "Package Management",
+    "name": "Package",
+    "list": "Package List",
+    "management": "Package Management",
+    "deleteConfirm": "Are you sure to delete selected packages?",
+    "deleteSuccess": "Delete successfully",
+    "tenantCount": "Tenant Count",
+    "form": {
+      "packageName": "Package Name",
+      "packageNamePlaceholder": "Please enter package name",
+      "packageNameRequired": "Package name is required",
+      "price": "Price",
+      "pricePlaceholder": "Please enter price",
+      "priceRequired": "Please enter price",
+      "originalPrice": "Original Price",
+      "originalPricePlaceholder": "Please enter original price",
+      "originalPriceRequired": "Please enter original price",
+      "description": "Description",
+      "descriptionPlaceholder": "Please enter description",
+      "menuIds": "Authorized Menus",
+      "menuIdsPlaceholder": "Please select authorized menus",
+      "menuIdsRequired": "Please select authorized menus",
+      "status": "Status",
+      "remarkPlaceholder": "Please enter remark"
+    },
+    "status": {
+      "normal": "Normal",
+      "disabled": "Disabled"
+    }
+  }
+}
