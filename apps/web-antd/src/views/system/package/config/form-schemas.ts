@@ -63,6 +63,13 @@ export function useFormSchemaConfig(): VbenFormSchema[] {
       label: $t('tenant.package.form.description'),
     },
     {
+      component: 'Input',
+      fieldName: 'menuIds',
+      formItemClass: 'items-start',
+      label: $t('tenant.package.form.menuIds'),
+      modelPropName: 'modelValue',
+    },
+    {
       component: 'Textarea',
       componentProps: {
         placeholder: $t('tenant.package.form.remarkPlaceholder'),
