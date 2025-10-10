@@ -1,3 +1,4 @@
+import type { Menu } from '../menu';
 import type { PackageStatus } from './enum';
 
 export namespace Package {
@@ -13,12 +14,7 @@ export namespace Package {
     description?: string;
     status: PackageStatusType;
     statusLabel: string;
-    menus: Array<{
-      id: number;
-      title: string;
-      name: string;
-      type: string;
-    }>;
+    menus: Menu.View[];
     tenantCount: number;
     remark?: string;
     createTime: string;
@@ -26,7 +22,7 @@ export namespace Package {
   }
 
   /** 套餐编辑 */
-  export interface Edit {
+  export interface Post {
     packageName: string;
     price: number;
     originalPrice: number;

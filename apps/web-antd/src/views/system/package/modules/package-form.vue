@@ -46,7 +46,7 @@ const [Modal, modalApi] = useVbenModal({
   async onConfirm() {
     const { valid } = await formApi.validate();
     if (!valid) return;
-    const values: Package.Edit = await formApi.getValues();
+    const values: Package.Post = await formApi.getValues();
     modalApi.lock();
     (id.value ? setPackage(id.value, values) : addPackage(values))
       .then(() => {
@@ -74,10 +74,12 @@ const [Modal, modalApi] = useVbenModal({
         id.value = undefined;
       }
 
-      // Wait for Vue to flush DOM updates (form fields mounted)
       await nextTick();
       if (data) {
-        formApi.setValues(data);
+        formApi.setValues({
+          ...data,
+          menuIds: data.menus.map((menu) => menu.id),
+        });
       }
     }
   },
