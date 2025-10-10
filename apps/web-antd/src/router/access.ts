@@ -6,11 +6,8 @@ import type {
 import { generateAccessible } from '@vben/access';
 import { preferences } from '@vben/preferences';
 
-import { message } from 'ant-design-vue';
-
 import { getBindMenus } from '#/api/system/user';
 import { BasicLayout, IFrameView } from '#/layouts';
-import { $t } from '#/locales';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 
@@ -25,10 +22,6 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   return await generateAccessible(preferences.app.accessMode, {
     ...options,
     fetchMenuListAsync: async () => {
-      message.loading({
-        content: `${$t('common.loadingMenu')}...`,
-        duration: 1.5,
-      });
       return await getBindMenus();
     },
     // 可以指定没有权限跳转403页面
