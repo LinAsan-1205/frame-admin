@@ -10,8 +10,8 @@ export function useColumns<T = Package.View>(
     { title: '#', type: 'seq', width: 50 },
     {
       field: 'packageName',
+      showOverflow: true,
       title: $t('tenant.package.form.packageName'),
-      width: 150,
     },
     {
       field: 'price',
@@ -33,6 +33,7 @@ export function useColumns<T = Package.View>(
       field: 'description',
       title: $t('tenant.package.form.description'),
       width: 200,
+      showOverflow: true,
       cellRender: {
         name: 'CellFormatEmpty',
       },
@@ -59,6 +60,7 @@ export function useColumns<T = Package.View>(
     {
       field: 'remark',
       title: $t('common.remark'),
+      showOverflow: true,
       width: 200,
       cellRender: {
         name: 'CellFormatEmpty',
