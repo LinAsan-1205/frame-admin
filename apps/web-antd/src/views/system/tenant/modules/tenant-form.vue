@@ -5,8 +5,8 @@ import { computed, nextTick, ref } from 'vue';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 
-import { addTenant, setTenant } from '#/api/system/tenant';
 import { queryPackageList } from '#/api/system/package';
+import { addTenant, setTenant } from '#/api/system/tenant';
 import { $t } from '#/locales';
 
 import { useFormSchemaConfig } from '../config/form-schemas';
@@ -20,7 +20,7 @@ const [Form, formApi] = useVbenForm({
   commonConfig: {
     controlClass: 'w-full',
   },
-  schema: useFormSchemaConfig(packageOptions),
+  schema: useFormSchemaConfig(),
   showDefaultActions: false,
 });
 
@@ -69,7 +69,7 @@ const [Modal, modalApi] = useVbenModal({
 async function loadPackageOptions() {
   try {
     const packages = await queryPackageList();
-    packageOptions.value = packages.map(pkg => ({
+    packageOptions.value = packages.map((pkg) => ({
       label: pkg.packageName,
       value: pkg.id,
     }));
@@ -80,8 +80,8 @@ async function loadPackageOptions() {
 
 const getModalTitle = computed(() => {
   return formData.value?.id
-    ? $t('common.edit') + ' ' + $t('tenant.name')
-    : $t('common.create') + ' ' + $t('tenant.name');
+    ? `${$t('common.edit')} ${$t('tenant.name')}`
+    : `${$t('common.create')} ${$t('tenant.name')}`;
 });
 </script>
 

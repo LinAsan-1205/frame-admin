@@ -1,23 +1,17 @@
 <script lang="ts" setup>
 import type {
-  OnActionClickFn,
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
 import type { Tenant } from '#/api/system/tenant';
 
-import { ref } from 'vue';
-
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { Button, message, Modal } from 'ant-design-vue';
+import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  delTenantById,
-  queryTenantPage,
-} from '#/api/system/tenant';
+import { delTenantById, queryTenantPage } from '#/api/system/tenant';
 import { $t } from '#/locales';
 
 import { useSearchFormOptions } from './config/search-config';

@@ -1,11 +1,11 @@
-import type { VbenFormSchema } from '@vben/common-ui';
-import type { Ref } from 'vue';
+import type { VbenFormSchema } from '#/adapter/form';
 
 import { z } from '@vben/common-ui';
 
+import { SubscriptionType } from '#/api/system/tenant';
 import { $t } from '#/locales';
 
-export function useFormSchema(packageOptions: Ref<Array<{ label: string; value: number }>>) {
+export function useFormSchema() {
   return z.object({
     tenantName: z
       .string({ required_error: $t('tenant.form.tenantNameRequired') })
@@ -31,8 +31,8 @@ export function useFormSchema(packageOptions: Ref<Array<{ label: string; value: 
   });
 }
 
-export function useFormSchemaConfig(packageOptions: Ref<Array<{ label: string; value: number }>>) {
-  return (): VbenFormSchema[] => [
+export function useFormSchemaConfig(): VbenFormSchema[] {
+  return [
     {
       component: 'Input',
       componentProps: {
@@ -71,22 +71,21 @@ export function useFormSchemaConfig(packageOptions: Ref<Array<{ label: string; v
         placeholder: $t('tenant.form.passwordPlaceholder'),
       },
       dependencies: {
-        show: (values) => !values.id,
+        show: (values) => {
+          return !values.id;
+        },
         triggerFields: ['id'],
       },
       fieldName: 'password',
       label: $t('tenant.form.password'),
     },
     {
-      component: 'Select',
+      component: 'RadioGroup',
       componentProps: {
-        options: [
-          { label: $t('tenant.subscription.oneYear'), value: '1' },
-          { label: $t('tenant.subscription.fixedPeriod'), value: '2' },
-          { label: $t('tenant.subscription.permanent'), value: '3' },
-        ],
+        options: SubscriptionType.toSelect(),
         placeholder: $t('tenant.form.subscriptionTypePlaceholder'),
       },
+      defaultValue: SubscriptionType.OneYear,
       fieldName: 'subscriptionType',
       label: $t('tenant.form.subscriptionType'),
     },
@@ -120,7 +119,7 @@ export function useFormSchemaConfig(packageOptions: Ref<Array<{ label: string; v
       component: 'Select',
       componentProps: {
         allowClear: true,
-        options: packageOptions,
+        options: [],
         placeholder: $t('tenant.form.packagePlaceholder'),
       },
       fieldName: 'packageId',
