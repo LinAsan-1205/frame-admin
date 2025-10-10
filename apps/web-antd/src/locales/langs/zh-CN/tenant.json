@@ -27,7 +27,7 @@
     "fixedPeriodDaysPlaceholder": "请输入固定周期天数",
     "expireTime": "到期时间",
     "expireTimePlaceholder": "请选择到期时间",
-    "package": "套餐",
+    "package": "租户套餐",
     "packagePlaceholder": "请选择套餐",
     "status": "状态",
     "remarkPlaceholder": "请输入备注"

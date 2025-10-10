@@ -2,6 +2,7 @@ import type { VbenFormSchema } from '#/adapter/form';
 
 import { z } from '@vben/common-ui';
 
+import { queryPackageList } from '#/api/system/package';
 import { SubscriptionType } from '#/api/system/tenant';
 import { $t } from '#/locales';
 
@@ -116,10 +117,12 @@ export function useFormSchemaConfig(): VbenFormSchema[] {
       label: $t('tenant.form.expireTime'),
     },
     {
-      component: 'Select',
+      component: 'ApiSelect',
       componentProps: {
         allowClear: true,
-        options: [],
+        api: queryPackageList,
+        labelField: 'packageName',
+        valueField: 'id',
         placeholder: $t('tenant.form.packagePlaceholder'),
       },
       fieldName: 'packageId',
