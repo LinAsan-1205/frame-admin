@@ -1,12 +1,9 @@
 <script lang="ts" setup>
 import type {
-  OnActionClickFn,
   OnActionClickParams,
   VxeTableGridOptions,
 } from '#/adapter/vxe-table';
 import type { Package } from '#/api/system/package';
-
-import { ref } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
@@ -14,10 +11,7 @@ import { Plus } from '@vben/icons';
 import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  delPackageById,
-  queryPackagePage,
-} from '#/api/system/package';
+import { delPackageById, queryPackagePage } from '#/api/system/package';
 import { $t } from '#/locales';
 
 import { useSearchFormOptions } from './config/search-config';

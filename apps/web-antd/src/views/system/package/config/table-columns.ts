@@ -1,7 +1,6 @@
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { Package } from '#/api/system/package';
 
-import { PackageStatus } from '#/api/system/package';
 import { $t } from '#/locales';
 
 export function useColumns<T = Package.View>(

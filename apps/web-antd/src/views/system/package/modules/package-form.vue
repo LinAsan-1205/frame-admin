@@ -62,8 +62,8 @@ const [Modal, modalApi] = useVbenModal({
 
 const getModalTitle = computed(() => {
   return formData.value?.id
-    ? $t('common.edit') + ' ' + $t('tenant.package.name')
-    : $t('common.create') + ' ' + $t('tenant.package.name');
+    ? `${$t('common.edit')} ${$t('tenant.package.name')}`
+    : `${$t('common.create')} ${$t('tenant.package.name')}`;
 });
 </script>
 

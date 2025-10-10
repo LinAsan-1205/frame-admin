@@ -13,7 +13,9 @@ export function useFormSchema() {
       .number({ required_error: $t('tenant.package.form.priceRequired') })
       .min(0, { message: $t('tenant.package.form.priceRequired') }),
     originalPrice: z
-      .number({ required_error: $t('tenant.package.form.originalPriceRequired') })
+      .number({
+        required_error: $t('tenant.package.form.originalPriceRequired'),
+      })
       .min(0, { message: $t('tenant.package.form.originalPriceRequired') }),
     description: z.string().optional(),
     menuIds: z.array(z.number()).default([]),
@@ -21,8 +23,8 @@ export function useFormSchema() {
   });
 }
 
-export function useFormSchemaConfig() {
-  return (): VbenFormSchema[] => [
+export function useFormSchemaConfig(): VbenFormSchema[] {
+  return [
     {
       component: 'Input',
       componentProps: {
