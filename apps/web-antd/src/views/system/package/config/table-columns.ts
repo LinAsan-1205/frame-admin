@@ -30,6 +30,11 @@ export function useColumns<T = Package.View>(
       },
     },
     {
+      field: 'tenantCount',
+      title: $t('tenant.package.tenantCount'),
+      width: 100,
+    },
+    {
       field: 'description',
       title: $t('tenant.package.form.description'),
       width: 200,
@@ -46,11 +51,7 @@ export function useColumns<T = Package.View>(
         name: 'CellTag',
       },
     },
-    {
-      field: 'tenantCount',
-      title: $t('tenant.package.tenantCount'),
-      width: 100,
-    },
+
     {
       field: 'createTime',
       title: $t('common.createTime'),
