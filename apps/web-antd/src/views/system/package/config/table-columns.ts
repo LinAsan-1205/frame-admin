@@ -12,11 +12,12 @@ export function useColumns<T = Package.View>(
       field: 'packageName',
       showOverflow: true,
       title: $t('tenant.package.form.packageName'),
+      width: 219,
     },
     {
       field: 'price',
       title: $t('tenant.package.form.price'),
-      width: 100,
+      width: 120,
       cellRender: {
         name: 'CellFormatMoney',
       },
@@ -46,7 +47,7 @@ export function useColumns<T = Package.View>(
     {
       field: 'status',
       title: $t('tenant.package.form.status'),
-      width: 100,
+      width: 120,
       cellRender: {
         name: 'CellTag',
       },
@@ -55,14 +56,12 @@ export function useColumns<T = Package.View>(
     {
       field: 'createTime',
       title: $t('common.createTime'),
-      width: 150,
       cellRender: { name: 'CellFormatDate' },
     },
     {
       field: 'remark',
       title: $t('common.remark'),
       showOverflow: true,
-      width: 200,
       cellRender: {
         name: 'CellFormatEmpty',
       },
