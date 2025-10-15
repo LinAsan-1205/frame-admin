@@ -62,9 +62,7 @@ const [Modal, modalApi] = useVbenModal({
 });
 
 const getModalTitle = computed(() => {
-  return formData.value?.id
-    ? $t('system.post.edit')
-    : $t('system.post.add');
+  return formData.value?.id ? $t('system.post.edit') : $t('system.post.add');
 });
 </script>
 <template>

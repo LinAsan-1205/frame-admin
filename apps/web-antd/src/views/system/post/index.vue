@@ -13,11 +13,7 @@ import { Plus } from '@vben/icons';
 import { Button, message, Modal } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  deletePostById,
-  getPostPage,
-  setPostStatus,
-} from '#/api/system/post';
+import { deletePostById, getPostPage, setPostStatus } from '#/api/system/post';
 import { $t } from '#/locales';
 
 import { useSearchFormOptions } from './config/search-config';
