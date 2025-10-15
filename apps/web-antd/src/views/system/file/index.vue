@@ -10,7 +10,7 @@ const categoryId = ref<number | undefined>();
 </script>
 
 <template>
-  <DualPaneLayout>
+  <DualPaneLayout :left-max-width="15">
     <template #left>
       <div
         class="border-border bg-card mr-2 h-full rounded-[var(--radius)] border p-4"
