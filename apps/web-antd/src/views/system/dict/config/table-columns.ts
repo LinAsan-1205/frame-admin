@@ -101,17 +101,14 @@ export function useDictDataColumns<T = DictData.View>(
     {
       field: 'dictValue',
       title: $t('system.dictData.dictValue'),
-      minWidth: 120,
     },
     {
       field: 'dictSort',
       title: $t('system.dictData.dictSort'),
-      width: 100,
     },
     {
       field: 'status',
       title: $t('system.dictData.status'),
-      width: 100,
       cellRender: {
         name: 'CellTag',
         options: Status.toOriginItems(),
