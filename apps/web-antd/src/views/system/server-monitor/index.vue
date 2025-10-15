@@ -3,7 +3,7 @@ import type { ServerMonitor } from '#/api/system/monitor';
 
 import { watchEffect } from 'vue';
 
-import { Loading } from '@vben/common-ui';
+import { Loading, Page } from '@vben/common-ui';
 
 import { useQuery } from '@tanstack/vue-query';
 import { Button, Card, Progress } from 'ant-design-vue';
@@ -120,15 +120,12 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="p-4">
-    <div class="mb-4 flex items-center justify-between">
-      <h2 class="text-2xl font-bold">
-        {{ $t('monitor.server.title') }}
-      </h2>
+  <Page :title="$t('monitor.server.title')">
+    <template #extra>
       <Button :loading="isLoading" type="primary" @click="() => refetch()">
         {{ $t('monitor.server.refresh') }}
       </Button>
-    </div>
+    </template>
     <Loading :spinning="isLoading" class="h-full w-full">
       <div v-if="serverInfo" class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <!-- CPU 信息卡片 -->
@@ -369,5 +366,5 @@ watchEffect(() => {
         </Card>
       </div>
     </Loading>
-  </div>
+  </Page>
 </template>
