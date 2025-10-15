@@ -353,13 +353,12 @@ watchEffect(() => {
         >
           <DiskGrid>
             <template #usage="{ row }">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center justify-center gap-2">
                 <Progress
                   :percent="row.usage"
                   :stroke-color="getUsageColor(row.usage)"
                   :style="{ width: '150px' }"
                 />
-                <div>{{ row.usage }}%</div>
               </div>
             </template>
           </DiskGrid>
