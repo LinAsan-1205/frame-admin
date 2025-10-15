@@ -63,7 +63,7 @@ const handleSuccess = () => {
         <ConfigItemEditForm ref="editFormRef" :group-id="groupId" />
       </div>
 
-      <div class="w-[500px]">
+      <div class="w-[600px]">
         <ConfigItemAddForm :group-id="groupId" @success="handleSuccess" />
       </div>
     </div>

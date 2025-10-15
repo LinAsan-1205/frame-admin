@@ -10,7 +10,7 @@ const groupId = ref<number | undefined>();
 </script>
 
 <template>
-  <DualPaneLayout>
+  <DualPaneLayout :left-max-width="15">
     <!-- 左侧：配置组分类 -->
     <template #left>
       <div
