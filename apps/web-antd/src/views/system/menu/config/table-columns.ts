@@ -69,6 +69,12 @@ export function useColumns(
       title: $t('system.menu.component'),
     },
     {
+      align: 'center',
+      field: 'meta.order',
+      title: $t('system.menu.orderNum'),
+      width: 200,
+    },
+    {
       cellRender: {
         name: 'CellState',
         props: {
