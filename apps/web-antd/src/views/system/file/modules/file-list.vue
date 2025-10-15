@@ -301,7 +301,7 @@ function handleUploadError(error: Error) {
       </div>
     </Card>
 
-    <div class="flex-1">
+    <div class="flex-1 overflow-y-auto">
       <!-- 文件列表 -->
       <div
         class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
