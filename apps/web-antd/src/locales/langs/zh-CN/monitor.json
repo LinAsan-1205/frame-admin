@@ -28,5 +28,67 @@
       "count": "个",
       "days": "天"
     }
+  },
+  "server": {
+    "title": "服务器监控",
+    "description": "实时监控服务器运行状态和资源使用情况",
+    "loading": "加载中...",
+    "refresh": "刷新",
+    "cpu": {
+      "title": "CPU",
+      "cpuNum": "核心数",
+      "total": "总使用率",
+      "sys": "系统使用率",
+      "used": "用户使用率",
+      "wait": "等待率",
+      "free": "空闲率"
+    },
+    "memory": {
+      "title": "内存",
+      "total": "总内存",
+      "used": "已用内存",
+      "free": "剩余内存",
+      "usage": "使用率"
+    },
+    "node": {
+      "title": "Node.js 运行时",
+      "version": "Node.js 版本",
+      "v8Version": "V8 引擎",
+      "home": "安装路径",
+      "startTime": "启动时间",
+      "runTime": "运行时长",
+      "heapTotal": "堆内存总量",
+      "heapUsed": "已用堆内存",
+      "heapFree": "空闲堆内存",
+      "heapMax": "堆内存上限"
+    },
+    "system": {
+      "title": "系统信息",
+      "computerName": "服务器名称",
+      "computerIp": "服务器IP",
+      "osName": "操作系统",
+      "osArch": "系统架构",
+      "userDir": "项目路径"
+    },
+    "disk": {
+      "title": "磁盘信息",
+      "dirName": "盘符路径",
+      "sysTypeName": "文件系统",
+      "typeName": "挂载点",
+      "total": "总容量",
+      "used": "已用空间",
+      "free": "剩余空间",
+      "usage": "使用率"
+    },
+    "unit": {
+      "core": "核",
+      "gb": "GB",
+      "mb": "MB",
+      "percent": "%",
+      "seconds": "秒",
+      "minutes": "分钟",
+      "hours": "小时",
+      "days": "天"
+    }
   }
 }

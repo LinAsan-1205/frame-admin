@@ -19,6 +19,7 @@
     "role": "Role Management",
     "menu": "Menu Management",
     "monitor": "System Monitor",
+    "serverMonitor": "Server Monitor",
     "session": "Session Management"
   },
   "log": {

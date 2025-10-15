@@ -28,5 +28,67 @@
       "count": "",
       "days": "days"
     }
+  },
+  "server": {
+    "title": "Server Monitor",
+    "description": "Real-time monitoring of server status and resource usage",
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "cpu": {
+      "title": "CPU",
+      "cpuNum": "Cores",
+      "total": "Total Usage",
+      "sys": "System Usage",
+      "used": "User Usage",
+      "wait": "Wait Rate",
+      "free": "Free Rate"
+    },
+    "memory": {
+      "title": "Memory",
+      "total": "Total Memory",
+      "used": "Used Memory",
+      "free": "Free Memory",
+      "usage": "Usage Rate"
+    },
+    "node": {
+      "title": "Node.js Runtime",
+      "version": "Node.js Version",
+      "v8Version": "V8 Engine",
+      "home": "Installation Path",
+      "startTime": "Start Time",
+      "runTime": "Uptime",
+      "heapTotal": "Heap Total",
+      "heapUsed": "Heap Used",
+      "heapFree": "Heap Free",
+      "heapMax": "Heap Max"
+    },
+    "system": {
+      "title": "System Information",
+      "computerName": "Server Name",
+      "computerIp": "Server IP",
+      "osName": "OS Name",
+      "osArch": "Architecture",
+      "userDir": "Project Path"
+    },
+    "disk": {
+      "title": "Disk Information",
+      "dirName": "Mount Path",
+      "sysTypeName": "File System",
+      "typeName": "Mount Point",
+      "total": "Total Capacity",
+      "used": "Used Space",
+      "free": "Free Space",
+      "usage": "Usage Rate"
+    },
+    "unit": {
+      "core": "Core",
+      "gb": "GB",
+      "mb": "MB",
+      "percent": "%",
+      "seconds": "seconds",
+      "minutes": "minutes",
+      "hours": "hours",
+      "days": "days"
+    }
   }
 }
