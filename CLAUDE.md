@@ -500,10 +500,7 @@ function getPostPage(params: any) {
 }
 
 // 错误2：缺少默认值
-function getPostPage(
-  pageCursor: Api.PageCursor,
-  condition: Post.Condition,
-) {
+function getPostPage(pageCursor: Api.PageCursor, condition: Post.Condition) {
   return requestClient.get('/system/post/page', {
     params: { ...pageCursor, ...condition },
   });
@@ -685,17 +682,17 @@ export namespace Post {
 
 ### API 命名规范
 
-| 操作类型 | 方法命名 | HTTP 方法 | 示例 |
-|---------|---------|----------|------|
-| 分页查询 | `get[模块名]Page` | GET | `getPostPage` |
-| 列表查询 | `get[模块名]List` | GET | `getPostList` |
-| 树形查询 | `get[模块名]Tree` | GET | `getDeptTree` |
-| 单个查询 | `get[模块名]ById` | GET | `getPostById` |
-| 新增 | `add[模块名]` | POST | `addPost` |
-| 更新 | `set[模块名]ById` | PUT | `setPostById` |
-| 状态更新 | `set[模块名]Status` | POST | `setPostStatus` |
-| 删除 | `delete[模块名]ById` | DELETE | `deletePostById` |
-| 批量删除 | `batchDelete[模块名]` | POST | `batchDeletePost` |
+| 操作类型 | 方法命名              | HTTP 方法 | 示例              |
+| -------- | --------------------- | --------- | ----------------- |
+| 分页查询 | `get[模块名]Page`     | GET       | `getPostPage`     |
+| 列表查询 | `get[模块名]List`     | GET       | `getPostList`     |
+| 树形查询 | `get[模块名]Tree`     | GET       | `getDeptTree`     |
+| 单个查询 | `get[模块名]ById`     | GET       | `getPostById`     |
+| 新增     | `add[模块名]`         | POST      | `addPost`         |
+| 更新     | `set[模块名]ById`     | PUT       | `setPostById`     |
+| 状态更新 | `set[模块名]Status`   | POST      | `setPostStatus`   |
+| 删除     | `delete[模块名]ById`  | DELETE    | `deletePostById`  |
+| 批量删除 | `batchDelete[模块名]` | POST      | `batchDeletePost` |
 
 ### 类型定义规范
 
