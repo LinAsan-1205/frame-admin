@@ -5,7 +5,7 @@ import type {
 } from '#/adapter/vxe-table';
 import type { Session } from '#/api/system/session';
 
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted, onUnmounted, watch } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
@@ -35,6 +35,10 @@ const userStore = useUserStore();
 const lastChangeCount = computed(() => websocketStore.sessionChangeCount);
 let previousChangeCount = 0;
 
+// WebSocket 连接状态
+const isWsConnected = computed(() => websocketStore.isConnected);
+let refreshTimer: NodeJS.Timeout | null = null;
+
 const [SessionGrid, sessionGridApi] = useVbenVxeGrid({
   formOptions: searchFormOptions,
   gridOptions: {
@@ -42,6 +46,7 @@ const [SessionGrid, sessionGridApi] = useVbenVxeGrid({
     height: 'auto',
     keepSource: true,
     proxyConfig: {
+      autoLoad: false,
       ajax: {
         query: async ({ page }, formValues) => {
           return await querySessionPage(
@@ -72,8 +77,47 @@ watch(lastChangeCount, (newCount) => {
   previousChangeCount = newCount;
 });
 
+watch(isWsConnected, (connected, wasConnected) => {
+  if (connected && wasConnected === false) {
+    if (refreshTimer) {
+      clearTimeout(refreshTimer);
+    }
+    refreshTimer = setTimeout(() => {
+      onRefreshSessionList();
+    }, 500);
+  }
+});
+
+function handleVisibilityChange() {
+  if (document.visibilityState === 'visible' && isWsConnected.value) {
+    if (refreshTimer) {
+      clearTimeout(refreshTimer);
+    }
+    refreshTimer = setTimeout(() => {
+      onRefreshSessionList();
+    }, 300);
+  }
+}
+
 onMounted(() => {
   previousChangeCount = lastChangeCount.value;
+
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  if (isWsConnected.value) {
+    refreshTimer = setTimeout(() => {
+      onRefreshSessionList();
+    }, 500);
+  }
+});
+
+onUnmounted(() => {
+  if (refreshTimer) {
+    clearTimeout(refreshTimer);
+    refreshTimer = null;
+  }
+
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 
 async function onActionClick(actionParams: OnActionClickParams<Session.View>) {
