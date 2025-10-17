@@ -25,6 +25,7 @@ import { useSearchFormOptions } from './config/search-config';
 import { useColumns } from './config/table-columns';
 import RoleAssign from './modules/role-assign.vue';
 import UserForm from './modules/user-form.vue';
+import UserPostsDisplay from './modules/user-posts-display.vue';
 import UserRolesDisplay from './modules/user-roles-display.vue';
 
 const deptId = defineModel<number | undefined>('deptId');
@@ -143,6 +144,9 @@ watch(() => deptId.value, onRefresh);
     </template>
     <template #rolesBlock="{ row }">
       <UserRolesDisplay :origin="row" />
+    </template>
+    <template #postsBlock="{ row }">
+      <UserPostsDisplay :origin="row" />
     </template>
     <template #toolbar-tools>
       <Button type="primary" @click="onCreate">

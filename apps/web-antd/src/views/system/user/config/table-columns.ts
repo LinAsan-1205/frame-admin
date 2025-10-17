@@ -72,6 +72,13 @@ export function useColumns<T = User.View>(
       width: 140,
     },
     {
+      slots: { default: 'postsBlock' },
+      field: 'posts',
+      title: $t('system.user.post'),
+      showOverflow: false,
+      width: 140,
+    },
+    {
       field: 'status',
       cellRender: {
         name: 'CellTag',
@@ -125,41 +132,33 @@ export function useColumns<T = User.View>(
               return row.userType === UserType.Admin;
             },
           },
-          'more',
-        ],
-        props: {
-          moreDisabled: (row: User.View) => {
-            return row.userType === UserType.Admin;
+          {
+            code: 'delete',
+            text: $t('system.user.deleteUser'),
+            disabled: (row: User.View) => {
+              return row.userType === UserType.Admin;
+            },
           },
-          moreOptions: [
-            {
-              code: 'delete',
-              text: $t('system.user.deleteUser'),
-              disabled: (row: User.View) => {
-                return row.userType === UserType.Admin;
-              },
+          {
+            code: 'assignedRole',
+            text: $t('system.user.assignedRole'),
+            disabled: (row: User.View) => {
+              return row.userType === UserType.Admin;
             },
-            {
-              code: 'assignedRole',
-              text: $t('system.user.assignedRole'),
-              disabled: (row: User.View) => {
-                return row.userType === UserType.Admin;
-              },
+          },
+          {
+            code: 'initializePassword',
+            text: $t('system.user.initializePassword'),
+            disabled: (row: User.View) => {
+              return row.userType === UserType.Admin;
             },
-            {
-              code: 'initializePassword',
-              text: $t('system.user.initializePassword'),
-              disabled: (row: User.View) => {
-                return row.userType === UserType.Admin;
-              },
-            },
-          ],
-        },
+          },
+        ],
       },
       field: 'operation',
       fixed: 'right',
       title: $t('system.user.operation'),
-      width: 130,
+      width: 300,
     },
   ];
 }

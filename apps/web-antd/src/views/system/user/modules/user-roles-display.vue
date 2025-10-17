@@ -28,9 +28,7 @@ const allRoleList = computed(() => {
 <template>
   <Space :size="5">
     <!-- 未分配角色时的提示 -->
-    <Tag v-if="isRoleNotAssigned" color="warning" class="!m-0">
-      未分配角色
-    </Tag>
+    <Tag v-if="isRoleNotAssigned" color="error" class="!m-0"> 未分配角色 </Tag>
     <!-- 已分配角色时的展示 -->
     <template v-else>
       <Tag
@@ -45,7 +43,6 @@ const allRoleList = computed(() => {
         <template #content>
           <div class="flex flex-col gap-2">
             <Tag
-              :bordered="false"
               v-for="roleItem in allRoleList"
               :key="roleItem.id"
               color="processing"
@@ -54,7 +51,7 @@ const allRoleList = computed(() => {
             </Tag>
           </div>
         </template>
-        <Tag color="processing" :bordered="false" class="cursor-pointer">
+        <Tag color="processing" class="cursor-pointer">
           +{{ origin.roles.length }}
         </Tag>
       </Popover>
