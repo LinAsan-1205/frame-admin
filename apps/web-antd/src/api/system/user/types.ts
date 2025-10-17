@@ -1,5 +1,6 @@
 import type { Role } from '../role';
 
+import type { Post as PostType } from '#/api/system/post';
 import type { Api } from '#/api/types';
 
 import { UserType } from './enum';
@@ -22,6 +23,7 @@ export declare namespace User {
     userType: UserType;
     userTypeDisplay: Api.StatusDisplay;
     roles: Pick<Role.View, 'id' | 'name'>[];
+    posts: Pick<PostType.View, 'id' | 'postCode' | 'postName'>[];
   }
   export interface Condition {
     userName?: string;
@@ -53,6 +55,7 @@ export declare namespace User {
     remark?: string;
     deptId?: number;
     userType?: UserType;
+    postIds?: number[];
   }
 
   export interface Foundation {

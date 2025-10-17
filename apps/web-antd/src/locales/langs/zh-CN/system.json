@@ -113,7 +113,9 @@
     "roles": "角色",
     "nickNameMin": "昵称长度不能小于2个字符",
     "nickNameMax": "昵称长度不能超过20个字符",
-    "avatar": "头像"
+    "avatar": "头像",
+    "post": "岗位",
+    "postPlaceholder": "请选择岗位"
   },
   "storage": {
     "title": "文件存储"

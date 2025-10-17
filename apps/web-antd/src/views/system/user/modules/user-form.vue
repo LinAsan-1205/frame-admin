@@ -43,7 +43,11 @@ const [Drawer, drawerApi] = useVbenDrawer({
       if (data) {
         formData.value = data;
         id.value = data.id;
-        formApi.setValues(data);
+        const postIds = data.posts.map((post) => post.id);
+        formApi.setValues({
+          ...data,
+          postIds,
+        });
       } else {
         id.value = undefined;
       }

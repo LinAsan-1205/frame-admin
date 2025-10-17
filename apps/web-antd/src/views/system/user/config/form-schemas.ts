@@ -4,6 +4,7 @@ import type { VbenFormSchema } from '#/adapter/form';
 
 import { z } from '#/adapter/form';
 import { queryDeptTree } from '#/api/system/dept';
+import { getPostList } from '#/api/system/post';
 import { findAllEnabledRoles } from '#/api/system/role';
 import { Sex, Status, UserType } from '#/api/system/user/enum';
 import { $t } from '#/locales';
@@ -98,6 +99,20 @@ export function useFormSchema(id: Ref<number | undefined>): VbenFormSchema[] {
       fieldName: 'deptId',
       label: $t('system.user.dept'),
       rules: 'required',
+    },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        api: getPostList,
+        labelField: 'postName',
+        valueField: 'id',
+        mode: 'multiple',
+        class: 'w-full',
+        allowClear: true,
+        placeholder: $t('system.user.postPlaceholder'),
+      },
+      fieldName: 'postIds',
+      label: $t('system.user.post'),
     },
     {
       component: 'RadioGroup',

@@ -113,7 +113,9 @@
     "roles": "Roles",
     "nickNameMin": "Nickname length cannot be less than 2 characters",
     "nickNameMax": "Nickname length cannot exceed 20 characters",
-    "avatar": "Avatar"
+    "avatar": "Avatar",
+    "post": "Post",
+    "postPlaceholder": "Please select post"
   },
   "storage": {
     "title": "File Storage"
