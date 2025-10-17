@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+import DeptTree from '#/components/dept/dept-tree.vue';
 import { DualPaneLayout } from '#/components/dual-pane-layout';
 
-import DeptTree from './modules/dept-tree.vue';
 import UserList from './user-list.vue';
 
 const deptId = ref<number | undefined>();
