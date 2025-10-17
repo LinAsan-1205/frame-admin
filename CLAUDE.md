@@ -437,3 +437,316 @@ export function useFormSchema(
 ```
 
 这样的结构使得代码更加清晰、易于维护，并且符合现代前端项目的最佳实践。
+
+## API 接口开发规范
+
+### API 目录结构
+
+每个模块的 API 应该遵循以下目录结构：
+
+```
+api/system/user/
+├── index.ts           # 统一导出
+├── api.ts            # API 方法定义
+├── types.ts          # 类型定义
+└── enum.ts           # 枚举定义（如果需要）
+```
+
+### 分页接口规范
+
+**所有分页查询接口必须遵循以下标准格式：**
+
+#### ✅ 正确的分页接口写法
+
+```typescript
+/**
+ * 获取岗位分页列表
+ * @param pageCursor 分页参数（page、pageSize）
+ * @param condition 查询条件
+ * @returns 分页结果
+ */
+function getPostPage(
+  pageCursor: Api.PageCursor = {},
+  condition: Post.Condition = {},
+) {
+  return requestClient.get<Api.PaginationResult<Post.View>>(
+    '/system/post/page',
+    {
+      params: {
+        ...pageCursor,
+        ...condition,
+      },
+    },
+  );
+}
+```
+
+#### 关键要求
+
+1. **参数分离**：必须将分页参数（`pageCursor`）和查询条件（`condition`）分开定义
+2. **默认值**：两个参数都必须提供默认空对象 `{}`
+3. **参数合并**：使用展开运算符 `...pageCursor, ...condition` 将参数合并到 `params` 中
+4. **类型定义**：
+   - 分页参数类型：`Api.PageCursor`
+   - 查询条件类型：`[模块名].Condition`
+   - 返回结果类型：`Api.PaginationResult<[模块名].View>`
+
+#### ❌ 错误的分页接口写法
+
+```typescript
+// 错误1：参数未分离
+function getPostPage(params: any) {
+  return requestClient.get('/system/post/page', { params });
+}
+
+// 错误2：缺少默认值
+function getPostPage(
+  pageCursor: Api.PageCursor,
+  condition: Post.Condition,
+) {
+  return requestClient.get('/system/post/page', {
+    params: { ...pageCursor, ...condition },
+  });
+}
+
+// 错误3：参数合并方式不正确
+function getPostPage(
+  pageCursor: Api.PageCursor = {},
+  condition: Post.Condition = {},
+) {
+  return requestClient.get('/system/post/page', {
+    params: {
+      pageCursor,
+      condition,
+    },
+  });
+}
+
+// 错误4：直接传递单个对象
+function getPostPage(queryDto: Post.Query) {
+  return requestClient.get('/system/post/page', { params: queryDto });
+}
+```
+
+### 完整的 API 文件示例
+
+#### api.ts
+
+```typescript
+import { requestClient } from '#/api/request';
+
+import type { Post } from './types';
+
+/**
+ * 获取岗位分页列表
+ */
+export function getPostPage(
+  pageCursor: Api.PageCursor = {},
+  condition: Post.Condition = {},
+) {
+  return requestClient.get<Api.PaginationResult<Post.View>>(
+    '/system/post/page',
+    {
+      params: {
+        ...pageCursor,
+        ...condition,
+      },
+    },
+  );
+}
+
+/**
+ * 获取岗位列表（不分页）
+ */
+export function getPostList(condition: Post.Condition = {}) {
+  return requestClient.get<Post.View[]>('/system/post/list', {
+    params: condition,
+  });
+}
+
+/**
+ * 获取岗位详情
+ */
+export function getPostById(id: number) {
+  return requestClient.get<Post.View>(`/system/post/${id}`);
+}
+
+/**
+ * 新增岗位
+ */
+export function addPost(data: Post.Create) {
+  return requestClient.post<boolean>('/system/post', data);
+}
+
+/**
+ * 更新岗位
+ */
+export function setPostById(id: number, data: Post.Update) {
+  return requestClient.put<boolean>(`/system/post/${id}`, data);
+}
+
+/**
+ * 设置岗位状态
+ */
+export function setPostStatus(data: Post.SetStatus) {
+  return requestClient.post<boolean>('/system/post/status', data);
+}
+
+/**
+ * 删除岗位
+ */
+export function deletePostById(id: number) {
+  return requestClient.delete<boolean>(`/system/post/${id}`);
+}
+
+/**
+ * 批量删除岗位
+ */
+export function batchDeletePost(data: Post.BatchDelete) {
+  return requestClient.post<boolean>('/system/post/batch-delete', data);
+}
+```
+
+#### types.ts
+
+```typescript
+export namespace Post {
+  /** 查询条件 */
+  export interface Condition {
+    /** 岗位编码 */
+    postCode?: string;
+    /** 岗位名称 */
+    postName?: string;
+    /** 状态 */
+    status?: string;
+    /** 部门ID */
+    deptId?: number;
+  }
+
+  /** 视图对象 */
+  export interface View {
+    /** 岗位ID */
+    id: number;
+    /** 岗位编码 */
+    postCode: string;
+    /** 岗位名称 */
+    postName: string;
+    /** 部门ID */
+    deptId?: number;
+    /** 部门信息 */
+    dept?: {
+      id: number;
+      name: string;
+    };
+    /** 排序 */
+    postSort: number;
+    /** 状态 */
+    status: string;
+    /** 备注 */
+    remark?: string;
+    /** 创建时间 */
+    createTime: string;
+  }
+
+  /** 创建对象 */
+  export interface Create {
+    /** 岗位编码 */
+    postCode: string;
+    /** 岗位名称 */
+    postName: string;
+    /** 部门ID */
+    deptId?: number;
+    /** 排序 */
+    postSort?: number;
+    /** 状态 */
+    status?: string;
+    /** 备注 */
+    remark?: string;
+  }
+
+  /** 更新对象 */
+  export interface Update extends Partial<Create> {}
+
+  /** 设置状态 */
+  export interface SetStatus {
+    /** 岗位ID */
+    id: number;
+    /** 状态 */
+    status: string;
+  }
+
+  /** 批量删除 */
+  export interface BatchDelete {
+    /** 岗位ID列表 */
+    postIds: number[];
+  }
+}
+```
+
+### API 命名规范
+
+| 操作类型 | 方法命名 | HTTP 方法 | 示例 |
+|---------|---------|----------|------|
+| 分页查询 | `get[模块名]Page` | GET | `getPostPage` |
+| 列表查询 | `get[模块名]List` | GET | `getPostList` |
+| 树形查询 | `get[模块名]Tree` | GET | `getDeptTree` |
+| 单个查询 | `get[模块名]ById` | GET | `getPostById` |
+| 新增 | `add[模块名]` | POST | `addPost` |
+| 更新 | `set[模块名]ById` | PUT | `setPostById` |
+| 状态更新 | `set[模块名]Status` | POST | `setPostStatus` |
+| 删除 | `delete[模块名]ById` | DELETE | `deletePostById` |
+| 批量删除 | `batchDelete[模块名]` | POST | `batchDeletePost` |
+
+### 类型定义规范
+
+每个模块的类型定义使用命名空间（namespace）组织：
+
+```typescript
+export namespace [ModuleName] {
+  /** 查询条件 */
+  export interface Condition { }
+
+  /** 视图对象 */
+  export interface View { }
+
+  /** 创建对象 */
+  export interface Create { }
+
+  /** 更新对象 */
+  export interface Update extends Partial<Create> { }
+
+  /** 设置状态 */
+  export interface SetStatus { }
+
+  /** 批量删除 */
+  export interface BatchDelete { }
+}
+```
+
+### 公共类型定义
+
+在 `#/types/global.d.ts` 中定义公共类型：
+
+```typescript
+declare namespace Api {
+  /** 分页游标 */
+  interface PageCursor {
+    /** 当前页码 */
+    page?: number;
+    /** 每页数量 */
+    pageSize?: number;
+  }
+
+  /** 分页结果 */
+  interface PaginationResult<T> {
+    /** 数据列表 */
+    items: T;
+    /** 总记录数 */
+    total: number;
+    /** 当前页码 */
+    page: number;
+    /** 每页数量 */
+    pageSize: number;
+  }
+}
+```
