@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import type { File as FileType } from '#/api/system/file';
+
 import { useUserStore } from '@vben/stores';
 
 import { message } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
 import { setFoundation, Sex } from '#/api/system/user';
+import ImageCropperUpload from '#/components/cropper/avatar-cropper-upload.vue';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store/auth';
 
@@ -106,8 +109,21 @@ async function onSubmit(values: Record<string, any>) {
   const userInfo = await authStore.fetchUserInfo();
   formApi.setValues(userInfo);
 }
+
+function handleAvatarSuccess(file: FileType.View) {
+  formApi.setValues({
+    avatar: file.fileUrl,
+  });
+}
 </script>
 
 <template>
-  <BaseForm />
+  <BaseForm>
+    <template #avatar>
+      <ImageCropperUpload
+        :model-value="userStore.userInfo!.avatar"
+        @success="handleAvatarSuccess"
+      />
+    </template>
+  </BaseForm>
 </template>

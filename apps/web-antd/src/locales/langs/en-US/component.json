@@ -1,0 +1,15 @@
+{
+  "cropper": {
+    "modalTitle": "Crop Image",
+    "changeAvatar": "Change Avatar",
+    "selectImage": "Select Image",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "reset": "Reset",
+    "invalidType": "Please select an image file",
+    "needCrop": "Please select and crop the image first",
+    "invalidArea": "Invalid crop area, please reselect",
+    "exportFailed": "Failed to export cropped image"
+  }
+}
+

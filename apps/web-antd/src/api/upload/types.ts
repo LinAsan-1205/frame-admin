@@ -7,11 +7,11 @@ export declare namespace Upload {
     /** 文件大小 */
     fileSize: number;
     /** 文件ID */
-    id?: number;
+    id: number;
     /** 文件类型 */
-    fileType?: string;
+    fileType: string;
     /** 上传时间 */
-    uploadTime?: string;
+    uploadTime: string;
   }
 
   export interface Post {

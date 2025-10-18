@@ -57,6 +57,7 @@
     "vue": "catalog:",
     "vue-codemirror": "^6.1.1",
     "vue-router": "catalog:",
+    "vue-advanced-cropper": "^2.8.9",
     "vxe-pc-ui": "catalog:",
     "vxe-table": "catalog:"
   },

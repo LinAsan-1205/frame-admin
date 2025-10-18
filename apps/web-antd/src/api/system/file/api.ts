@@ -19,8 +19,12 @@ function queryFilePage(
   );
 }
 
-function delFileById(id: number) {
-  return requestClient.delete<boolean>(`/system/file/${id}`);
+function getFileById(fileId: number) {
+  return requestClient.get<File.View>(`/system/file/${fileId}`);
 }
 
-export { delFileById, queryFilePage };
+function delFileById(fileId: number) {
+  return requestClient.delete<boolean>(`/system/file/${fileId}`);
+}
+
+export { delFileById, getFileById, queryFilePage };

@@ -9,6 +9,7 @@ export declare namespace File {
     fileType: typeof FileType.valueType;
     fileUrl: string;
     id: number;
+    originalFileUrl: string;
     mimeType: string;
     originalName: string;
     remark: string;
