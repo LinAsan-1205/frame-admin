@@ -149,7 +149,7 @@ function openModal() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
+  <div class="relative flex flex-col gap-3">
     <div class="flex flex-col items-center gap-2">
       <div
         v-if="imageUrl"
