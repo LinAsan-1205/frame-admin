@@ -92,7 +92,7 @@ const [DiskGrid, diskGridApi] = useVbenVxeGrid<ServerMonitor.SysFile>({
       },
     ],
     data: [],
-    height: 'auto',
+    height: '300px',
     pagerConfig: {
       enabled: false,
     },
