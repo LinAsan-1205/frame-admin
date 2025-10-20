@@ -192,7 +192,15 @@
     "fileTypeNotAllowed": "File type not allowed",
     "fileValidationFailed": "File validation failed",
     "uploadSuccess": "Upload Success",
-    "uploadFailed": "Upload Failed"
+    "uploadFailed": "Upload Failed",
+    "filePreviewTitle": "File Preview",
+    "officePreviewFallbackHint": "If loading fails, we will fallback to Google preview",
+    "openOriginalFile": "Open original file",
+    "useGooglePreview": "Use Google preview",
+    "openInNewWindow": "Open in new window",
+    "previewNotSupported": "This file type is not supported for online preview",
+    "imageLoadFailed": "Image failed to load",
+    "retry": "Retry"
   },
   "fileCategory": {
     "title": "File Category",
