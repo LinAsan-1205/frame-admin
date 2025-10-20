@@ -28,19 +28,6 @@ const [DictDataFormModal, dictDataFormModalApi] = useVbenModal({
 const formOptions = useDictDataSearchFormOptions();
 
 const dictId = ref<number | undefined>();
-const [Drawer, drawerApi] = useVbenDrawer({
-  onOpenChange(isOpen) {
-    if (isOpen) {
-      const data = drawerApi.getData<{ dictId?: number }>();
-      dictId.value = data?.dictId;
-      if (dictId.value) {
-        gridApi.reload();
-      }
-    } else {
-      dictId.value = undefined;
-    }
-  },
-});
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
@@ -68,6 +55,17 @@ const [Grid, gridApi] = useVbenVxeGrid({
       keyField: 'id',
     },
   } as VxeTableGridOptions<DictData.View>,
+});
+
+const [Drawer, drawerApi] = useVbenDrawer({
+  onOpenChange(isOpen) {
+    if (isOpen) {
+      const data = drawerApi.getData<{ dictId?: number }>();
+      dictId.value = data?.dictId;
+    } else {
+      dictId.value = undefined;
+    }
+  },
 });
 
 function onActionClick(event: OnActionClickParams<DictData.View>) {
