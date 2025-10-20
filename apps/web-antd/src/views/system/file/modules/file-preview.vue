@@ -98,11 +98,11 @@ watch(
     v-if="isImage && file"
     :src="file.fileUrl"
     style="
+      position: fixed;
       width: 0;
       height: 0;
-      opacity: 0;
-      position: fixed;
       pointer-events: none;
+      opacity: 0;
     "
     :preview="{ visible: open, onVisibleChange: onImageVisibleChange }"
   />

@@ -122,18 +122,6 @@ const [SearchForm, SearchFormApi] = useVbenForm({
       fieldName: 'storageType',
       label: $t('system.storageFiles.storageType'),
     },
-    {
-      component: 'Select',
-      componentProps: {
-        allowClear: true,
-        options: FileStatus.toOriginItems(),
-        placeholder: $t('system.storageFiles.statusPlaceholder'),
-        showSearch: true,
-        filterOption: true,
-      },
-      fieldName: 'status',
-      label: $t('system.storageFiles.status'),
-    },
   ],
   submitButtonOptions: {
     content: $t('common.search'),
