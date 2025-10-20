@@ -21,17 +21,14 @@ export function useDictColumns<T = Dict.View>(
     {
       field: 'dictType',
       title: $t('system.dict.dictType'),
-      minWidth: 120,
     },
     {
       field: 'dictName',
       title: $t('system.dict.dictName'),
-      minWidth: 120,
     },
     {
       field: 'remark',
       title: $t('system.dict.remark'),
-      minWidth: 150,
       cellRender: {
         name: 'CellFormatEmpty',
       },
@@ -39,7 +36,6 @@ export function useDictColumns<T = Dict.View>(
     {
       field: 'status',
       title: $t('system.dict.status'),
-      width: 100,
       cellRender: {
         name: 'CellTag',
         options: Status.toOriginItems(),
@@ -49,7 +45,6 @@ export function useDictColumns<T = Dict.View>(
     {
       field: 'createTime',
       title: $t('common.createTime'),
-      width: 180,
       cellRender: { name: 'CellFormatDate' },
     },
     {

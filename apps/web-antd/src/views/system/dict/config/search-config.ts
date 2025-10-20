@@ -16,19 +16,19 @@ export function useDictSearchFormOptions(): VbenFormProps {
         component: 'Input',
         componentProps: {
           allowClear: true,
-          placeholder: $t('system.dict.dictNamePlaceholder'),
+          placeholder: $t('system.dict.dictTypePlaceholder'),
         },
-        fieldName: 'dictName',
-        label: $t('system.dict.dictName'),
+        fieldName: 'dictType',
+        label: $t('system.dict.dictType'),
       },
       {
         component: 'Input',
         componentProps: {
           allowClear: true,
-          placeholder: $t('system.dict.dictTypePlaceholder'),
+          placeholder: $t('system.dict.dictNamePlaceholder'),
         },
-        fieldName: 'dictType',
-        label: $t('system.dict.dictType'),
+        fieldName: 'dictName',
+        label: $t('system.dict.dictName'),
       },
       {
         component: 'Select',
