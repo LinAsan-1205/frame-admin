@@ -245,11 +245,13 @@ function getHitRateColor(percent: number): string {
     opacity 200ms ease,
     transform 200ms ease;
 }
+
 .fade-zoom-enter-from,
 .fade-zoom-leave-to {
   opacity: 0;
   transform: scale(0.98);
 }
+
 .fade-zoom-enter-to,
 .fade-zoom-leave-from {
   opacity: 1;
