@@ -28,7 +28,13 @@ const [Modal, modalApi] = useVbenModal({
     if (!valid) return;
     const values: DictData.Post = await formApi.getValues();
     modalApi.lock();
-    (id.value ? setDictDataById(id.value, values) : addDictData(values))
+    (id.value
+      ? setDictDataById(id.value, values)
+      : addDictData({
+          ...values,
+          dictId: dictId.value,
+        })
+    )
       .then(() => {
         emits('success');
         modalApi.close();

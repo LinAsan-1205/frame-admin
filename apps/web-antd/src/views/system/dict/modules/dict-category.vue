@@ -66,7 +66,6 @@ function onActionClick(event: OnActionClickParams<Dict.View>) {
       break;
     }
     case 'dictData': {
-      // 打开字典数据抽屉，传入字典ID
       dictDataDrawerApi.setData({ dictId: event.row.id }).open();
       break;
     }

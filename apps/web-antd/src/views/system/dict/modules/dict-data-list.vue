@@ -27,7 +27,6 @@ const [DictDataFormModal, dictDataFormModalApi] = useVbenModal({
 
 const formOptions = useDictDataSearchFormOptions();
 
-// 抽屉及分类ID
 const dictId = ref<number | undefined>();
 const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange(isOpen) {
