@@ -19,14 +19,22 @@ export function useDictColumns<T = Dict.View>(
       title: $t('common.index'),
     },
     {
+      field: 'dictType',
+      title: $t('system.dict.dictType'),
+      minWidth: 120,
+    },
+    {
       field: 'dictName',
       title: $t('system.dict.dictName'),
       minWidth: 120,
     },
     {
-      field: 'dictType',
-      title: $t('system.dict.dictType'),
-      minWidth: 120,
+      field: 'remark',
+      title: $t('system.dict.remark'),
+      minWidth: 150,
+      cellRender: {
+        name: 'CellFormatEmpty',
+      },
     },
     {
       field: 'status',
@@ -37,14 +45,7 @@ export function useDictColumns<T = Dict.View>(
         options: Status.toOriginItems(),
       },
     },
-    {
-      field: 'remark',
-      title: $t('system.dict.remark'),
-      minWidth: 150,
-      cellRender: {
-        name: 'CellFormatEmpty',
-      },
-    },
+
     {
       field: 'createTime',
       title: $t('common.createTime'),
@@ -69,12 +70,16 @@ export function useDictColumns<T = Dict.View>(
             code: 'delete',
             text: $t('common.delete'),
           },
+          {
+            code: 'dictData',
+            text: $t('system.dictData.list'),
+          },
         ],
       },
       field: 'actions',
       fixed: 'right',
       title: $t('common.action'),
-      width: 160,
+      width: 300,
     },
   ];
 }

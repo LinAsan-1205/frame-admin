@@ -5,9 +5,9 @@ import type {
 } from '#/adapter/vxe-table';
 import type { DictData } from '#/api/system/dict';
 
-import { watch } from 'vue';
+import { ref } from 'vue';
 
-import { useVbenModal } from '@vben/common-ui';
+import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
 import { Button, message, Modal } from 'ant-design-vue';
@@ -20,18 +20,28 @@ import { useDictDataSearchFormOptions } from '../config/search-config';
 import { useDictDataColumns } from '../config/table-columns';
 import DictDataForm from './dict-data-form.vue';
 
-interface Props {
-  dictId?: number;
-}
-
-const props = defineProps<Props>();
-
 const [DictDataFormModal, dictDataFormModalApi] = useVbenModal({
   connectedComponent: DictDataForm,
   destroyOnClose: true,
 });
 
 const formOptions = useDictDataSearchFormOptions();
+
+// 抽屉及分类ID
+const dictId = ref<number | undefined>();
+const [Drawer, drawerApi] = useVbenDrawer({
+  onOpenChange(isOpen) {
+    if (isOpen) {
+      const data = drawerApi.getData<{ dictId?: number }>();
+      dictId.value = data?.dictId;
+      if (dictId.value) {
+        gridApi.reload();
+      }
+    } else {
+      dictId.value = undefined;
+    }
+  },
+});
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions,
@@ -49,7 +59,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
             },
             {
               ...formValues,
-              dictId: props.dictId,
+              dictId: dictId.value,
             },
           );
         },
@@ -79,11 +89,11 @@ function onEdit(row: DictData.View) {
 }
 
 function onCreate() {
-  if (!props.dictId) {
+  if (!dictId.value) {
     message.warning($t('system.dictData.selectDictFirst'));
     return;
   }
-  dictDataFormModalApi.setData({ dictId: props.dictId }).open();
+  dictDataFormModalApi.setData({ dictId: dictId.value }).open();
 }
 
 async function onDelete(row: DictData.View) {
@@ -103,27 +113,20 @@ async function onDelete(row: DictData.View) {
 function onFormSuccess() {
   gridApi.reload();
 }
-
-watch(
-  () => props.dictId,
-  () => {
-    if (props.dictId) {
-      gridApi.reload();
-    }
-  },
-);
 </script>
 
 <template>
-  <DictDataFormModal @success="onFormSuccess" />
-  <Grid>
-    <template #toolbar-tools>
-      <Button type="primary" :disabled="!dictId" @click="onCreate">
-        <template #icon>
-          <Plus class="size-4" />
-        </template>
-        {{ $t('common.add') }}
-      </Button>
-    </template>
-  </Grid>
+  <Drawer :title="$t('system.dictData.list')">
+    <DictDataFormModal @success="onFormSuccess" />
+    <Grid>
+      <template #toolbar-tools>
+        <Button type="primary" :disabled="!dictId" @click="onCreate">
+          <template #icon>
+            <Plus class="size-4" />
+          </template>
+          {{ $t('common.add') }}
+        </Button>
+      </template>
+    </Grid>
+  </Drawer>
 </template>

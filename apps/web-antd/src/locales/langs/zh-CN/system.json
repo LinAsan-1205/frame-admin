@@ -319,7 +319,7 @@
   "dictData": {
     "title": "字典数据管理",
     "description": "管理字典数据项",
-    "list": "字典数据列表",
+    "list": "键值数据列表",
     "dictLabel": "字典标签",
     "dictValue": "字典键值",
     "dictSort": "字典排序",
