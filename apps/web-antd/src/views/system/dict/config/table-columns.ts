@@ -96,7 +96,6 @@ export function useDictDataColumns<T = DictData.View>(
     {
       field: 'dictLabel',
       title: $t('system.dictData.dictLabel'),
-      minWidth: 120,
     },
     {
       field: 'dictValue',
@@ -117,7 +116,6 @@ export function useDictDataColumns<T = DictData.View>(
     {
       field: 'remark',
       title: $t('system.dictData.remark'),
-      minWidth: 150,
       cellRender: {
         name: 'CellFormatEmpty',
       },
@@ -125,7 +123,6 @@ export function useDictDataColumns<T = DictData.View>(
     {
       field: 'createTime',
       title: $t('common.createTime'),
-      width: 180,
       cellRender: { name: 'CellFormatDate' },
     },
     {

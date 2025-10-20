@@ -29,7 +29,7 @@ const [DictFormModal, dictFormModalApi] = useVbenModal({
 const [DictDataDrawer, dictDataDrawerApi] = useVbenDrawer({
   connectedComponent: DictDataList,
   destroyOnClose: true,
-  class: 'w-[1200px]',
+  class: 'w-1/2',
 });
 
 const formOptions = useDictSearchFormOptions();
