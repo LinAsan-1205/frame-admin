@@ -4,7 +4,7 @@ export namespace Param {
     id: number;
     paramName: string;
     paramKey: string;
-    paramValue?: string | null;
+    paramValue?: null | string;
     remark?: string;
     createTime?: string;
     updateTime?: string;
@@ -22,7 +22,7 @@ export namespace Param {
   export interface Post {
     paramName: string;
     paramKey: string;
-    paramValue?: string | null;
+    paramValue?: null | string;
     remark?: string;
   }
 
@@ -31,4 +31,3 @@ export namespace Param {
     paramIds: number[];
   }
 }
-
