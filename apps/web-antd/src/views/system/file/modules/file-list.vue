@@ -5,12 +5,16 @@ import { computed, ref } from 'vue';
 
 import { downloadFileFromImageUrl } from '@vben/utils';
 
-import { VbenIcon, VbenIconButton } from '@vben-core/shadcn-ui';
+import {
+  VbenButton,
+  VbenIcon,
+  VbenIconButton,
+  VbenSpinner,
+} from '@vben-core/shadcn-ui';
 
 import { keepPreviousData, useQuery } from '@tanstack/vue-query';
 import {
   Badge,
-  Button,
   Card,
   Dropdown,
   Menu,
@@ -18,6 +22,7 @@ import {
   message,
   Modal,
   Pagination,
+  Skeleton,
 } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
@@ -26,12 +31,52 @@ import { delFileById, queryFilePage } from '#/api/system/file';
 import { FileStatus, FileType, StorageType } from '#/api/system/file/enum';
 import { $t } from '#/locales';
 
+import FilePreview from './file-preview.vue';
 import FileUpload from './file-upload.vue';
 
 const categoryId = defineModel<number | undefined>('categoryId');
 
 const currentPage = ref(1);
 const pageSize = ref(30);
+
+const previewOpen = ref(false);
+const previewFile = ref<File.View | null>(null);
+const opSpinning = ref(false);
+const submitDebounceTimer = ref<number | undefined>();
+
+// 图片加载错误与重试支持
+const imageErrorMap = ref<Record<number, boolean>>({});
+const imageRetryTokenMap = ref<Record<number, number>>({});
+
+function getImageUrl(file: File.View) {
+  const token = imageRetryTokenMap.value[file.id];
+  if (!token) return file.fileUrl;
+  const sep = file.fileUrl.includes('?') ? '&' : '?';
+  return `${file.fileUrl}${sep}_=${token}`;
+}
+
+function onImageError(fileId: number) {
+  imageErrorMap.value[fileId] = true;
+}
+
+function onImageLoad(fileId: number) {
+  if (imageErrorMap.value[fileId]) {
+    delete imageErrorMap.value[fileId];
+  }
+}
+
+function onRetryImage(file: File.View) {
+  imageErrorMap.value[file.id] = false;
+  imageRetryTokenMap.value[file.id] = Date.now();
+}
+
+function onFileMenuClick(info: { key: string }, file: File.View) {
+  handleFileAction(info.key as string, file);
+}
+
+function renderPaginationTotal(total: number, range: [number, number]) {
+  return `第 ${range[0]}-${range[1]} 条，共 ${total} 条`;
+}
 
 const [SearchForm, SearchFormApi] = useVbenForm({
   collapsed: false,
@@ -41,7 +86,7 @@ const [SearchForm, SearchFormApi] = useVbenForm({
     },
   },
   handleSubmit: onSubmit,
-  handleValuesChange: onSubmit,
+  handleValuesChange: onValuesChange,
   layout: 'horizontal',
   schema: [
     {
@@ -77,18 +122,6 @@ const [SearchForm, SearchFormApi] = useVbenForm({
       fieldName: 'storageType',
       label: $t('system.storageFiles.storageType'),
     },
-    {
-      component: 'Select',
-      componentProps: {
-        allowClear: true,
-        options: FileStatus.toOriginItems(),
-        placeholder: $t('system.storageFiles.statusPlaceholder'),
-        showSearch: true,
-        filterOption: true,
-      },
-      fieldName: 'status',
-      label: $t('system.storageFiles.status'),
-    },
   ],
   submitButtonOptions: {
     content: $t('common.search'),
@@ -111,7 +144,7 @@ const searchParams = ref<Record<string, any>>({});
 const {
   data: filePageData,
   refetch: refetchFiles,
-  isLoading,
+  isFetching,
 } = useQuery({
   queryKey: ['fileList', currentPage, pageSize, searchParams, categoryId],
   queryFn: () =>
@@ -134,6 +167,18 @@ function onSubmit(values: Record<string, any>) {
   searchParams.value = { ...values };
   currentPage.value = 1;
   refetchFiles();
+}
+
+function onValuesChange(values: Record<string, any>) {
+  // 输入时做防抖，降低频繁请求与闪烁
+  if (submitDebounceTimer.value) {
+    clearTimeout(submitDebounceTimer.value);
+  }
+  submitDebounceTimer.value = window.setTimeout(() => {
+    searchParams.value = { ...values };
+    currentPage.value = 1;
+    refetchFiles();
+  }, 300);
 }
 
 /**
@@ -231,11 +276,14 @@ async function handleFileAction(action: string, file: File.View) {
         ]),
         onOk: async () => {
           try {
+            opSpinning.value = true;
             await delFileById(file.id);
             message.success($t('system.storageFiles.deleteSuccess'));
             refetchFiles();
           } catch {
             message.error($t('system.storageFiles.deleteFailed'));
+          } finally {
+            opSpinning.value = false;
           }
         },
       });
@@ -254,11 +302,17 @@ async function handleFileAction(action: string, file: File.View) {
       break;
     }
     case 'view': {
-      // 预览文件
-      window.open(file.fileUrl, '_blank');
+      // 使用通用预览组件预览（图片类型内部用 a-image 覆盖层）
+      previewFile.value = file;
+      previewOpen.value = true;
       break;
     }
   }
+}
+
+function onCardClick(file: File.View) {
+  if (isFetching || opSpinning.value) return;
+  handleFileAction('view', file);
 }
 
 /**
@@ -283,11 +337,11 @@ function handleUploadError(error: Error) {
 <template>
   <div class="flex h-full flex-col space-y-4">
     <!-- 搜索表单 -->
-    <Card>
+    <Card size="small" :body-style="{ padding: '12px' }">
       <SearchForm />
     </Card>
 
-    <Card>
+    <Card size="small" :body-style="{ padding: '12px' }">
       <div class="flex justify-end">
         <FileUpload
           :multiple="true"
@@ -301,22 +355,96 @@ function handleUploadError(error: Error) {
       </div>
     </Card>
 
-    <div class="flex-1 overflow-y-auto">
+    <div class="relative flex-1 overflow-y-auto">
+      <VbenSpinner
+        :min-loading-time="150"
+        class="!bg-transparent backdrop-blur-0"
+        :spinning="opSpinning"
+      />
+      <!-- Skeleton 占位卡片（分页/查询 isFetching 时显示，覆盖在旧数据上方） -->
+      <div v-if="isFetching" class="pointer-events-none absolute inset-0">
+        <div
+          class="grid grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          <Card
+            v-for="i in 8"
+            :key="`sk-${i}`"
+            :body-style="{ padding: '12px' }"
+            class="h-full"
+          >
+            <div
+              class="mb-3 aspect-video w-full rounded-md bg-gray-100 dark:bg-gray-800"
+            ></div>
+            <Skeleton active :title="true" :paragraph="{ rows: 3 }" />
+          </Card>
+        </div>
+      </div>
       <!-- 文件列表 -->
       <div
-        class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="grid grid-cols-1 gap-4 transition-opacity sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        :class="{ 'pointer-events-none opacity-60': isFetching }"
       >
         <Card
           v-for="file in displayFileList"
           :key="file.id"
-          class="group cursor-pointer transition-shadow hover:shadow-lg"
-          @click="handleFileAction('view', file)"
+          hoverable
+          :body-style="{ padding: '12px' }"
+          class="group h-full cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-lg"
+          @click="onCardClick(file)"
         >
+          <!-- 缩略图（图片） -->
+          <div
+            v-if="
+              file.fileType === 'image' ||
+              (file.mimeType && file.mimeType.startsWith('image/'))
+            "
+            class="relative mb-3"
+          >
+            <div
+              class="aspect-video w-full overflow-hidden rounded-md bg-gray-50"
+            >
+              <img
+                :src="getImageUrl(file)"
+                :alt="file.originalName"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                @click.stop="onCardClick(file)"
+                @error="onImageError(file.id)"
+                @load="onImageLoad(file.id)"
+              />
+            </div>
+            <!-- 图片加载失败覆盖提示 -->
+            <div
+              v-if="imageErrorMap[file.id]"
+              class="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-md bg-red-50/80 text-red-600 dark:bg-red-900/40 dark:text-red-300"
+              @click.stop
+            >
+              <VbenIcon icon="ri:error-warning-line" class="size-6" />
+              <span class="text-xs">{{
+                $t('system.storageFiles.imageLoadFailed')
+              }}</span>
+              <VbenButton
+                size="sm"
+                variant="outline"
+                @click.stop="onRetryImage(file)"
+              >
+                {{ $t('system.storageFiles.retry') }}
+              </VbenButton>
+            </div>
+          </div>
           <div class="space-y-3">
             <!-- 文件图标和操作按钮 -->
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-3">
-                <div class="text-3xl" :class="[getFileColor(file.fileType)]">
+                <div
+                  v-if="
+                    !(
+                      file.fileType === 'image' ||
+                      (file.mimeType && file.mimeType.startsWith('image/'))
+                    )
+                  "
+                  class="text-3xl"
+                  :class="[getFileColor(file.fileType)]"
+                >
                   <VbenIcon :icon="getFileIcon(file.fileType)" />
                 </div>
                 <div class="min-w-0 flex-1">
@@ -331,18 +459,21 @@ function handleUploadError(error: Error) {
                   </p>
                 </div>
               </div>
-              <Dropdown :trigger="['click']" @click.stop>
-                <Button
-                  type="text"
-                  size="small"
-                  class="opacity-0 transition-opacity group-hover:opacity-100"
+              <Dropdown
+                :trigger="['click']"
+                placement="bottomRight"
+                @click.stop
+              >
+                <VbenButton
+                  size="sm"
+                  variant="ghost"
+                  :disabled="isFetching || opSpinning"
+                  class="opacity-60 transition-opacity hover:opacity-100 group-hover:opacity-100"
                 >
                   <VbenIcon icon="ri:more-2-line" />
-                </Button>
+                </VbenButton>
                 <template #overlay>
-                  <Menu
-                    @click="({ key }) => handleFileAction(key as string, file)"
-                  >
+                  <Menu @click="onFileMenuClick($event as any, file)">
                     <MenuItem key="view">
                       <div class="flex items-center">
                         <VbenIcon icon="ri:eye-line" class="size-4" />
@@ -392,19 +523,21 @@ function handleUploadError(error: Error) {
             </div>
 
             <!-- 状态指示器 -->
-            <div class="flex items-center justify-between">
+            <div class="mt-2 flex items-center justify-between">
               <Badge
                 :status="isFileStatusNormal(file.status) ? 'success' : 'error'"
                 :text="getFileStatusLabel(file.status)"
               />
               <div class="flex space-x-1">
                 <VbenIconButton
+                  :disabled="isFetching || opSpinning"
                   @click.stop="handleFileAction('view', file)"
                   :tooltip="$t('system.storageFiles.preview')"
                 >
                   <VbenIcon icon="ri:eye-line" class="size-3" />
                 </VbenIconButton>
                 <VbenIconButton
+                  :disabled="isFetching || opSpinning"
                   @click.stop="handleFileAction('download', file)"
                   :tooltip="$t('system.storageFiles.download')"
                 >
@@ -416,44 +549,37 @@ function handleUploadError(error: Error) {
         </Card>
       </div>
 
-      <!-- 加载状态 -->
-      <div v-if="isLoading" class="py-12 text-center">
-        <VbenIcon
-          icon="ri:loader-4-line"
-          class="mx-auto mb-4 size-16 animate-spin text-gray-300"
-        />
-        <p class="text-lg text-gray-500">
-          {{ $t('system.storageFiles.loading') }}
-        </p>
-      </div>
-
       <!-- 空状态 -->
-      <div v-else-if="displayFileList.length === 0" class="py-12 text-center">
+      <div
+        v-if="!isFetching && displayFileList.length === 0"
+        class="py-12 text-center"
+      >
         <VbenIcon
           icon="ri:file-line"
-          class="mx-auto mb-4 size-16 text-gray-300"
+          class="mx-auto mb-4 size-12 text-gray-300"
         />
-        <p class="mb-2 text-lg text-gray-500">
+        <p class="mb-1.5 text-base text-gray-500">
           {{ $t('system.storageFiles.noFiles') }}
         </p>
-        <p class="text-sm text-gray-400">
+        <p class="text-xs text-gray-400">
           {{ $t('system.storageFiles.noFilesDesc') }}
         </p>
       </div>
     </div>
     <!-- 分页 -->
-    <div v-if="!isLoading && total > pageSize" class="flex justify-center">
+    <div v-if="!isFetching && total > pageSize" class="flex justify-center">
       <Pagination
         v-model:current="currentPage"
         v-model:page-size="pageSize"
         :total="total"
         :show-size-changer="true"
         :show-quick-jumper="true"
-        :show-total="
-          (total, range) => `第 ${range[0]}-${range[1]} 条，共 ${total} 条`
-        "
+        :show-total="renderPaginationTotal"
         @change="handlePageChange"
       />
     </div>
+
+    <!-- 文件预览组件（图片/视频/音频/PDF/其他） -->
+    <FilePreview v-model:open="previewOpen" :file="previewFile" />
   </div>
 </template>

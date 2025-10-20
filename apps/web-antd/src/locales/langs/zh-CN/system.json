@@ -192,7 +192,15 @@
     "fileTypeNotAllowed": "不支持的文件类型",
     "fileValidationFailed": "文件验证失败",
     "uploadSuccess": "上传成功",
-    "uploadFailed": "上传失败"
+    "uploadFailed": "上传失败",
+    "filePreviewTitle": "文件预览",
+    "officePreviewFallbackHint": "如遇加载失败，将尝试回退为 Google 预览",
+    "openOriginalFile": "直接打开原文件",
+    "useGooglePreview": "使用 Google 预览",
+    "openInNewWindow": "在新窗口打开",
+    "previewNotSupported": "暂不支持此类型的在线预览",
+    "imageLoadFailed": "图片预览加载失败",
+    "retry": "重试"
   },
   "fileCategory": {
     "title": "文件分类",

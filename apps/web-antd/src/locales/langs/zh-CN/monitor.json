@@ -24,10 +24,13 @@
     "totalNetInput": "网络输入总量",
     "totalNetOutput": "网络输出总量",
     "loading": "加载中...",
+    "fetchFailed": "获取 Redis 缓存信息失败",
     "unit": {
       "count": "个",
       "days": "天"
-    }
+    },
+    "uptimeLessThanOneDay": "< 1天",
+    "uptimeDays": "{0}天"
   },
   "server": {
     "title": "服务器监控",

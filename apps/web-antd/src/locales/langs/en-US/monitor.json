@@ -24,10 +24,13 @@
     "totalNetInput": "Total Network Input",
     "totalNetOutput": "Total Network Output",
     "loading": "Loading...",
+    "fetchFailed": "Failed to fetch Redis cache info",
     "unit": {
       "count": "",
       "days": "days"
-    }
+    },
+    "uptimeLessThanOneDay": "< 1 day",
+    "uptimeDays": "{0} days"
   },
   "server": {
     "title": "Server Monitor",
