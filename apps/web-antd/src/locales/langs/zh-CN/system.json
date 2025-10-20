@@ -464,5 +464,14 @@
     "editFailed": "编辑失败",
     "setStatusSuccess": "状态更新成功",
     "setStatusFailed": "状态更新失败"
+  },
+  "param": {
+    "title": "系统参数管理",
+    "list": "系统参数列表",
+    "name": "系统参数",
+    "paramName": "参数名称",
+    "paramKey": "参数键",
+    "paramValue": "参数值",
+    "remark": "备注"
   }
 }

@@ -39,13 +39,14 @@ const [PostGrid, postGridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        query: async ({ page }, formValues) => {
-          return await getPostPage({
-            page: page.currentPage,
-            pageSize: page.pageSize,
-            ...formValues,
-            deptId: deptId.value,
-          });
+        query: ({ page }, formValues) => {
+          return getPostPage(
+            {
+              page: page.currentPage,
+              pageSize: page.pageSize,
+            },
+            { ...formValues, deptId: deptId.value },
+          );
         },
       },
     },

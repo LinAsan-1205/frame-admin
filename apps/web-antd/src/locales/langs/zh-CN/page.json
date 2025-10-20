@@ -22,7 +22,8 @@
     "serverMonitor": "服务监控",
     "session": "会话管理",
     "generator": "代码生成",
-    "post": "岗位管理"
+    "post": "岗位管理",
+    "param": "系统参数"
   },
   "log": {
     "title": "日志管理",

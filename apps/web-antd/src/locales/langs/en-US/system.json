@@ -463,5 +463,14 @@
     "editFailed": "Edit Failed",
     "setStatusSuccess": "Status Update Success",
     "setStatusFailed": "Status Update Failed"
+  },
+  "param": {
+    "title": "System Param",
+    "list": "System Param",
+    "name": "System Param",
+    "paramName": "Name",
+    "paramKey": "Key",
+    "paramValue": "Value",
+    "remark": "Remark"
   }
 }
