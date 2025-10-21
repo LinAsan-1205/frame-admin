@@ -471,6 +471,9 @@
     "paramName": "Name",
     "paramKey": "Key",
     "paramValue": "Value",
+    "isSystem": "System Built-in",
+    "isSystemYes": "Yes",
+    "isSystemNo": "No",
     "remark": "Remark"
   }
 }

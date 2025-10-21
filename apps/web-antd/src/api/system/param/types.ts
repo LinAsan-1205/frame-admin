@@ -1,10 +1,15 @@
+import type { IsSystem as ParamIsSystem } from './enum';
+
 export namespace Param {
+  /** 是否系统内置 类型 */
+  export type IsSystem = typeof ParamIsSystem.valueType;
   /** 系统参数视图 */
   export interface View {
     id: number;
     paramName: string;
     paramKey: string;
     paramValue?: null | string;
+    isSystem?: IsSystem;
     remark?: string;
     createTime?: string;
     updateTime?: string;
@@ -23,6 +28,8 @@ export namespace Param {
     paramName: string;
     paramKey: string;
     paramValue?: null | string;
+    /** 是否系统内置：Yes(1)/No(0) */
+    isSystem?: IsSystem;
     remark?: string;
   }
 

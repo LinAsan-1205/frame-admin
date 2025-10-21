@@ -1,5 +1,6 @@
 import type { VbenFormSchema } from '#/adapter/form';
 
+import { IsSystem } from '#/api/system/param';
 import { $t } from '#/locales';
 
 /**
@@ -24,6 +25,13 @@ export function useFormSchema(): VbenFormSchema[] {
       fieldName: 'paramValue',
       label: $t('system.param.paramValue'),
       componentProps: { rows: 3 },
+    },
+    {
+      component: 'RadioGroup',
+      fieldName: 'isSystem',
+      label: $t('system.param.isSystem'),
+      defaultValue: IsSystem.No,
+      componentProps: { options: IsSystem.toSelect() },
     },
     {
       component: 'Textarea',

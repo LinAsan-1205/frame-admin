@@ -472,6 +472,9 @@
     "paramName": "参数名称",
     "paramKey": "参数键",
     "paramValue": "参数值",
+    "isSystem": "系统内置",
+    "isSystemYes": "是",
+    "isSystemNo": "否",
     "remark": "备注"
   }
 }
