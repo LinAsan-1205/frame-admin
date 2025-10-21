@@ -1,6 +1,7 @@
 import type { OnActionClickFn, VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { Param } from '#/api/system/param';
 
+import { IsSystem } from '#/api/system/param';
 import { $t } from '#/locales';
 
 export function useColumns<T = Param.View>(
@@ -19,6 +20,14 @@ export function useColumns<T = Param.View>(
       field: 'createTime',
       title: $t('common.createTime'),
       cellRender: { name: 'CellFormatDate' },
+    },
+    {
+      field: 'isSystem',
+      title: $t('system.param.isSystem'),
+      cellRender: {
+        name: 'CellTag',
+        options: IsSystem.toOriginItems(),
+      },
     },
     {
       field: 'operation',

@@ -5,7 +5,7 @@ import { Enum } from 'enum-plus';
  */
 export const IsSystem = Enum({
   /** 是：系统内置参数 */
-  Yes: { value: 1, label: '是' },
+  Yes: { value: 1, label: '是', color: 'success' },
   /** 否：非系统内置参数 */
-  No: { value: 0, label: '否' },
+  No: { value: 0, label: '否', color: 'error' },
 } as const);
