@@ -15,12 +15,6 @@ export function useColumns<T = Param.View>(
       field: 'paramValue',
       title: $t('system.param.paramValue'),
     },
-    { field: 'remark', title: $t('system.param.remark') },
-    {
-      field: 'createTime',
-      title: $t('common.createTime'),
-      cellRender: { name: 'CellFormatDate' },
-    },
     {
       field: 'isSystem',
       title: $t('system.param.isSystem'),
@@ -28,6 +22,12 @@ export function useColumns<T = Param.View>(
         name: 'CellTag',
         options: IsSystem.toOriginItems(),
       },
+    },
+    { field: 'remark', title: $t('system.param.remark') },
+    {
+      field: 'createTime',
+      title: $t('common.createTime'),
+      cellRender: { name: 'CellFormatDate' },
     },
     {
       field: 'operation',
