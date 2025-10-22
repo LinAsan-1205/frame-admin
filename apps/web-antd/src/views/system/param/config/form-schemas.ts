@@ -1,4 +1,7 @@
+import type { Ref } from 'vue';
+
 import type { VbenFormSchema } from '#/adapter/form';
+import type { Param } from '#/api/system/param';
 
 import { IsSystem } from '#/api/system/param';
 import { $t } from '#/locales';
@@ -6,7 +9,9 @@ import { $t } from '#/locales';
 /**
  * 系统参数表单配置
  */
-export function useFormSchema(): VbenFormSchema[] {
+export function useFormSchema(
+  formData: Ref<Param.View | undefined>,
+): VbenFormSchema[] {
   return [
     {
       component: 'Input',
@@ -33,10 +38,13 @@ export function useFormSchema(): VbenFormSchema[] {
       defaultValue: IsSystem.No,
       componentProps: { options: IsSystem.toSelect() },
       dependencies: {
-        show: (values) => {
-          return values.isSystem === IsSystem.Yes;
+        if: (values) => {
+          if (formData.value?.id) {
+            return values.isSystem !== IsSystem.Yes;
+          }
+          return true;
         },
-        triggerFields: ['id'],
+        triggerFields: ['id', 'isSystem'],
       },
     },
     {
