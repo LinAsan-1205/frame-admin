@@ -32,6 +32,12 @@ export function useFormSchema(): VbenFormSchema[] {
       label: $t('system.param.isSystem'),
       defaultValue: IsSystem.No,
       componentProps: { options: IsSystem.toSelect() },
+      dependencies: {
+        show: (values) => {
+          return values.isSystem === IsSystem.Yes;
+        },
+        triggerFields: ['id'],
+      },
     },
     {
       component: 'Textarea',

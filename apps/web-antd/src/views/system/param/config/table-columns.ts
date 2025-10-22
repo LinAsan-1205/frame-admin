@@ -42,7 +42,16 @@ export function useColumns<T = Param.View>(
           nameTitle: $t('system.param.paramName'),
           onClick: onActionClick,
         },
-        options: ['edit', 'delete'],
+        options: [
+          'edit',
+          {
+            code: 'delete',
+            text: $t('common.delete'),
+            disabled: (row: Param.View) => {
+              return row.isSystem === IsSystem.Yes;
+            },
+          },
+        ],
       },
     },
   ];

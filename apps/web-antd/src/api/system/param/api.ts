@@ -2,6 +2,8 @@ import type { Param } from './types';
 
 import type { Api } from '#/api/types';
 
+import { omit } from 'es-toolkit';
+
 import { requestClient } from '#/api/request';
 
 const prefix = '/system/param';
@@ -42,7 +44,8 @@ function addParam(data: Param.Post) {
 
 /** 更新参数 */
 function setParamById(paramId: number, data: Param.Post) {
-  return requestClient.put<boolean>(`${prefix}/${paramId}`, data);
+  const omitIsSystem = omit(data, ['isSystem']);
+  return requestClient.put<boolean>(`${prefix}/${paramId}`, omitIsSystem);
 }
 
 /** 删除参数 */
