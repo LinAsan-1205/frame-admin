@@ -60,10 +60,17 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
    */
   async function doRefreshToken() {
     const accessStore = useAccessStore();
-    const resp = await refreshTokenApi(accessStore.refreshToken);
-    const newToken = resp?.accessToken;
-    accessStore.setAccessToken(newToken);
-    return newToken;
+
+    try {
+      const resp = await refreshTokenApi(accessStore.refreshToken);
+      const newToken = resp?.accessToken;
+      accessStore.setAccessToken(newToken);
+      return newToken;
+    } catch (error: any) {
+      message.error(error.toString());
+      accessStore.setAccessToken(null);
+      return '';
+    }
   }
 
   function formatToken(token: null | string) {
@@ -108,11 +115,6 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       const errorMessage =
         responseData?.error ?? responseData?.message ?? msg ?? '';
       const errorCode = responseData?.code ?? error.code;
-
-      // 4010 表示刷新token出错了 不提示
-      if (errorCode === 4010) {
-        return;
-      }
 
       switch (errorCode) {
         case 401:
