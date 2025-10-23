@@ -104,11 +104,15 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
-      // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
       const responseData = error?.response?.data ?? {};
       const errorMessage =
         responseData?.error ?? responseData?.message ?? msg ?? '';
       const errorCode = responseData?.code ?? error.code;
+
+      // 4010 表示刷新token出错了 不提示
+      if (errorCode === 4010) {
+        return;
+      }
 
       switch (errorCode) {
         case 401:
@@ -118,7 +122,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
           break;
         }
         default: {
-          message.error(errorMessage || msg);
+          message.error(errorMessage);
           break;
         }
       }
