@@ -15,6 +15,8 @@ import { $t } from '@vben/locales';
 
 import { notification } from 'ant-design-vue';
 
+import { RegionCascader } from '#/components/region';
+
 const AutoComplete = defineAsyncComponent(
   () => import('ant-design-vue/es/auto-complete'),
 );
@@ -115,6 +117,7 @@ export type ComponentType =
   | 'RadioGroup'
   | 'RangePicker'
   | 'Rate'
+  | 'RegionCascader'
   | 'Select'
   | 'Space'
   | 'Switch'
@@ -190,6 +193,7 @@ async function initComponentAdapter() {
     TimePicker,
     TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),
     Upload,
+    RegionCascader,
   };
 
   // 将组件注册到全局共享状态中

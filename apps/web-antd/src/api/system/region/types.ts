@@ -22,6 +22,7 @@ export namespace Region {
     type?: RegionTypeType;
     page?: number;
     pageSize?: number;
+    limit?: number;
   }
 
   export interface Post {

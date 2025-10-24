@@ -1,7 +1,10 @@
+import type { Ref } from 'vue';
+
 import type { VbenFormSchema } from '#/adapter/form';
+import type { CascaderOption } from '#/components/region/region-cascader.vue';
 
 import { z } from '#/adapter/form';
-import { getRegionList, RegionType } from '#/api/system/region';
+import { RegionType } from '#/api/system/region';
 import { $t } from '#/locales';
 
 /**
@@ -9,7 +12,9 @@ import { $t } from '#/locales';
  * 获取编辑表单的字段配置
  * @returns 行政区域表单字段配置数组
  */
-export function useFormSchema(): VbenFormSchema[] {
+export function useFormSchema(
+  parentItem: Ref<CascaderOption | undefined>,
+): VbenFormSchema[] {
   return [
     {
       component: 'Input',
@@ -42,6 +47,10 @@ export function useFormSchema(): VbenFormSchema[] {
         class: 'w-full',
         min: 1,
       },
+      dependencies: {
+        show: false,
+        triggerFields: ['parentId'],
+      },
       fieldName: 'level',
       label: $t('system.region.level'),
       rules: z
@@ -50,11 +59,17 @@ export function useFormSchema(): VbenFormSchema[] {
         .optional(),
     },
     {
-      component: 'ApiSelect',
+      component: 'RegionCascader',
       componentProps: {
-        api: getRegionList,
-        labelField: 'title',
-        valueField: 'id',
+        maxLevel: 2,
+        placeholder: $t('system.region.parentIdPlaceholder'),
+        allowClear: true,
+        onChange: (value: number | number[] | undefined, options: any[]) => {
+          const item = options.find((option) => option.value === value);
+          if (item) {
+            parentItem.value = item;
+          }
+        },
       },
       fieldName: 'parentId',
       defaultValue: undefined,
@@ -62,9 +77,14 @@ export function useFormSchema(): VbenFormSchema[] {
     },
     {
       component: 'RadioGroup',
+      dependencies: {
+        show: false,
+        triggerFields: ['parentId'],
+      },
       componentProps: { options: RegionType.toSelect() },
       defaultValue: RegionType.Province,
       fieldName: 'type',
+      disabled: true,
       label: $t('system.region.type'),
     },
   ];

@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import type { Region } from '#/api/system/region';
+import type { CascaderOption } from '#/components/region/region-cascader.vue';
 
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
 import { useVbenForm } from '#/adapter/form';
-import { addRegion, setRegionById } from '#/api/system/region';
+import { addRegion, RegionType, setRegionById } from '#/api/system/region';
 import { $t } from '#/locales';
 
 import { useFormSchema } from '../config/form-schemas';
@@ -19,12 +20,14 @@ const getTitle = computed(() => {
     : $t('ui.actionTitle.create', [$t('system.region.name')]);
 });
 
+const parentItem = ref<CascaderOption>();
+
 const [Form, formApi] = useVbenForm({
   commonConfig: {
     controlClass: 'w-full',
   },
   layout: 'horizontal',
-  schema: useFormSchema(),
+  schema: useFormSchema(parentItem),
   showDefaultActions: false,
 });
 
@@ -55,6 +58,30 @@ const [Modal, modalApi] = useVbenModal({
     }
   },
 });
+
+watch(
+  parentItem,
+  async (newVal) => {
+    if (!newVal) return;
+
+    const parentLevel = Number(newVal.level ?? 0);
+    const nextLevel = parentLevel + 1;
+    formApi.setFieldValue('level', nextLevel);
+
+    let nextType: Region.RegionTypeType = RegionType.Province;
+
+    if (parentLevel >= 2) {
+      const data = (await formApi.getValues()) as Region.View | undefined;
+      const title = data?.title ?? '';
+      nextType = title.includes('街道') ? RegionType.Street : RegionType.Area;
+    } else if (parentLevel === 1) {
+      nextType = RegionType.City;
+    }
+
+    formApi.setFieldValue('type', nextType);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
