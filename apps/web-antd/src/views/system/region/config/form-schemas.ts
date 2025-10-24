@@ -77,14 +77,10 @@ export function useFormSchema(
     },
     {
       component: 'RadioGroup',
-      dependencies: {
-        show: false,
-        triggerFields: ['parentId'],
-      },
+      help: $t('system.region.typeHelpText'),
       componentProps: { options: RegionType.toSelect() },
       defaultValue: RegionType.Province,
       fieldName: 'type',
-      disabled: true,
       label: $t('system.region.type'),
     },
   ];

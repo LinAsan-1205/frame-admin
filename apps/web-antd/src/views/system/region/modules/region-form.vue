@@ -7,7 +7,7 @@ import { computed, ref, watch } from 'vue';
 import { useVbenModal } from '@vben/common-ui';
 
 import { useVbenForm } from '#/adapter/form';
-import { addRegion, RegionType, setRegionById } from '#/api/system/region';
+import { addRegion, setRegionById } from '#/api/system/region';
 import { $t } from '#/locales';
 
 import { useFormSchema } from '../config/form-schemas';
@@ -67,18 +67,6 @@ watch(
     const parentLevel = Number(newVal.level ?? 0);
     const nextLevel = parentLevel + 1;
     formApi.setFieldValue('level', nextLevel);
-
-    let nextType: Region.RegionTypeType = RegionType.Province;
-
-    if (parentLevel >= 2) {
-      const data = (await formApi.getValues()) as Region.View | undefined;
-      const title = data?.title ?? '';
-      nextType = title.includes('街道') ? RegionType.Street : RegionType.Area;
-    } else if (parentLevel === 1) {
-      nextType = RegionType.City;
-    }
-
-    formApi.setFieldValue('type', nextType);
   },
   { immediate: true },
 );
