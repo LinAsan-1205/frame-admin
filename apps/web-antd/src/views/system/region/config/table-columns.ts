@@ -32,14 +32,6 @@ export function useColumns(
     },
     {
       align: 'center',
-      field: 'level',
-      title: $t('system.region.level'),
-      cellRender: {
-        name: 'CellFormatEmpty',
-      },
-    },
-    {
-      align: 'center',
       cellRender: { name: 'CellTag', options: RegionType.toOriginItems() },
       field: 'type',
       title: $t('system.region.type'),
