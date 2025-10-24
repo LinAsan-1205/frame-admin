@@ -295,7 +295,30 @@
     "cleanupExpiredLoading": "Cleaning up expired sessions...",
     "forceLogoutLoading": "Force logging out...",
     "canceled": "Canceled",
-    "loadStatisticsFailed": "Load statistics failed"
+    "loadStatisticsFailed": "Load statistics failed",
+    "loginStrategyConfig": "Login Strategy Configuration",
+    "strategyType": "Strategy Type",
+    "strategyDescriptionSingle": "Single Sign-On: Users can only maintain one active session on the same device type. New login will automatically kick out old sessions.",
+    "strategyDescriptionMulti": "Multi-Point Login: Users can stay logged in on multiple devices simultaneously, with a maximum of specified concurrent sessions allowed.",
+    "strategyDescriptionDeviceType": "Device Type Restriction: Limit maximum sessions separately for different device types (Web, Mobile, Desktop, Tablet).",
+    "strategy": {
+      "single": "Single Sign-On",
+      "multi": "Multi-Point Login",
+      "deviceType": "Device Type Restriction"
+    },
+    "maxConcurrentSessions": "Max Concurrent Sessions",
+    "maxConcurrentSessionsPlaceholder": "Please enter max concurrent sessions (1-999)",
+    "enforceDeviceLimit": "Enable Device Type Limit",
+    "deviceLimitWeb": "Max Web Sessions",
+    "deviceLimitMobile": "Max Mobile Sessions",
+    "deviceLimitDesktop": "Max Desktop Sessions",
+    "deviceLimitTablet": "Max Tablet Sessions",
+    "deviceLimitPlaceholder": "Please enter max device sessions (1-99)",
+    "isEnabled": "Enabled",
+    "remark": "Remark",
+    "remarkPlaceholder": "Please enter remark (max 500 characters)",
+    "strategyConfigSuccess": "Login strategy configured successfully",
+    "strategyConfigFailed": "Login strategy configuration failed"
   },
   "dict": {
     "title": "Dictionary Management",

@@ -295,7 +295,30 @@
     "cleanupExpiredLoading": "正在清理过期会话...",
     "forceLogoutLoading": "正在强制下线...",
     "canceled": "已取消",
-    "loadStatisticsFailed": "加载统计数据失败"
+    "loadStatisticsFailed": "加载统计数据失败",
+    "loginStrategyConfig": "登录策略配置",
+    "strategyType": "策略类型",
+    "strategyDescriptionSingle": "单点登录：用户在同一设备类型上只能保持一个活跃会话，新登录会自动踢出旧会话。",
+    "strategyDescriptionMulti": "多点登录：用户可以在多个设备上同时保持登录状态，最多允许指定数量的并发会话。",
+    "strategyDescriptionDeviceType": "设备类型限制：根据不同设备类型（Web、Mobile、Desktop、Tablet）分别限制最大会话数。",
+    "strategy": {
+      "single": "单点登录",
+      "multi": "多点登录",
+      "deviceType": "设备类型限制"
+    },
+    "maxConcurrentSessions": "最大并发会话数",
+    "maxConcurrentSessionsPlaceholder": "请输入最大并发会话数(1-999)",
+    "enforceDeviceLimit": "启用设备类型限制",
+    "deviceLimitWeb": "Web设备最大会话数",
+    "deviceLimitMobile": "Mobile设备最大会话数",
+    "deviceLimitDesktop": "Desktop设备最大会话数",
+    "deviceLimitTablet": "Tablet设备最大会话数",
+    "deviceLimitPlaceholder": "请输入设备最大会话数(1-99)",
+    "isEnabled": "启用状态",
+    "remark": "备注",
+    "remarkPlaceholder": "请输入备注信息（最多500字）",
+    "strategyConfigSuccess": "登录策略配置成功",
+    "strategyConfigFailed": "登录策略配置失败"
   },
   "dict": {
     "title": "字典管理",

@@ -5,7 +5,7 @@ import type {
 } from '#/adapter/vxe-table';
 import type { Session } from '#/api/system/session';
 
-import { computed, onMounted, onUnmounted, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
@@ -25,19 +25,20 @@ import { useWebSocketStore } from '#/store/websocket';
 import { useSearchFormOptions } from './config/search-config';
 import { useColumns } from './config/table-columns';
 import Detail from './modules/detail.vue';
+import LoginStrategyConfigForm from './modules/login-strategy-config-form.vue';
 
 const searchFormOptions = useSearchFormOptions();
-
 const websocketStore = useWebSocketStore();
-
 const userStore = useUserStore();
 
+// 轮询配置
+const POLLING_INTERVAL = 10_000; // 10秒轮询
+const POLLING_INTERVAL_HIDDEN = 30_000; // 页面隐藏时30秒轮询
+const pollingTimer = ref<NodeJS.Timeout | null>(null);
+
+// WebSocket 会话变更计数
 const lastChangeCount = computed(() => websocketStore.sessionChangeCount);
 let previousChangeCount = 0;
-
-// WebSocket 连接状态
-const isWsConnected = computed(() => websocketStore.isConnected);
-let refreshTimer: NodeJS.Timeout | null = null;
 
 const [SessionGrid, sessionGridApi] = useVbenVxeGrid({
   formOptions: searchFormOptions,
@@ -46,7 +47,7 @@ const [SessionGrid, sessionGridApi] = useVbenVxeGrid({
     height: 'auto',
     keepSource: true,
     proxyConfig: {
-      autoLoad: false,
+      autoLoad: true,
       ajax: {
         query: async ({ page }, formValues) => {
           return await querySessionPage(
@@ -70,6 +71,14 @@ const [DetailModal, detailModalApi] = useVbenModal({
   destroyOnClose: true,
 });
 
+const [LoginStrategyConfigModal, loginStrategyConfigModalApi] = useVbenModal({
+  connectedComponent: LoginStrategyConfigForm,
+  destroyOnClose: true,
+});
+
+/**
+ * 监听 WebSocket 会话变更事件（实时通知）
+ */
 watch(lastChangeCount, (newCount) => {
   if (newCount > previousChangeCount && previousChangeCount > 0) {
     onRefreshSessionList();
@@ -77,49 +86,63 @@ watch(lastChangeCount, (newCount) => {
   previousChangeCount = newCount;
 });
 
-watch(isWsConnected, (connected, wasConnected) => {
-  if (connected && wasConnected === false) {
-    if (refreshTimer) {
-      clearTimeout(refreshTimer);
-    }
-    refreshTimer = setTimeout(() => {
-      onRefreshSessionList();
-    }, 500);
-  }
-});
+/**
+ * 启动轮询
+ * @param interval 轮询间隔（毫秒）
+ */
+function startPolling(interval: number = POLLING_INTERVAL) {
+  stopPolling();
+  pollingTimer.value = setInterval(() => {
+    onRefreshSessionList();
+  }, interval);
+}
 
+/**
+ * 停止轮询
+ */
+function stopPolling() {
+  if (pollingTimer.value) {
+    clearInterval(pollingTimer.value);
+    pollingTimer.value = null;
+  }
+}
+
+/**
+ * 页面可见性变化处理
+ * 页面可见时使用正常轮询间隔，隐藏时降低轮询频率
+ */
 function handleVisibilityChange() {
-  if (document.visibilityState === 'visible' && isWsConnected.value) {
-    if (refreshTimer) {
-      clearTimeout(refreshTimer);
-    }
-    refreshTimer = setTimeout(() => {
-      onRefreshSessionList();
-    }, 300);
+  if (document.visibilityState === 'visible') {
+    // 页面可见：立即刷新 + 恢复正常轮询
+    onRefreshSessionList();
+    startPolling(POLLING_INTERVAL);
+  } else {
+    // 页面隐藏：降低轮询频率减少服务器压力
+    startPolling(POLLING_INTERVAL_HIDDEN);
   }
 }
 
 onMounted(() => {
   previousChangeCount = lastChangeCount.value;
 
+  // 监听页面可见性变化
   document.addEventListener('visibilitychange', handleVisibilityChange);
 
-  if (isWsConnected.value) {
-    refreshTimer = setTimeout(() => {
-      onRefreshSessionList();
-    }, 500);
-  }
+  // 启动轮询
+  startPolling();
 });
 
 onUnmounted(() => {
-  if (refreshTimer) {
-    clearTimeout(refreshTimer);
-    refreshTimer = null;
-  }
+  // 停止轮询
+  stopPolling();
 
+  // 移除事件监听
   document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 
+/**
+ * 处理表格操作
+ */
 async function onActionClick(actionParams: OnActionClickParams<Session.View>) {
   switch (actionParams.code) {
     case 'delete': {
@@ -137,6 +160,9 @@ async function onActionClick(actionParams: OnActionClickParams<Session.View>) {
   }
 }
 
+/**
+ * 确认弹窗
+ */
 function confirmModal(content: string, title: string) {
   return new Promise((resolve, reject) => {
     Modal.confirm({
@@ -154,7 +180,6 @@ function confirmModal(content: string, title: string) {
 
 /**
  * 删除会话
- * @param sessionView 会话数据
  */
 async function onDeleteSession(sessionView: Session.View) {
   const deletingContent = $t('ui.actionMessage.deleting', [
@@ -182,7 +207,6 @@ async function onDeleteSession(sessionView: Session.View) {
 
 /**
  * 强制下线
- * @param sessionView 会话数据
  */
 async function onForceLogout(sessionView: Session.View) {
   await confirmModal(
@@ -203,6 +227,7 @@ async function onForceLogout(sessionView: Session.View) {
     hideLoading();
   });
 
+  // 通过 WebSocket 通知被强制下线的用户
   websocketStore.sendMessage('force_user_offline', {
     userId: sessionView.userId,
     deviceId: sessionView.deviceId,
@@ -211,6 +236,9 @@ async function onForceLogout(sessionView: Session.View) {
   onRefreshSessionList();
 }
 
+/**
+ * 刷新会话列表
+ */
 function onRefreshSessionList() {
   sessionGridApi.query();
 }
@@ -241,13 +269,27 @@ async function onCleanupExpiredSessions() {
 
   onRefreshSessionList();
 }
+
+function onOpenLoginStrategyConfig() {
+  loginStrategyConfigModalApi.open();
+}
+
+onUnmounted(() => {
+  stopPolling();
+
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+});
 </script>
 
 <template>
   <Page auto-content-height>
     <DetailModal />
+    <LoginStrategyConfigModal @success="onRefreshSessionList" />
     <SessionGrid :table-title="$t('system.session.list')">
       <template #toolbar-tools>
+        <Button @click="onOpenLoginStrategyConfig" type="default">
+          {{ $t('system.session.loginStrategyConfig') }}
+        </Button>
         <Button @click="onCleanupExpiredSessions" type="primary">
           {{ $t('system.session.cleanupExpired') }}
         </Button>

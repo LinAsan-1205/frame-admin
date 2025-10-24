@@ -1,0 +1,53 @@
+{
+  "connection": {
+    "connecting": "Connecting...",
+    "connected": "WebSocket connected successfully",
+    "disconnected": "Disconnected: {reason}",
+    "reconnecting": "Reconnecting (attempt {attempt})...",
+    "reconnected": "Reconnected successfully",
+    "failed": "Connection failed: {error}",
+    "timeout": "Connection timeout",
+    "error": "Connection error: {message}"
+  },
+  "session": {
+    "forceLogout": "Your account has been logged in on another device, current session is invalid",
+    "forceLogoutWithReason": "You have been forced offline: {reason}",
+    "expired": "Session expired, please login again",
+    "revoked": "Session has been revoked by administrator",
+    "inactive": "Session is inactive",
+    "stateChanged": "Session state updated",
+    "created": "New session created",
+    "kicked": "You have been kicked offline",
+    "online": "Session is online",
+    "offline": "Session is offline"
+  },
+  "heartbeat": {
+    "timeout": "Heartbeat timeout, connection will be closed",
+    "restored": "Heartbeat restored",
+    "missed": "Heartbeat missed",
+    "error": "Heartbeat error"
+  },
+  "strategy": {
+    "updated": "Login strategy updated",
+    "changed": "System login strategy has changed, may affect your login status"
+  },
+  "notification": {
+    "title": {
+      "info": "System Notification",
+      "warning": "Warning",
+      "error": "Error",
+      "success": "Success"
+    },
+    "newMessage": "You have new message",
+    "systemMaintenance": "System maintenance notification",
+    "reconnectSuccess": "Connection restored"
+  },
+  "error": {
+    "connectionFailed": "Unable to connect to server",
+    "authFailed": "WebSocket authentication failed",
+    "networkError": "Network error",
+    "serverError": "Server error",
+    "timeout": "Operation timeout",
+    "unknown": "Unknown error"
+  }
+}

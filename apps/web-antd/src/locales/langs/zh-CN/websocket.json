@@ -1,0 +1,53 @@
+{
+  "connection": {
+    "connecting": "连接中...",
+    "connected": "WebSocket 连接成功",
+    "disconnected": "连接断开: {reason}",
+    "reconnecting": "正在重连（第 {attempt} 次）...",
+    "reconnected": "重连成功",
+    "failed": "连接失败: {error}",
+    "timeout": "连接超时",
+    "error": "连接错误: {message}"
+  },
+  "session": {
+    "forceLogout": "您的账号已在其他设备登录，当前会话已失效",
+    "forceLogoutWithReason": "您已被强制下线: {reason}",
+    "expired": "会话已过期，请重新登录",
+    "revoked": "会话已被管理员撤销",
+    "inactive": "会话已失效",
+    "stateChanged": "会话状态已更新",
+    "created": "新会话已创建",
+    "kicked": "您已被踢下线",
+    "online": "会话已上线",
+    "offline": "会话已离线"
+  },
+  "heartbeat": {
+    "timeout": "心跳超时，连接即将断开",
+    "restored": "心跳已恢复",
+    "missed": "心跳丢失",
+    "error": "心跳异常"
+  },
+  "strategy": {
+    "updated": "登录策略已更新",
+    "changed": "系统登录策略已变更，可能会影响您的登录状态"
+  },
+  "notification": {
+    "title": {
+      "info": "系统通知",
+      "warning": "警告",
+      "error": "错误",
+      "success": "成功"
+    },
+    "newMessage": "您有新消息",
+    "systemMaintenance": "系统维护通知",
+    "reconnectSuccess": "连接已恢复"
+  },
+  "error": {
+    "connectionFailed": "无法连接到服务器",
+    "authFailed": "WebSocket 认证失败",
+    "networkError": "网络错误",
+    "serverError": "服务器错误",
+    "timeout": "操作超时",
+    "unknown": "未知错误"
+  }
+}

@@ -106,4 +106,36 @@ export declare namespace Session {
     status?: string;
     isActive?: boolean;
   }
+
+  // 登录策略类型
+  export type LoginStrategyType = 'device-type' | 'multi' | 'single';
+
+  // 登录策略配置
+  export interface LoginStrategyConfig {
+    id: number;
+    strategy: LoginStrategyType;
+    maxConcurrentSessions: number;
+    enforceDeviceLimit: boolean;
+    deviceLimitWeb: number;
+    deviceLimitMobile: number;
+    deviceLimitDesktop: number;
+    deviceLimitTablet: number;
+    isEnabled: boolean;
+    remark?: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  // 更新登录策略配置参数
+  export interface UpdateLoginStrategyConfigParams {
+    strategy: LoginStrategyType;
+    maxConcurrentSessions: number;
+    enforceDeviceLimit: boolean;
+    deviceLimitWeb: number;
+    deviceLimitMobile: number;
+    deviceLimitDesktop: number;
+    deviceLimitTablet: number;
+    isEnabled: boolean;
+    remark?: string;
+  }
 }

@@ -44,10 +44,20 @@ export const useWebSocketStore = defineStore('websocket', () => {
   const sessionChangeCount = ref(0);
   const lastSessionChange = ref<Date | null>(null);
 
+  // 会话状态数据（新增）
+  const sessionStates = ref<any[]>([]);
+  const currentSessionState = ref<any | null>(null);
+
   const socket = ref<null | Socket>(null);
 
   const heartbeatInterval = ref<NodeJS.Timeout | null>(null);
   const HEARTBEAT_INTERVAL = 30_000; // 30秒心跳间隔
+
+  // 重连配置（新增）
+  const reconnectAttempts = ref(0);
+  const MAX_RECONNECT_ATTEMPTS = 10;
+  const BASE_RECONNECT_DELAY = 1000; // 基础延迟 1秒
+  const MAX_RECONNECT_DELAY = 30_000; // 最大延迟 30秒
 
   const wsUrl = computed(() => {
     let baseUrl = import.meta.env.VITE_WEBSOCKET_URL;
@@ -84,6 +94,31 @@ export const useWebSocketStore = defineStore('websocket', () => {
 
       case 'online_users_response': {
         handleOnlineUsersResponse(payload);
+        break;
+      }
+
+      case 'session.force-logout-response': {
+        handleForceLogoutResponse(payload);
+        break;
+      }
+
+      case 'session.heartbeat-timeout': {
+        handleHeartbeatTimeout(payload);
+        break;
+      }
+
+      case 'session.state-changed': {
+        handleSessionStateChanged(payload);
+        break;
+      }
+
+      case 'session.status-response': {
+        handleSessionStatusResponse(payload);
+        break;
+      }
+
+      case 'session.strategy-updated': {
+        handleStrategyUpdated(payload);
         break;
       }
 
@@ -144,6 +179,162 @@ export const useWebSocketStore = defineStore('websocket', () => {
     console.warn($t('system.websocket.sessionChange'), payload);
   }
 
+  // 处理会话状态变化（新增）
+  function handleSessionStateChanged(payload: any) {
+    const { type, sessionId, deviceId, timestamp } = payload;
+
+    currentSessionState.value = payload;
+    sessionChangeCount.value++;
+    lastSessionChange.value = new Date(timestamp);
+
+    console.log('[WebSocket] 会话状态变化:', type, payload);
+
+    // 根据不同的会话状态类型显示通知
+    switch (type) {
+      case 'session.created': {
+        notification.info({
+          message: $t('websocket.session.created'),
+          description: $t('websocket.notification.newMessage'),
+        });
+        break;
+      }
+
+      case 'session.expired': {
+        notification.warning({
+          message: $t('websocket.session.expired'),
+          description: $t('websocket.session.expired'),
+        });
+        break;
+      }
+
+      case 'session.kicked': {
+        notification.warning({
+          message: $t('websocket.session.kicked'),
+          description: payload.reason || $t('websocket.session.forceLogout'),
+          duration: 0,
+        });
+        break;
+      }
+
+      case 'session.offline': {
+        console.log($t('websocket.session.offline'), {
+          sessionId,
+          deviceId,
+          reason: payload.reason,
+        });
+        break;
+      }
+
+      case 'session.online': {
+        console.log($t('websocket.session.online'), { sessionId, deviceId });
+        break;
+      }
+
+      default: {
+        console.warn($t('websocket.error.unknown'), type);
+      }
+    }
+
+    // 更新会话状态列表
+    const existingIndex = sessionStates.value.findIndex(
+      (s) => s.sessionId === sessionId,
+    );
+    if (existingIndex === -1) {
+      sessionStates.value.push(payload);
+    } else {
+      sessionStates.value[existingIndex] = payload;
+    }
+  }
+
+  // 处理会话状态查询响应（新增）
+  function handleSessionStatusResponse(payload: any) {
+    const { userId, deviceId, isOnline, socketCount, allDevices, timestamp } =
+      payload;
+
+    console.log('[WebSocket] 会话状态查询响应:', {
+      userId,
+      deviceId,
+      isOnline,
+      socketCount,
+      devicesCount: allDevices?.length,
+    });
+
+    // 更新会话状态列表
+    if (allDevices && Array.isArray(allDevices)) {
+      sessionStates.value = allDevices;
+    }
+
+    currentSessionState.value = {
+      userId,
+      deviceId,
+      isOnline,
+      socketCount,
+      allDevices,
+      timestamp: new Date(timestamp),
+    };
+  }
+
+  // 处理强制登出响应（新增）
+  function handleForceLogoutResponse(payload: any) {
+    const { success, message, targetDeviceId, timestamp } = payload;
+
+    if (success) {
+      notification.success({
+        message: $t('websocket.notification.title.success'),
+        description: message || $t('websocket.session.forceLogout'),
+      });
+    } else {
+      notification.error({
+        message: $t('websocket.error.unknown'),
+        description: message || $t('websocket.error.unknown'),
+      });
+    }
+
+    console.log('[WebSocket] 强制登出响应:', {
+      success,
+      targetDeviceId,
+      timestamp,
+    });
+  }
+
+  // 处理心跳超时（新增）
+  function handleHeartbeatTimeout(payload: any) {
+    const { message, timeout, timestamp } = payload;
+
+    notification.error({
+      message: $t('websocket.heartbeat.timeout'),
+      description: message || $t('websocket.heartbeat.timeout'),
+      duration: 5,
+    });
+
+    console.warn('[WebSocket] 心跳超时:', { timeout, timestamp });
+
+    // 自动尝试重连
+    setTimeout(() => {
+      if (!isConnected.value) {
+        connect();
+      }
+    }, 3000);
+  }
+
+  // 处理登录策略更新（新增）
+  function handleStrategyUpdated(payload: any) {
+    const { oldStrategy, newStrategy, updatedBy, timestamp } = payload;
+
+    notification.info({
+      message: $t('websocket.strategy.updated'),
+      description: $t('websocket.strategy.changed'),
+      duration: 10,
+    });
+
+    console.log('[WebSocket] 登录策略更新:', {
+      oldStrategy,
+      newStrategy,
+      updatedBy,
+      timestamp,
+    });
+  }
+
   function handleForceLogout(payload: any) {
     const { message, reason } = payload;
 
@@ -183,10 +374,15 @@ export const useWebSocketStore = defineStore('websocket', () => {
     });
   }
 
-  // 发送消息（通用方法）
+  // 发送消息(通用方法)
   function sendMessage(type: string, data: any = {}) {
-    if (!isConnected.value || !socket.value) {
-      console.warn($t('system.websocket.notConnected'));
+    if (!socket.value) {
+      console.warn($t('websocket.error.connectionFailed'));
+      return false;
+    }
+
+    if (!socket.value.connected) {
+      console.warn($t('websocket.error.networkError'));
       return false;
     }
 
@@ -224,8 +420,23 @@ export const useWebSocketStore = defineStore('websocket', () => {
       return;
     }
 
+    // 先断开旧连接（如果存在）
+    if (socket.value) {
+      console.log('[WebSocket] 清理旧连接');
+      socket.value.removeAllListeners();
+      socket.value.disconnect();
+      socket.value = null;
+      stopHeartbeat();
+    }
+
     isConnecting.value = true;
     connectionError.value = null;
+
+    // 计算指数退避延迟
+    const reconnectDelay = Math.min(
+      BASE_RECONNECT_DELAY * 2 ** reconnectAttempts.value,
+      MAX_RECONNECT_DELAY,
+    );
 
     socket.value = io(`${wsUrl.value}/admin`, {
       query: {
@@ -234,8 +445,10 @@ export const useWebSocketStore = defineStore('websocket', () => {
       transports: ['websocket', 'polling'],
       timeout: 5000,
       reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 3000,
+      reconnectionAttempts: MAX_RECONNECT_ATTEMPTS,
+      reconnectionDelay: reconnectDelay,
+      reconnectionDelayMax: MAX_RECONNECT_DELAY,
+      forceNew: true, // 强制创建新连接
     });
 
     // 连接成功事件
@@ -243,29 +456,85 @@ export const useWebSocketStore = defineStore('websocket', () => {
       isConnected.value = true;
       isConnecting.value = false;
       connectionError.value = null;
+      reconnectAttempts.value = 0; // 重置重连计数
       startHeartbeat();
+
+      console.log($t('websocket.connection.connected'));
+
+      // 连接成功后查询会话状态（延迟确保状态已更新）
+      setTimeout(() => {
+        if (socket.value?.connected) {
+          socket.value.emit('session.query-status');
+        }
+      }, 1000);
+    });
+
+    // 重连尝试事件
+    socket.value.on('reconnect_attempt', (attempt) => {
+      reconnectAttempts.value = attempt;
+      console.log($t('websocket.connection.reconnecting', { attempt }));
+    });
+
+    // 重连失败事件
+    socket.value.on('reconnect_failed', () => {
+      isConnected.value = false;
+      isConnecting.value = false;
+      connectionError.value = $t('websocket.error.connectionFailed');
+
+      notification.error({
+        message: $t('websocket.error.connectionFailed'),
+        description: $t('websocket.connection.failed'),
+        duration: 0,
+      });
+
+      console.error($t('websocket.connection.failed'));
     });
 
     // 连接失败事件
     socket.value.on('connect_error', (error) => {
       isConnected.value = false;
       isConnecting.value = false;
+      reconnectAttempts.value++;
+
       connectionError.value = $t('system.websocket.connectionFailed', {
         error: error.message,
       });
 
-      notification.error({
-        message: $t('system.websocket.connectionFailedTitle'),
-        description: $t('system.websocket.connectionFailedDescription'),
-      });
+      console.error(
+        $t('websocket.connection.error', { message: error.message }),
+      );
+
+      // 只在首次连接失败时显示通知，避免重连时频繁弹窗
+      if (reconnectAttempts.value === 1) {
+        notification.error({
+          message: $t('websocket.error.connectionFailed'),
+          description: $t('websocket.connection.error', {
+            message: error.message,
+          }),
+        });
+      }
     });
 
-    socket.value.on('disconnect', (_reason) => {
+    socket.value.on('disconnect', (reason) => {
       isConnected.value = false;
       isConnecting.value = false;
       stopHeartbeat();
+
+      console.log($t('websocket.connection.disconnected', { reason }));
+
+      // 如果是服务器主动断开或传输关闭，尝试重连
+      if (reason === 'io server disconnect' || reason === 'transport close') {
+        notification.warning({
+          message: $t('websocket.notification.title.warning'),
+          description: $t('websocket.connection.reconnecting', {
+            attempt: reconnectAttempts.value + 1,
+          }),
+          duration: 3,
+        });
+      }
     });
 
+    // 注册所有事件监听器
     const events = [
       'connected',
       'heartbeat_response',
@@ -276,6 +545,12 @@ export const useWebSocketStore = defineStore('websocket', () => {
       'system_broadcast',
       'error',
       'session_change',
+      // 新增的会话相关事件
+      'session.state-changed',
+      'session.status-response',
+      'session.force-logout-response',
+      'session.heartbeat-timeout',
+      'session.strategy-updated',
     ];
 
     events.forEach((eventType) => {
@@ -289,6 +564,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
     stopHeartbeat();
 
     if (socket.value) {
+      socket.value.removeAllListeners(); // 移除所有事件监听器
       socket.value.disconnect();
       socket.value = null;
     }
@@ -301,6 +577,20 @@ export const useWebSocketStore = defineStore('websocket', () => {
     sendMessage('get_online_users');
   }
 
+  // 查询会话状态（新增）
+  function querySessionStatus() {
+    return sendMessage('session.query-status');
+  }
+
+  // 强制登出指定设备（新增）
+  function forceLogoutDevice(targetDeviceId?: string, reason?: string) {
+    return sendMessage('session.force-logout', {
+      targetDeviceId,
+      reason:
+        reason || $t('websocket.session.forceLogoutWithReason', { reason: '' }),
+    });
+  }
+
   function $reset() {
     disconnect();
     onlineUsers.value = [];
@@ -309,25 +599,44 @@ export const useWebSocketStore = defineStore('websocket', () => {
     connectionError.value = null;
     sessionChangeCount.value = 0;
     lastSessionChange.value = null;
+    sessionStates.value = [];
+    currentSessionState.value = null;
+    reconnectAttempts.value = 0;
   }
 
   return {
+    // 连接状态
     isConnected: computed(() => isConnected.value),
     isConnecting: computed(() => isConnecting.value),
     connectionError: computed(() => connectionError.value),
+    reconnectAttempts: computed(() => reconnectAttempts.value),
+
+    // 在线用户数据
     onlineUsers: computed(() => onlineUsers.value),
     onlineUserCount: computed(() => onlineUserCount.value),
     serverStats: computed(() => serverStats.value),
+
+    // 会话相关数据
     sessionChangeCount: computed(() => sessionChangeCount.value),
     lastSessionChange: computed(() => lastSessionChange.value),
+    sessionStates: computed(() => sessionStates.value),
+    currentSessionState: computed(() => currentSessionState.value),
 
+    // 连接管理
     connect,
     disconnect,
+
+    // 消息发送
     sendMessage,
     getOnlineUsers,
-    $reset,
+    querySessionStatus,
+    forceLogoutDevice,
 
+    // 心跳管理
     startHeartbeat,
     stopHeartbeat,
+
+    // 重置
+    $reset,
   };
 });

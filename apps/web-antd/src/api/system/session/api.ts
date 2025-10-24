@@ -110,16 +110,36 @@ function cleanupExpiredSessions() {
   return requestClient.post<boolean>('/system/session/cleanup');
 }
 
+/**
+ * 获取登录策略配置
+ */
+function getLoginStrategyConfig() {
+  return requestClient.get<Session.LoginStrategyConfig>(
+    '/system/session/strategy/config',
+  );
+}
+
+/**
+ * 更新登录策略配置
+ */
+function updateLoginStrategyConfig(
+  data: Session.UpdateLoginStrategyConfigParams,
+) {
+  return requestClient.put<boolean>('/system/session/strategy/config', data);
+}
+
 export {
   batchDeleteSessions,
   cleanupExpiredSessions,
   deleteSessionById,
   forceLogout,
+  getLoginStrategyConfig,
   getOnlineUsers,
   getSessionStatistics,
   getUserDevices,
   querySessionPage,
   refreshToken,
   revokeSession,
+  updateLoginStrategyConfig,
   updateSessionStatus,
 };
