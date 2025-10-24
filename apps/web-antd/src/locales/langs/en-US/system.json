@@ -475,5 +475,26 @@
     "isSystemYes": "Yes",
     "isSystemNo": "No",
     "remark": "Remark"
+  },
+  "region": {
+    "title": "Region Management",
+    "list": "Region List",
+    "name": "Region",
+    "code": "Code",
+    "level": "Level",
+    "parentId": "Parent ID",
+    "type": "Type",
+    "createTime": "Create Time",
+    "updateTime": "Update Time",
+    "operation": "Operation",
+    "titlePlaceholder": "Please enter title",
+    "codePlaceholder": "Please enter code",
+    "levelPlaceholder": "Please enter level",
+    "parentIdPlaceholder": "Please enter parent ID",
+    "typePlaceholder": "Please select type",
+    "typeProvince": "Province",
+    "typeCity": "City",
+    "typeArea": "Area",
+    "typeStreet": "Street"
   }
 }

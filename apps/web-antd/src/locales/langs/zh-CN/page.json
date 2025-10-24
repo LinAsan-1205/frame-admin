@@ -23,7 +23,8 @@
     "session": "会话管理",
     "generator": "代码生成",
     "post": "岗位管理",
-    "param": "系统参数"
+    "param": "系统参数",
+    "region": "行政区域"
   },
   "log": {
     "title": "日志管理",

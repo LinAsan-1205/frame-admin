@@ -476,5 +476,26 @@
     "isSystemYes": "是",
     "isSystemNo": "否",
     "remark": "备注"
+  },
+  "region": {
+    "title": "区域名称",
+    "list": "行政区域列表",
+    "name": "行政区域",
+    "code": "行政区划代码",
+    "level": "层级",
+    "parentId": "父级ID",
+    "type": "类型",
+    "createTime": "创建时间",
+    "updateTime": "更新时间",
+    "operation": "操作",
+    "titlePlaceholder": "请输入区域名称",
+    "codePlaceholder": "请输入行政区划代码",
+    "levelPlaceholder": "请输入层级",
+    "parentIdPlaceholder": "请输入父级ID",
+    "typePlaceholder": "请选择类型",
+    "typeProvince": "省",
+    "typeCity": "市",
+    "typeArea": "区县",
+    "typeStreet": "街道"
   }
 }
