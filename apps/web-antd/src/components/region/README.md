@@ -16,7 +16,7 @@
 ## Props
 
 | 参数 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
+| --- | --- | --- | --- |
 | `v-model` | 绑定值 | `number \| number[] \| undefined` | - |
 | `maxLevel` | 最大层级（1=省, 2=市, 3=区县, 4=街道） | `number` | `4` |
 | `placeholder` | 占位符 | `string` | `'请选择父级区域'` |
@@ -73,10 +73,7 @@ const regionPath = ref<number[]>([]);
 </script>
 
 <template>
-  <RegionCascader
-    v-model="regionPath"
-    value-type="path"
-  />
+  <RegionCascader v-model="regionPath" value-type="path" />
 </template>
 ```
 
@@ -121,6 +118,7 @@ const parentRegionId = ref<number>();
 在 `form-schemas.ts` 中，你可以移除原有的 `ApiSelect` 配置，然后在表单组件中单独使用 `RegionCascader`：
 
 **修改前：**
+
 ```typescript
 {
   component: 'ApiSelect',
@@ -137,6 +135,7 @@ const parentRegionId = ref<number>();
 ```
 
 **修改后（在 form-schemas.ts 中移除该字段，在组件中单独使用）：**
+
 ```vue
 <script setup lang="ts">
 import { RegionCascader } from '#/components/region';
@@ -210,6 +209,7 @@ async function onSubmit() {
 ### 场景 4：支持任意层级选择
 
 组件默认支持在任意层级停止选择，用户可以：
+
 - 只选择省级（如："北京市"）
 - 选择到市级（如："北京市 / 朝阳区"）
 - 选择到区县级（如："北京市 / 朝阳区 / 建国门街道"）
@@ -277,9 +277,11 @@ watch(selectedRegionId, (newId) => {
 ## API 依赖
 
 组件依赖以下 API：
+
 - `getRegionList(params)` - 查询行政区域列表
 
 确保后端接口支持以下参数：
+
 - `level` - 查询指定层级
 - `parentId` - 查询指定父级下的子级
 - `limit` - 限制返回数量
