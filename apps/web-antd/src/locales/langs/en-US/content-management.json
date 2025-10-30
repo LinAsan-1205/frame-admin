@@ -1,0 +1,42 @@
+{
+  "category": {
+    "title": "Product Category",
+    "name": "Category Name",
+    "namePlaceholder": "Please enter category name",
+    "nameSearch": "Search by category name",
+    "parentId": "Parent Category",
+    "parentIdPlaceholder": "Select parent category (optional for root)",
+    "sort": "Sort Order",
+    "sortPlaceholder": "Please enter sort order",
+    "remark": "Remark",
+    "remarkPlaceholder": "Please enter remark"
+  },
+  "content": {
+    "title": "Product Content",
+    "id": "Content ID",
+    "titleField": "Title",
+    "title": "Product Title",
+    "titlePlaceholder": "Please enter product title",
+    "titleSearch": "Search by title",
+    "categoryId": "Category",
+    "categoryIdPlaceholder": "Please select category",
+    "categoryIdSearch": "Select category",
+    "coverImage": "Cover Image",
+    "coverImagePlaceholder": "Please enter cover image URL",
+    "summary": "Summary",
+    "summaryPlaceholder": "Please enter summary",
+    "content": "Content",
+    "contentPlaceholder": "Please enter content",
+    "type": "Content Type",
+    "typePlaceholder": "Please select content type",
+    "typeSearch": "Select type",
+    "sort": "Sort Order",
+    "sortPlaceholder": "Please enter sort order",
+    "publishedAt": "Published At",
+    "publishedAtPlaceholder": "Please select publish time",
+    "status": "Status",
+    "statusPlaceholder": "Please select status",
+    "statusSearch": "Select status"
+  }
+}
+

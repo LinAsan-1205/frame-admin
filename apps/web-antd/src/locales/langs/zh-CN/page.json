@@ -54,5 +54,10 @@
   "package": {
     "title": "套餐管理",
     "list": "套餐列表"
+  },
+  "content-management": {
+    "title": "内容管理",
+    "productCategory": "产品分类",
+    "productContent": "产品内容"
   }
 }

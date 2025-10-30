@@ -42,5 +42,10 @@
     "log": {
       "title": "Execution Log"
     }
+  },
+  "content-management": {
+    "title": "Content Management",
+    "productCategory": "Product Category",
+    "productContent": "Product Content"
   }
 }

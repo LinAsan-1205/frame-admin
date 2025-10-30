@@ -19,5 +19,13 @@
   "deleteSuccess": "删除成功",
   "cancel": "取消",
   "create": "创建",
-  "remark": "备注"
+  "remark": "备注",
+  "confirm": "确认",
+  "search": "搜索",
+  "reset": "重置",
+  "addSuccess": "新增成功",
+  "updateSuccess": "更新成功",
+  "batchDelete": "批量删除",
+  "selectAtLeastOne": "请至少选择一条数据",
+  "confirmDeleteContent": "确认删除选中的 {count} 条数据吗？"
 }

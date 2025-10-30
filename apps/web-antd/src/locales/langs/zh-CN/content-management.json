@@ -1,0 +1,40 @@
+{
+  "category": {
+    "title": "产品分类",
+    "name": "分类名称",
+    "namePlaceholder": "请输入分类名称",
+    "nameSearch": "请输入分类名称搜索",
+    "parentId": "上级分类",
+    "parentIdPlaceholder": "请选择上级分类（根节点可不选）",
+    "sort": "排序号",
+    "sortPlaceholder": "请输入排序号",
+    "remark": "备注",
+    "remarkPlaceholder": "请输入备注信息"
+  },
+  "content": {
+    "id": "内容ID",
+    "titleField": "标题",
+    "title": "产品标题",
+    "titlePlaceholder": "请输入产品标题",
+    "titleSearch": "请输入标题搜索",
+    "categoryId": "所属分类",
+    "categoryIdPlaceholder": "请选择所属分类",
+    "categoryIdSearch": "请选择分类",
+    "coverImage": "产品主图",
+    "coverImagePlaceholder": "请输入主图URL",
+    "summary": "摘要",
+    "summaryPlaceholder": "请输入内容摘要",
+    "content": "内容正文",
+    "contentPlaceholder": "请输入内容正文",
+    "type": "内容类型",
+    "typePlaceholder": "请选择内容类型",
+    "typeSearch": "请选择类型",
+    "sort": "排序号",
+    "sortPlaceholder": "请输入排序号",
+    "publishedAt": "发布时间",
+    "publishedAtPlaceholder": "请选择发布时间",
+    "status": "状态",
+    "statusPlaceholder": "请选择状态",
+    "statusSearch": "请选择状态"
+  }
+}
