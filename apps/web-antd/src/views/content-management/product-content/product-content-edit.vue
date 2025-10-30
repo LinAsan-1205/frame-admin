@@ -6,6 +6,7 @@ import { Page } from '@vben/common-ui';
 import { ArrowLeft } from '@vben/icons';
 
 import { Button, message } from 'ant-design-vue';
+import dayjs from 'dayjs';
 
 import { useVbenForm } from '#/adapter/form';
 import {
@@ -40,6 +41,7 @@ const [Form, formApi] = useVbenForm({
       class: 'w-full',
     },
   },
+  handleSubmit,
   schema: useFormSchema(),
   wrapperClass: 'grid-cols-1',
 });
@@ -53,7 +55,10 @@ async function loadData() {
   loading.value = true;
   try {
     const data = await getProductContentById(contentId.value);
-    await formApi.setValues(data);
+    await formApi.setValues({
+      ...data,
+      publishedAt: dayjs(data.publishedAt),
+    });
   } catch (error) {
     message.error('加载数据失败');
     console.error('Load data error:', error);
