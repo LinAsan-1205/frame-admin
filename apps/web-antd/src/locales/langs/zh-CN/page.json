@@ -60,6 +60,9 @@
     "productCategory": "产品分类",
     "productContent": "产品内容",
     "productContentAdd": "新增产品内容",
-    "productContentEdit": "编辑产品内容"
+    "productContentEdit": "编辑产品内容",
+    "joinUs": "招聘管理",
+    "joinUsAdd": "新增招聘职位",
+    "joinUsEdit": "编辑招聘职位"
   }
 }

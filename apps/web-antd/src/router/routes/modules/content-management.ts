@@ -58,6 +58,38 @@ const routes: RouteRecordRaw[] = [
           title: $t('page.content-management.productContentEdit'),
         },
       },
+      {
+        name: 'JoinUs',
+        path: '/content-management/join-us',
+        component: () =>
+          import('#/views/content-management/join-us/index.vue'),
+        meta: {
+          icon: 'lucide:users',
+          title: $t('page.content-management.joinUs'),
+        },
+      },
+      {
+        name: 'JoinUsAdd',
+        path: '/content-management/join-us/add',
+        component: () =>
+          import('#/views/content-management/join-us/join-us-edit.vue'),
+        meta: {
+          hideInMenu: true,
+          icon: 'lucide:user-plus',
+          title: $t('page.content-management.joinUsAdd'),
+        },
+      },
+      {
+        name: 'JoinUsEdit',
+        path: '/content-management/join-us/edit/:id',
+        component: () =>
+          import('#/views/content-management/join-us/join-us-edit.vue'),
+        meta: {
+          hideInMenu: true,
+          icon: 'lucide:user-cog',
+          title: $t('page.content-management.joinUsEdit'),
+        },
+      },
     ],
   },
 ];

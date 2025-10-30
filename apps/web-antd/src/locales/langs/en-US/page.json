@@ -48,6 +48,9 @@
     "productCategory": "Product Category",
     "productContent": "Product Content",
     "productContentAdd": "Add Product Content",
-    "productContentEdit": "Edit Product Content"
+    "productContentEdit": "Edit Product Content",
+    "joinUs": "Join Us",
+    "joinUsAdd": "Add Job Position",
+    "joinUsEdit": "Edit Job Position"
   }
 }
