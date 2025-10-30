@@ -3,9 +3,7 @@ import type { ProductContent } from '#/api/content-management/product-content';
 
 import {
   ProductContentStatus,
-  ProductContentStatusLabels,
   ProductContentType,
-  ProductContentTypeLabels,
 } from '#/api/content-management/product-content';
 import { $t } from '#/locales';
 
@@ -41,10 +39,7 @@ export function useColumns<T = ProductContent.View>(
     {
       cellRender: {
         name: 'CellTag',
-        options: Object.values(ProductContentType).map((value) => ({
-          label: ProductContentTypeLabels[value],
-          value,
-        })),
+        options: ProductContentType.toOriginItems(),
       },
       field: 'type',
       title: $t('content-management.content.type'),
@@ -66,10 +61,7 @@ export function useColumns<T = ProductContent.View>(
     {
       cellRender: {
         name: 'CellTag',
-        options: Object.values(ProductContentStatus).map((value) => ({
-          label: ProductContentStatusLabels[value],
-          value,
-        })),
+        options: ProductContentStatus.toOriginItems(),
       },
       field: 'status',
       title: $t('content-management.content.status'),

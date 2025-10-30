@@ -35,6 +35,10 @@
     "publishedAtPlaceholder": "请选择发布时间",
     "status": "状态",
     "statusPlaceholder": "请选择状态",
-    "statusSearch": "请选择状态"
+    "statusSearch": "请选择状态",
+    "addTitle": "新增产品内容",
+    "addDescription": "填写产品内容信息",
+    "editTitle": "编辑产品内容",
+    "editDescription": "修改产品内容信息"
   }
 }

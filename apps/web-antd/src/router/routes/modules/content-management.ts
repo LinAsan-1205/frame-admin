@@ -32,6 +32,32 @@ const routes: RouteRecordRaw[] = [
           title: $t('page.content-management.productContent'),
         },
       },
+      {
+        name: 'ProductContentAdd',
+        path: '/content-management/product-content/add',
+        component: () =>
+          import(
+            '#/views/content-management/product-content/product-content-edit.vue'
+          ),
+        meta: {
+          hideInMenu: true,
+          icon: 'lucide:file-plus',
+          title: $t('page.content-management.productContentAdd'),
+        },
+      },
+      {
+        name: 'ProductContentEdit',
+        path: '/content-management/product-content/edit/:id',
+        component: () =>
+          import(
+            '#/views/content-management/product-content/product-content-edit.vue'
+          ),
+        meta: {
+          hideInMenu: true,
+          icon: 'lucide:file-edit',
+          title: $t('page.content-management.productContentEdit'),
+        },
+      },
     ],
   },
 ];

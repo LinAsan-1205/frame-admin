@@ -3,9 +3,7 @@ import type { VbenFormProps } from '#/adapter/form';
 import { getProductCategoryTree } from '#/api/content-management/product-category';
 import {
   ProductContentStatus,
-  ProductContentStatusLabels,
   ProductContentType,
-  ProductContentTypeLabels,
 } from '#/api/content-management/product-content';
 import { $t } from '#/locales';
 
@@ -43,10 +41,7 @@ export function useSearchFormOptions(): VbenFormProps {
         component: 'Select',
         componentProps: {
           allowClear: true,
-          options: Object.values(ProductContentType).map((value) => ({
-            label: ProductContentTypeLabels[value],
-            value,
-          })),
+          options: ProductContentType.toOriginItems(),
           placeholder: $t('content-management.content.typeSearch'),
         },
         fieldName: 'type',
@@ -56,10 +51,7 @@ export function useSearchFormOptions(): VbenFormProps {
         component: 'Select',
         componentProps: {
           allowClear: true,
-          options: Object.values(ProductContentStatus).map((value) => ({
-            label: ProductContentStatusLabels[value],
-            value,
-          })),
+          options: ProductContentStatus.toOriginItems(),
           placeholder: $t('content-management.content.statusSearch'),
         },
         fieldName: 'status',

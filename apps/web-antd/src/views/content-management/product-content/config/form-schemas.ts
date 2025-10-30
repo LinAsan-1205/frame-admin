@@ -1,12 +1,16 @@
 import type { VbenFormSchema } from '#/adapter/form';
 
+import { markRaw } from 'vue';
+
+import dayjs from 'dayjs';
+
 import { getProductCategoryTree } from '#/api/content-management/product-category';
 import {
   ProductContentStatus,
-  ProductContentStatusLabels,
   ProductContentType,
-  ProductContentTypeLabels,
 } from '#/api/content-management/product-content';
+import { RichTextEditor } from '#/components/editor';
+import { ImageUpload } from '#/components/upload';
 import { $t } from '#/locales';
 
 /**
@@ -42,19 +46,19 @@ export function useFormSchema(): VbenFormSchema[] {
     {
       component: 'Select',
       componentProps: {
-        options: Object.values(ProductContentType).map((value) => ({
-          label: ProductContentTypeLabels[value],
-          value,
-        })),
+        options: ProductContentType.toOriginItems(),
         placeholder: $t('content-management.content.typePlaceholder'),
       },
+      defaultValue: ProductContentType.Article,
       fieldName: 'type',
       label: $t('content-management.content.type'),
     },
     {
-      component: 'Input',
+      component: markRaw(ImageUpload),
       componentProps: {
-        placeholder: $t('content-management.content.coverImagePlaceholder'),
+        accept: 'image/*',
+        buttonText: '上传产品主图',
+        maxSize: 5,
       },
       fieldName: 'coverImage',
       label: $t('content-management.content.coverImage'),
@@ -69,10 +73,11 @@ export function useFormSchema(): VbenFormSchema[] {
       label: $t('content-management.content.summary'),
     },
     {
-      component: 'Textarea',
+      component: markRaw(RichTextEditor),
       componentProps: {
+        minHeight: '300px',
         placeholder: $t('content-management.content.contentPlaceholder'),
-        rows: 6,
+        toolbar: 'full',
       },
       fieldName: 'content',
       label: $t('content-management.content.content'),
@@ -84,6 +89,7 @@ export function useFormSchema(): VbenFormSchema[] {
         placeholder: $t('content-management.content.sortPlaceholder'),
         style: { width: '100%' },
       },
+      defaultValue: 1,
       fieldName: 'sort',
       label: $t('content-management.content.sort'),
     },
@@ -95,17 +101,16 @@ export function useFormSchema(): VbenFormSchema[] {
         showTime: true,
         style: { width: '100%' },
       },
+      defaultValue: dayjs(),
       fieldName: 'publishedAt',
       label: $t('content-management.content.publishedAt'),
     },
     {
       component: 'RadioGroup',
       componentProps: {
-        options: Object.values(ProductContentStatus).map((value) => ({
-          label: ProductContentStatusLabels[value],
-          value,
-        })),
+        options: ProductContentStatus.toOriginItems(),
       },
+      defaultValue: ProductContentStatus.Show,
       fieldName: 'status',
       label: $t('content-management.content.status'),
     },

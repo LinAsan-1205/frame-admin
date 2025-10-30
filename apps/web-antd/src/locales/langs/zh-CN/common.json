@@ -27,5 +27,7 @@
   "updateSuccess": "更新成功",
   "batchDelete": "批量删除",
   "selectAtLeastOne": "请至少选择一条数据",
-  "confirmDeleteContent": "确认删除选中的 {count} 条数据吗？"
+  "confirmDeleteContent": "确认删除选中的 {count} 条数据吗？",
+  "back": "返回",
+  "save": "保存"
 }

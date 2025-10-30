@@ -58,6 +58,8 @@
   "content-management": {
     "title": "内容管理",
     "productCategory": "产品分类",
-    "productContent": "产品内容"
+    "productContent": "产品内容",
+    "productContentAdd": "新增产品内容",
+    "productContentEdit": "编辑产品内容"
   }
 }

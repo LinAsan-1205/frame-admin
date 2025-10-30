@@ -36,7 +36,11 @@
     "publishedAtPlaceholder": "Please select publish time",
     "status": "Status",
     "statusPlaceholder": "Please select status",
-    "statusSearch": "Select status"
+    "statusSearch": "Select status",
+    "addTitle": "Add Product Content",
+    "addDescription": "Fill in product content information",
+    "editTitle": "Edit Product Content",
+    "editDescription": "Modify product content information"
   }
 }
 

@@ -27,5 +27,7 @@
   "updateSuccess": "Update Success",
   "batchDelete": "Batch Delete",
   "selectAtLeastOne": "Please select at least one item",
-  "confirmDeleteContent": "Are you sure to delete the selected {count} item(s)?"
+  "confirmDeleteContent": "Are you sure to delete the selected {count} item(s)?",
+  "back": "Back",
+  "save": "Save"
 }

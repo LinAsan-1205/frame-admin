@@ -46,6 +46,8 @@
   "content-management": {
     "title": "Content Management",
     "productCategory": "Product Category",
-    "productContent": "Product Content"
+    "productContent": "Product Content",
+    "productContentAdd": "Add Product Content",
+    "productContentEdit": "Edit Product Content"
   }
 }

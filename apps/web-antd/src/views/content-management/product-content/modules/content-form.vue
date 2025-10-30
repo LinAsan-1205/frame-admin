@@ -5,6 +5,8 @@ import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
+import dayjs from 'dayjs';
+
 import { useVbenForm } from '#/adapter/form';
 import {
   addProductContent,
@@ -52,10 +54,10 @@ const [Modal, modalApi] = useVbenModal({
       if (data && data.id) {
         formData.value = data;
         id.value = data.id;
-        // 处理关联对象，提取 categoryId
         const formValues = {
           ...data,
           categoryId: data.category?.id || data.categoryId,
+          publishedAt: dayjs(data.publishedAt),
         };
         formApi.setValues(formValues);
       } else {
