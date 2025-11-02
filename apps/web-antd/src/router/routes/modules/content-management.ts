@@ -61,8 +61,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: 'JoinUs',
         path: '/content-management/join-us',
-        component: () =>
-          import('#/views/content-management/join-us/index.vue'),
+        component: () => import('#/views/content-management/join-us/index.vue'),
         meta: {
           icon: 'lucide:users',
           title: $t('page.content-management.joinUs'),
@@ -88,6 +87,16 @@ const routes: RouteRecordRaw[] = [
           hideInMenu: true,
           icon: 'lucide:user-cog',
           title: $t('page.content-management.joinUsEdit'),
+        },
+      },
+      {
+        name: 'ContactUs',
+        path: '/content-management/contact-us',
+        component: () =>
+          import('#/views/content-management/contact-us/index.vue'),
+        meta: {
+          icon: 'lucide:mail',
+          title: $t('page.content-management.contactUs'),
         },
       },
     ],

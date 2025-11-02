@@ -84,6 +84,29 @@
     "addDescription": "Fill in job position information",
     "editTitle": "Edit Job Position",
     "editDescription": "Modify job position information"
+  },
+  "contactUs": {
+    "title": "Contact Us",
+    "detail": "Contact Details",
+    "name": "Contact Name",
+    "namePlaceholder": "Please enter contact name",
+    "nameSearch": "Search by name",
+    "email": "Contact Email",
+    "emailPlaceholder": "Please enter contact email",
+    "emailSearch": "Search by email",
+    "phone": "Phone Number",
+    "phonePlaceholder": "Please enter phone number",
+    "type": "Contact Type",
+    "typePlaceholder": "Please select contact type",
+    "typeSearch": "Select type",
+    "subject": "Subject",
+    "subjectPlaceholder": "Please enter subject",
+    "subjectSearch": "Search by subject",
+    "message": "Message",
+    "messagePlaceholder": "Please enter message",
+    "ipAddress": "IP Address",
+    "userAgent": "User Agent",
+    "createTime": "Submitted At"
   }
 }
 

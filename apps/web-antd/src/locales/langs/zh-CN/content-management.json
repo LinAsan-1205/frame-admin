@@ -83,5 +83,28 @@
     "addDescription": "填写招聘职位信息",
     "editTitle": "编辑招聘职位",
     "editDescription": "修改招聘职位信息"
+  },
+  "contactUs": {
+    "title": "联系我们",
+    "detail": "联系详情",
+    "name": "联系人姓名",
+    "namePlaceholder": "请输入联系人姓名",
+    "nameSearch": "请输入姓名搜索",
+    "email": "联系人邮箱",
+    "emailPlaceholder": "请输入联系人邮箱",
+    "emailSearch": "请输入邮箱搜索",
+    "phone": "联系电话",
+    "phonePlaceholder": "请输入联系电话",
+    "type": "联系类型",
+    "typePlaceholder": "请选择联系类型",
+    "typeSearch": "请选择类型",
+    "subject": "主题",
+    "subjectPlaceholder": "请输入主题",
+    "subjectSearch": "请输入主题搜索",
+    "message": "消息内容",
+    "messagePlaceholder": "请输入消息内容",
+    "ipAddress": "IP地址",
+    "userAgent": "用户代理",
+    "createTime": "提交时间"
   }
 }
