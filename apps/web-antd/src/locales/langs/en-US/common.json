@@ -10,5 +10,18 @@
   "download": "Download",
   "view": "View",
   "delete": "Delete",
-  "filter": "Filter"
+  "filter": "Filter",
+  "tip": "Tip",
+  "confirmDelete": "Confirm Delete",
+  "deleteSuccess": "Delete Success",
+  "cancel": "Cancel",
+  "create": "Create",
+  "remark": "Remark",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "switchStatus": "Switch Status",
+  "confirmSwitchStatus": "Do you want to switch the status of {0} to 【{1}】?",
+  "executing": "Executing: {0}",
+  "executeSuccess": "{0} executed successfully",
+  "cancelled": "Cancelled"
 }

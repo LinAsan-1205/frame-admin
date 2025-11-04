@@ -19,5 +19,12 @@
   "deleteSuccess": "删除成功",
   "cancel": "取消",
   "create": "创建",
-  "remark": "备注"
+  "remark": "备注",
+  "enabled": "启用",
+  "disabled": "禁用",
+  "switchStatus": "切换状态",
+  "confirmSwitchStatus": "你要将{0}的状态切换为【{1}】吗？",
+  "executing": "正在执行：{0}",
+  "executeSuccess": "{0}执行成功",
+  "cancelled": "已取消"
 }

@@ -102,7 +102,7 @@ function confirmModal(content: string, title: string) {
     Modal.confirm({
       content,
       onCancel() {
-        reject(new Error('已取消'));
+        reject(new Error($t('common.cancelled')));
       },
       onOk() {
         resolve(true);
@@ -121,14 +121,14 @@ function confirmModal(content: string, title: string) {
 async function onStatusChange(newStatus: string, taskView: Task.View) {
   // 状态映射
   const statusMap: Recordable<string> = {
-    1: '禁用',
-    0: '启用',
+    1: $t('common.disabled'),
+    0: $t('common.enabled'),
   };
   try {
     const statusText = statusMap[newStatus.toString()];
     await confirmModal(
-      `你要将${taskView.name}的状态切换为 【${statusText}】 吗？`,
-      `切换状态`,
+      $t('common.confirmSwitchStatus', [taskView.name, statusText]),
+      $t('common.switchStatus'),
     );
     await setTaskStatus(taskView.id, newStatus);
     return true;
@@ -176,8 +176,8 @@ async function onDeleteTask(taskView: Task.View) {
  * @param taskView 任务数据
  */
 async function onExecuteTask(taskView: Task.View) {
-  const executingContent = `正在执行任务：${taskView.name}`;
-  const executeSuccessContent = `任务 ${taskView.name} 执行成功`;
+  const executingContent = $t('common.executing', [taskView.name]);
+  const executeSuccessContent = $t('common.executeSuccess', [taskView.name]);
   const hideLoading = message.loading({
     content: executingContent,
     duration: 0,
