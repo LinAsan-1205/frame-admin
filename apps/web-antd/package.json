@@ -48,6 +48,7 @@
     "@vben/utils": "workspace:*",
     "@vueuse/core": "catalog:",
     "ant-design-vue": "catalog:",
+    "axios": "catalog:",
     "dayjs": "catalog:",
     "enum-plus": "catalog:",
     "es-toolkit": "catalog:",
