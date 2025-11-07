@@ -51,7 +51,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
   const socket = ref<null | Socket>(null);
 
   const heartbeatInterval = ref<NodeJS.Timeout | null>(null);
-  const HEARTBEAT_INTERVAL = 20_000; // 20秒心跳间隔（小于后端30秒检查间隔，留出延迟容错空间）
+  const HEARTBEAT_INTERVAL = 60_000; // 60秒心跳间隔（后端超时3分钟）
 
   // 重连配置（新增）
   const reconnectAttempts = ref(0);
