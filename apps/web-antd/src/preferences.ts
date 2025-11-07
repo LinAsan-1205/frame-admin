@@ -42,4 +42,7 @@ export const overridesPreferences = defineOverridesPreferences({
     companySiteLink: 'https://www.linasan.cn',
     date: '2025',
   },
+  widget: {
+    timezone: false,
+  },
 });
