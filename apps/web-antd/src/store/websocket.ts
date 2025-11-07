@@ -51,7 +51,7 @@ export const useWebSocketStore = defineStore('websocket', () => {
   const socket = ref<null | Socket>(null);
 
   const heartbeatInterval = ref<NodeJS.Timeout | null>(null);
-  const HEARTBEAT_INTERVAL = 30_000; // 30秒心跳间隔
+  const HEARTBEAT_INTERVAL = 20_000; // 20秒心跳间隔（小于后端30秒检查间隔，留出延迟容错空间）
 
   // 重连配置（新增）
   const reconnectAttempts = ref(0);
@@ -187,8 +187,6 @@ export const useWebSocketStore = defineStore('websocket', () => {
     sessionChangeCount.value++;
     lastSessionChange.value = new Date(timestamp);
 
-    console.log('[WebSocket] 会话状态变化:', type, payload);
-
     // 根据不同的会话状态类型显示通知
     switch (type) {
       case 'session.created': {
@@ -251,14 +249,6 @@ export const useWebSocketStore = defineStore('websocket', () => {
     const { userId, deviceId, isOnline, socketCount, allDevices, timestamp } =
       payload;
 
-    console.log('[WebSocket] 会话状态查询响应:', {
-      userId,
-      deviceId,
-      isOnline,
-      socketCount,
-      devicesCount: allDevices?.length,
-    });
-
     // 更新会话状态列表
     if (allDevices && Array.isArray(allDevices)) {
       sessionStates.value = allDevices;
@@ -289,12 +279,6 @@ export const useWebSocketStore = defineStore('websocket', () => {
         description: message || $t('websocket.error.unknown'),
       });
     }
-
-    console.log('[WebSocket] 强制登出响应:', {
-      success,
-      targetDeviceId,
-      timestamp,
-    });
   }
 
   // 处理心跳超时（新增）
@@ -459,8 +443,6 @@ export const useWebSocketStore = defineStore('websocket', () => {
       reconnectAttempts.value = 0; // 重置重连计数
       startHeartbeat();
 
-      console.log($t('websocket.connection.connected'));
-
       // 连接成功后查询会话状态（延迟确保状态已更新）
       setTimeout(() => {
         if (socket.value?.connected) {
@@ -472,7 +454,6 @@ export const useWebSocketStore = defineStore('websocket', () => {
     // 重连尝试事件
     socket.value.on('reconnect_attempt', (attempt) => {
       reconnectAttempts.value = attempt;
-      console.log($t('websocket.connection.reconnecting', { attempt }));
     });
 
     // 重连失败事件
@@ -519,8 +500,6 @@ export const useWebSocketStore = defineStore('websocket', () => {
       isConnected.value = false;
       isConnecting.value = false;
       stopHeartbeat();
-
-      console.log($t('websocket.connection.disconnected', { reason }));
 
       // 如果是服务器主动断开或传输关闭，尝试重连
       if (reason === 'io server disconnect' || reason === 'transport close') {
