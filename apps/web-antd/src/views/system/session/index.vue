@@ -227,12 +227,6 @@ async function onForceLogout(sessionView: Session.View) {
     hideLoading();
   });
 
-  // 通过 WebSocket 通知被强制下线的用户
-  websocketStore.sendMessage('force_user_offline', {
-    userId: sessionView.userId,
-    deviceId: sessionView.deviceId,
-  });
-
   onRefreshSessionList();
 }
 
