@@ -31,7 +31,7 @@ interface ParsedSseMessage {
   payload: any;
 }
 
-export const useWebSocketStore = defineStore('websocket', () => {
+export const useRealtimeStore = defineStore('realtime', () => {
   const accessStore = useAccessStore();
   const userStore = useUserStore();
   const authStore = useAuthStore();
@@ -526,7 +526,7 @@ function createSseUrl(path: string): string {
   }
 }
 
-function parseSseMessage(event: MessageEvent<string>): ParsedSseMessage | null {
+function parseSseMessage(event: MessageEvent<string>): null | ParsedSseMessage {
   const rawText = (event?.data ?? '').trim();
   if (!rawText) {
     return null;

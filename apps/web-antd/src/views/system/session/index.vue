@@ -20,7 +20,7 @@ import {
   querySessionPage,
 } from '#/api/system/session';
 import { $t } from '#/locales';
-import { useWebSocketStore } from '#/store/websocket';
+import { useRealtimeStore } from '#/store/realtime';
 
 import { useSearchFormOptions } from './config/search-config';
 import { useColumns } from './config/table-columns';
@@ -28,7 +28,7 @@ import Detail from './modules/detail.vue';
 import LoginStrategyConfigForm from './modules/login-strategy-config-form.vue';
 
 const searchFormOptions = useSearchFormOptions();
-const websocketStore = useWebSocketStore();
+const realtimeStore = useRealtimeStore();
 const userStore = useUserStore();
 
 // 轮询配置
@@ -37,7 +37,7 @@ const POLLING_INTERVAL_HIDDEN = 30_000; // 页面隐藏时30秒轮询
 const pollingTimer = ref<NodeJS.Timeout | null>(null);
 
 // WebSocket 会话变更计数
-const lastChangeCount = computed(() => websocketStore.sessionChangeCount);
+const lastChangeCount = computed(() => realtimeStore.sessionChangeCount);
 let previousChangeCount = 0;
 
 const [SessionGrid, sessionGridApi] = useVbenVxeGrid({
