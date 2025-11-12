@@ -72,10 +72,7 @@ export function useFormSchema(
         },
         triggerFields: ['type'],
       },
-      rules: z
-        .string()
-        .nonempty($t('ui.formRules.required'))
-        .regex(/^[\w/]+$/, $t('ui.formRules.invalid')),
+      rules: z.string().nonempty($t('ui.formRules.required')),
     },
 
     {
