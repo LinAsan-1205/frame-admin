@@ -131,7 +131,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
       }
 
       default: {
-        console.warn($t('system.websocket.unhandledMessage'), type, payload);
+        console.warn($t('system.realtime.unhandledMessage'), type, payload);
       }
     }
   }
@@ -139,7 +139,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
   function handleUserStatusChange(payload: any) {
     const { userId, status, timestamp } = payload ?? {};
     console.warn(
-      $t('system.websocket.userStatusChange', { userId, status }),
+      $t('system.realtime.userStatusChange', { userId, status }),
       timestamp,
     );
 
@@ -152,7 +152,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
     const { users, count, timestamp } = payload ?? {};
     onlineUsers.value = users || [];
     onlineUserCount.value = count || 0;
-    console.warn($t('system.websocket.onlineUsersUpdate'), {
+    console.warn($t('system.realtime.onlineUsersUpdate'), {
       count,
       timestamp,
     });
@@ -161,7 +161,7 @@ export const useRealtimeStore = defineStore('realtime', () => {
   function handleSessionChange(payload: any) {
     sessionChangeCount.value++;
     lastSessionChange.value = new Date();
-    console.warn($t('system.websocket.sessionChange'), payload);
+    console.warn($t('system.realtime.sessionChange'), payload);
   }
 
   function handleSessionStateChanged(payload: any) {
@@ -174,31 +174,31 @@ export const useRealtimeStore = defineStore('realtime', () => {
     switch (type) {
       case 'session.created': {
         notification.info({
-          message: $t('websocket.session.created'),
-          description: $t('websocket.notification.newMessage'),
+          message: $t('realtime.session.created'),
+          description: $t('realtime.notification.newMessage'),
         });
         break;
       }
 
       case 'session.expired': {
         notification.warning({
-          message: $t('websocket.session.expired'),
-          description: $t('websocket.session.expired'),
+          message: $t('realtime.session.expired'),
+          description: $t('realtime.session.expired'),
         });
         break;
       }
 
       case 'session.kicked': {
         notification.warning({
-          message: $t('websocket.session.kicked'),
-          description: payload?.reason || $t('websocket.session.forceLogout'),
+          message: $t('realtime.session.kicked'),
+          description: payload?.reason || $t('realtime.session.forceLogout'),
           duration: 0,
         });
         break;
       }
 
       case 'session.offline': {
-        console.warn($t('websocket.session.offline'), {
+        console.warn($t('realtime.session.offline'), {
           sessionId,
           deviceId,
           reason: payload?.reason,
@@ -207,12 +207,12 @@ export const useRealtimeStore = defineStore('realtime', () => {
       }
 
       case 'session.online': {
-        console.warn($t('websocket.session.online'), { sessionId, deviceId });
+        console.warn($t('realtime.session.online'), { sessionId, deviceId });
         break;
       }
 
       default: {
-        console.warn($t('websocket.error.unknown'), type);
+        console.warn($t('realtime.error.unknown'), type);
       }
     }
 
@@ -249,13 +249,13 @@ export const useRealtimeStore = defineStore('realtime', () => {
 
     if (success) {
       notification.success({
-        message: $t('websocket.notification.title.success'),
-        description: message || $t('websocket.session.forceLogout'),
+        message: $t('realtime.notification.title.success'),
+        description: message || $t('realtime.session.forceLogout'),
       });
     } else {
       notification.error({
-        message: $t('websocket.error.unknown'),
-        description: message || $t('websocket.error.unknown'),
+        message: $t('realtime.error.unknown'),
+        description: message || $t('realtime.error.unknown'),
       });
     }
 
@@ -268,8 +268,8 @@ export const useRealtimeStore = defineStore('realtime', () => {
     const { message, timeout, timestamp } = payload ?? {};
 
     notification.error({
-      message: $t('websocket.heartbeat.timeout'),
-      description: message || $t('websocket.heartbeat.timeout'),
+      message: $t('realtime.heartbeat.timeout'),
+      description: message || $t('realtime.heartbeat.timeout'),
       duration: 5,
     });
 
@@ -280,8 +280,8 @@ export const useRealtimeStore = defineStore('realtime', () => {
     const { oldStrategy, newStrategy, updatedBy, timestamp } = payload ?? {};
 
     notification.info({
-      message: $t('websocket.strategy.updated'),
-      description: $t('websocket.strategy.changed'),
+      message: $t('realtime.strategy.updated'),
+      description: $t('realtime.strategy.changed'),
       duration: 10,
     });
 
@@ -297,8 +297,8 @@ export const useRealtimeStore = defineStore('realtime', () => {
     const { message, reason } = payload ?? {};
 
     notification.warning({
-      message: message || $t('system.websocket.forceLogoutTitle'),
-      description: reason || $t('system.websocket.forceLogoutDescription'),
+      message: message || $t('system.realtime.forceLogoutTitle'),
+      description: reason || $t('system.realtime.forceLogoutDescription'),
       duration: 0,
     });
 
@@ -308,14 +308,14 @@ export const useRealtimeStore = defineStore('realtime', () => {
 
   function handleSystemMessage(payload: any) {
     notification.info({
-      message: payload?.message || $t('system.websocket.systemMessage'),
+      message: payload?.message || $t('system.realtime.systemMessage'),
       description: payload?.content,
     });
   }
 
   function handleSystemBroadcast(payload: any) {
     notification.info({
-      message: payload?.message || $t('system.websocket.systemBroadcast'),
+      message: payload?.message || $t('system.realtime.systemBroadcast'),
       description: payload?.content,
     });
   }
@@ -323,14 +323,14 @@ export const useRealtimeStore = defineStore('realtime', () => {
   function handleErrorMessage(payload: any) {
     const { message, error } = payload ?? {};
     notification.error({
-      message: message || $t('system.websocket.error'),
+      message: message || $t('system.realtime.error'),
       description: error,
     });
   }
 
   function connect() {
     if (!accessStore.accessToken) {
-      connectionError.value = $t('system.websocket.loginRequired');
+      connectionError.value = $t('system.realtime.loginRequired');
       return;
     }
 
@@ -405,22 +405,22 @@ export const useRealtimeStore = defineStore('realtime', () => {
         isConnected.value = false;
         isConnecting.value = true;
         reconnectAttempts.value += 1;
-        connectionError.value = $t('websocket.connection.failed', {
-          error: $t('websocket.error.connectionFailed'),
+        connectionError.value = $t('realtime.connection.failed', {
+          error: $t('realtime.error.connectionFailed'),
         });
 
         if (!hasShownConnectionErrorNotification) {
           notification.error({
-            message: $t('system.websocket.connectionFailedTitle'),
-            description: $t('system.websocket.connectionFailedDescription'),
+            message: $t('system.realtime.connectionFailedTitle'),
+            description: $t('system.realtime.connectionFailedDescription'),
             duration: 0,
           });
           hasShownConnectionErrorNotification = true;
         }
 
         if (reconnectAttempts.value >= MAX_RECONNECT_ATTEMPTS) {
-          connectionError.value = $t('websocket.connection.failed', {
-            error: $t('websocket.error.connectionFailed'),
+          connectionError.value = $t('realtime.connection.failed', {
+            error: $t('realtime.error.connectionFailed'),
           });
           isConnecting.value = false;
           es.close();
@@ -434,13 +434,13 @@ export const useRealtimeStore = defineStore('realtime', () => {
     } catch (error: any) {
       isConnected.value = false;
       isConnecting.value = false;
-      connectionError.value = $t('websocket.connection.failed', {
-        error: error?.message || $t('websocket.error.connectionFailed'),
+      connectionError.value = $t('realtime.connection.failed', {
+        error: error?.message || $t('realtime.error.connectionFailed'),
       });
       notification.error({
-        message: $t('system.websocket.connectionFailedTitle'),
+        message: $t('system.realtime.connectionFailedTitle'),
         description:
-          error?.message || $t('system.websocket.connectionFailedDescription'),
+          error?.message || $t('system.realtime.connectionFailedDescription'),
         duration: 0,
       });
     }

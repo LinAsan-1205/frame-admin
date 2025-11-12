@@ -1,13 +1,13 @@
 {
   "connection": {
-    "connecting": "Connecting...",
-    "connected": "WebSocket connected successfully",
-    "disconnected": "Disconnected: {reason}",
-    "reconnecting": "Reconnecting (attempt {attempt})...",
-    "reconnected": "Reconnected successfully",
-    "failed": "Connection failed: {error}",
-    "timeout": "Connection timeout",
-    "error": "Connection error: {message}"
+    "connecting": "Connecting realtime stream...",
+    "connected": "Realtime stream connected successfully",
+    "disconnected": "Realtime stream disconnected: {reason}",
+    "reconnecting": "Reconnecting realtime stream (attempt {attempt})...",
+    "reconnected": "Realtime stream reconnected successfully",
+    "failed": "Realtime connection failed: {error}",
+    "timeout": "Realtime connection timeout",
+    "error": "Realtime connection error: {message}"
   },
   "session": {
     "forceLogout": "Your account has been logged in on another device, current session is invalid",
@@ -22,10 +22,10 @@
     "offline": "Session is offline"
   },
   "heartbeat": {
-    "timeout": "Heartbeat timeout, connection will be closed",
-    "restored": "Heartbeat restored",
-    "missed": "Heartbeat missed",
-    "error": "Heartbeat error"
+    "timeout": "Heartbeat timeout, realtime stream will be closed",
+    "restored": "Realtime heartbeat restored",
+    "missed": "Realtime heartbeat missed",
+    "error": "Realtime heartbeat error"
   },
   "strategy": {
     "updated": "Login strategy updated",
@@ -43,8 +43,8 @@
     "reconnectSuccess": "Connection restored"
   },
   "error": {
-    "connectionFailed": "Unable to connect to server",
-    "authFailed": "WebSocket authentication failed",
+    "connectionFailed": "Unable to connect to realtime service",
+    "authFailed": "Realtime authentication failed",
     "networkError": "Network error",
     "serverError": "Server error",
     "timeout": "Operation timeout",
