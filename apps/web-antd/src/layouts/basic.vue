@@ -10,13 +10,13 @@ import { useAccessStore, useUserStore } from '@vben/stores';
 
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
-import { useWebSocketStore } from '#/store/websocket';
+import { useRealtimeStore } from '#/store/realtime';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const accessStore = useAccessStore();
-const websocketStore = useWebSocketStore();
+const realtimeStore = useRealtimeStore();
 const { destroyWatermark, updateWatermark } = useWatermark();
 const router = useRouter();
 
@@ -40,12 +40,12 @@ async function handleLogout() {
 
 onMounted(() => {
   if (accessStore.accessToken) {
-    websocketStore.connect();
+    realtimeStore.connect();
   }
 });
 
 onUnmounted(() => {
-  websocketStore.disconnect();
+  realtimeStore.disconnect();
 });
 
 watch(
@@ -67,12 +67,12 @@ watch(
 accessStore.$subscribe((_, state) => {
   if (
     state.accessToken &&
-    !websocketStore.isConnected &&
-    !websocketStore.isConnecting
+    !realtimeStore.isConnected &&
+    !realtimeStore.isConnecting
   ) {
-    websocketStore.connect();
-  } else if (!state.accessToken && websocketStore.isConnected) {
-    websocketStore.disconnect();
+    realtimeStore.connect();
+  } else if (!state.accessToken && realtimeStore.isConnected) {
+    realtimeStore.disconnect();
   }
 });
 </script>
