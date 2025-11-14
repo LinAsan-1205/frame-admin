@@ -1,6 +1,10 @@
 import { setTimezoneHandler } from '@vben/stores';
 
-import { getTimezoneApi, getTimezoneOptionsApi, setTimezoneApi } from '#/api/timezone';
+import {
+  getTimezoneApi,
+  getTimezoneOptionsApi,
+  setTimezoneApi,
+} from '#/api/timezone';
 
 /**
  * 初始化时区处理，通过API保存时区设置
