@@ -24,7 +24,7 @@ export interface ServerStats {
   timestamp: Date;
 }
 
-const SSE_ENDPOINT_PATH = '/api/admin/sse/stream';
+const SSE_ENDPOINT_PATH = `${import.meta.env.VITE_WEBSOCKET_URL}/api/admin/sse/stream`;
 
 interface ParsedSseMessage {
   type: string;
