@@ -432,21 +432,21 @@
       "colorPicker": "颜色选择器"
     }
   },
-  "websocket": {
-    "unhandledMessage": "未处理的消息:",
+  "realtime": {
+    "unhandledMessage": "未处理的实时消息:",
     "userStatusChange": "用户 {userId} 状态变为 {status}",
     "onlineUsersUpdate": "在线用户更新:",
     "forceLogoutTitle": "强制下线通知",
     "forceLogoutDescription": "您的账户已被管理员强制下线",
     "systemMessage": "系统消息",
     "systemBroadcast": "系统广播",
-    "error": "WebSocket错误",
-    "notConnected": "Socket.IO未连接，无法发送消息",
-    "loginRequired": "用户未登录，无法建立Socket.IO连接",
-    "alreadyConnected": "Socket.IO已连接或正在连接中",
+    "error": "实时连接错误",
+    "notConnected": "实时流未连接，无法接收更新",
+    "loginRequired": "用户未登录，无法建立实时流",
+    "alreadyConnected": "实时流已连接或正在连接中",
     "connectionFailed": "连接失败: {error}",
-    "connectionFailedTitle": "WebSocket连接失败",
-    "connectionFailedDescription": "无法建立Socket.IO连接，请检查网络",
+    "connectionFailedTitle": "实时连接失败",
+    "connectionFailedDescription": "无法建立实时流，请检查网络",
     "sessionChange": "会话数据已更新",
     "sessionChangeNotification": "会话列表已更新，点击刷新查看最新数据"
   },

@@ -23,6 +23,7 @@ export function useColumns<T = Post.View>(
     {
       field: 'postName',
       title: $t('system.post.postName'),
+      minWidth: 100,
     },
     {
       field: 'dept.name',
@@ -30,10 +31,12 @@ export function useColumns<T = Post.View>(
         name: 'CellFormatEmpty',
       },
       title: $t('system.post.dept'),
+      minWidth: 100,
     },
     {
       field: 'postSort',
       title: $t('system.post.postSort'),
+      minWidth: 100,
     },
     {
       cellRender: {
@@ -42,6 +45,7 @@ export function useColumns<T = Post.View>(
       },
       field: 'status',
       title: $t('system.post.status'),
+      minWidth: 100,
     },
     {
       field: 'remark',

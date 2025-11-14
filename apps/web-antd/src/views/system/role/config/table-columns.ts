@@ -16,10 +16,12 @@ export function useColumns<T = Role.View>(
   return [
     { title: '#', type: 'seq', width: 50 },
     {
+      minWidth: 100,
       field: 'name',
       title: $t('system.role.roleName'),
     },
     {
+      minWidth: 100,
       field: 'code',
       cellRender: {
         name: 'CellFormatEmpty',
@@ -27,6 +29,7 @@ export function useColumns<T = Role.View>(
       title: $t('system.role.code'),
     },
     {
+      minWidth: 100,
       cellRender: {
         attrs: { beforeChange: onStatusChange },
         name: onStatusChange ? 'CellSwitch' : 'CellTag',

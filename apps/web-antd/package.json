@@ -51,6 +51,7 @@
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "ant-design-vue": "catalog:",
+    "axios": "catalog:",
     "dayjs": "catalog:",
     "enum-plus": "catalog:",
     "es-toolkit": "catalog:",

@@ -22,6 +22,7 @@ export function useColumns(
       fixed: 'left',
       title: $t('system.dept.deptName'),
       treeNode: true,
+      minWidth: 100,
     },
     {
       align: 'center',
@@ -30,6 +31,7 @@ export function useColumns(
       cellRender: {
         name: 'CellFormatEmpty',
       },
+      minWidth: 100,
     },
     {
       align: 'center',
@@ -38,6 +40,7 @@ export function useColumns(
       cellRender: {
         name: 'CellFormatEmpty',
       },
+      minWidth: 100,
     },
     {
       align: 'center',
@@ -57,6 +60,7 @@ export function useColumns(
       field: 'createTime',
       cellRender: { name: 'CellFormatDate' },
       title: $t('system.dept.createTime'),
+      minWidth: 100,
     },
     {
       field: 'remark',

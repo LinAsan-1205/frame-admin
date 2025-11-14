@@ -20,14 +20,11 @@
   "cancel": "取消",
   "create": "创建",
   "remark": "备注",
-  "confirm": "确认",
-  "search": "搜索",
-  "reset": "重置",
-  "addSuccess": "新增成功",
-  "updateSuccess": "更新成功",
-  "batchDelete": "批量删除",
-  "selectAtLeastOne": "请至少选择一条数据",
-  "confirmDeleteContent": "确认删除选中的 {count} 条数据吗？",
-  "back": "返回",
-  "save": "保存"
+  "enabled": "启用",
+  "disabled": "禁用",
+  "switchStatus": "切换状态",
+  "confirmSwitchStatus": "你要将{0}的状态切换为【{1}】吗？",
+  "executing": "正在执行：{0}",
+  "executeSuccess": "{0}执行成功",
+  "cancelled": "已取消"
 }

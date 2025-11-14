@@ -20,14 +20,11 @@
   "cancel": "Cancel",
   "create": "Create",
   "remark": "Remark",
-  "confirm": "Confirm",
-  "search": "Search",
-  "reset": "Reset",
-  "addSuccess": "Add Success",
-  "updateSuccess": "Update Success",
-  "batchDelete": "Batch Delete",
-  "selectAtLeastOne": "Please select at least one item",
-  "confirmDeleteContent": "Are you sure to delete the selected {count} item(s)?",
-  "back": "Back",
-  "save": "Save"
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "switchStatus": "Switch Status",
+  "confirmSwitchStatus": "Do you want to switch the status of {0} to 【{1}】?",
+  "executing": "Executing: {0}",
+  "executeSuccess": "{0} executed successfully",
+  "cancelled": "Cancelled"
 }

@@ -431,21 +431,21 @@
       "colorPicker": "Color Picker"
     }
   },
-  "websocket": {
-    "unhandledMessage": "Unhandled message:",
+  "realtime": {
+    "unhandledMessage": "Unhandled realtime message:",
     "userStatusChange": "User {userId} status changed to {status}",
     "onlineUsersUpdate": "Online users updated:",
     "forceLogoutTitle": "Force Logout Notification",
     "forceLogoutDescription": "Your account has been forced to log out by administrator",
     "systemMessage": "System Message",
     "systemBroadcast": "System Broadcast",
-    "error": "WebSocket Error",
-    "notConnected": "Socket.IO not connected, unable to send message",
-    "loginRequired": "User not logged in, unable to establish Socket.IO connection",
-    "alreadyConnected": "Socket.IO is already connected or connecting",
+    "error": "Realtime Error",
+    "notConnected": "Realtime stream is not connected, unable to receive updates",
+    "loginRequired": "User not logged in, unable to establish realtime stream",
+    "alreadyConnected": "Realtime stream is already connected or connecting",
     "connectionFailed": "Connection failed: {error}",
-    "connectionFailedTitle": "WebSocket Connection Failed",
-    "connectionFailedDescription": "Unable to establish Socket.IO connection, please check network",
+    "connectionFailedTitle": "Realtime Connection Failed",
+    "connectionFailedDescription": "Unable to establish realtime stream, please check network",
     "sessionChange": "Session data updated",
     "sessionChangeNotification": "Session list has been updated, click refresh to view latest data"
   },
